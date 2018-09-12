@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<GridPane alignment="CENTER" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <JFXButton buttonType="RAISED" defaultButton="true" prefHeight="124.0" prefWidth="459.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Practice Mode" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </JFXButton>
+   </children>
+</GridPane>
