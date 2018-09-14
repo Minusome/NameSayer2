@@ -1,21 +1,25 @@
 package namesayer.recording;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecordingManager {
 
     private static RecordingManager instance = null;
-
-    public static RecordingManager getInstance() {
+    private List<Recording> recordingList = new ArrayList<>();
+    private List<File> DirectoryList= new ArrayList<>();
+    public static RecordingManager getInstance(String path) {
         if (instance == null) {
-            instance = new RecordingManager();
+            instance = new RecordingManager(path);
         }
         return instance;
     }
 
-    private RecordingManager() {
+    private RecordingManager(String path) {
         //make folders and stuff
+        initialise(path);
     }
 
     //return a list of all the names
@@ -48,5 +52,36 @@ public class RecordingManager {
             add("test6");
 
         }};
+    }
+
+    //initialise all folders
+    public void initialise(String path){
+    Recording temp = new Recording(path);
+    File[] fileList = temp.listFiles();
+    int i = 0;
+    while(i!=fileList.length){
+        fileList[i].mkdirs();//create a folder for every recording
+        System.out.println(fileList[i].getAbsolutePath());
+        i++;
+    }
+    File[] newList = temp.listFiles();
+
+        int j = 0;
+        while(j!=fileList.length){
+            if(fileList[j].isDirectory()){
+                DirectoryList.add(fileList[j]); //create a folder for every recording
+            }
+            j++;
+        }
+        //put corresponding recordings into that directory
+        for(File f:DirectoryList){
+            Integer version = 1;
+            for(File e:fileList){
+                if(f.getName().equals(e.getName())){
+                    e.renameTo(new File(f.getPath()+e.getName()+version));
+                    version++;
+                }
+            }
+        }
     }
 }

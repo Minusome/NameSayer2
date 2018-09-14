@@ -31,7 +31,7 @@ public class NameSelectScreenController implements Initializable {
 
 
     public void initialize(URL location, ResourceBundle resources) {
-        recordingManager = RecordingManager.getInstance();
+        recordingManager = RecordingManager.getInstance("C:/Users/zhugu/Pictures/Camera Roll");
         ObservableList<String> listOfNames = FXCollections.observableArrayList(recordingManager.getListOfNames());
 
 
