@@ -19,34 +19,11 @@ public class RecordingManager {
     }
 
     //return a list of all the names
-    public List<String> getListOfNames() {
-        //dummy values for now
-        return new ArrayList<String>() {{
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-
-        }};
+    public List<Name> getListOfNames() {
+        List<Name> names = new ArrayList<>();
+        for (int i = 0; i <= 100; i++) {
+            names.add(new Name("test" + i));
+        }
+        return names;
     }
 }

@@ -6,57 +6,49 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import namesayer.recording.Name;
 import namesayer.recording.RecordingManager;
 import namesayer.util.EmptySelectionModel;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class NameSelectScreenController implements Initializable {
 
     @FXML private JFXTextField nameSearchBar;
-    @FXML private JFXListView<String> nameListView;
+    @FXML private JFXListView<Name> nameListView;
 
     private RecordingManager recordingManager;
-    private List<String> selectedNames = new ArrayList<String>();
-
+    private ObservableList<Name> listOfNames;
 
     public void initialize(URL location, ResourceBundle resources) {
         recordingManager = RecordingManager.getInstance();
-        ObservableList<String> listOfNames = FXCollections.observableArrayList(recordingManager.getListOfNames());
+        listOfNames = FXCollections.observableArrayList(recordingManager.getListOfNames());
 
 
-        nameListView.setCellFactory(value -> new JFXListCell<String>() {
+        nameListView.setCellFactory(value -> new JFXListCell<Name>() {
             JFXCheckBox checkBox = new JFXCheckBox();
-            String name;
-
-            {
-                checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue && !oldValue) {
-                        selectedNames.add(name);
-                    } else if (!newValue && oldValue) {
-                        selectedNames.remove(name);
-                    }
-                    System.out.println(selectedNames);
-                });
-            }
+            Name recycledName = null;
 
             @Override
-            public void updateItem(String item, boolean empty) {
+            public void updateItem(Name item, boolean empty) {
                 super.updateItem(item, empty);
-                name = item;
                 if (empty) {
                     setGraphic(null);
                 } else {
+                    if (recycledName != null){
+                        checkBox.selectedProperty().unbindBidirectional(recycledName.selectedProperty());
+                    }
+                    checkBox.selectedProperty().bindBidirectional(item.selectedProperty());
+                    recycledName = item;
                     setGraphic(checkBox);
                 }
             }
