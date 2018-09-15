@@ -1,8 +1,11 @@
 package namesayer.recording;
 
+import javax.lang.model.element.Name;
 import java.io.File;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RecordingManager implements FileManager{
@@ -23,17 +26,19 @@ public class RecordingManager implements FileManager{
     private RecordingManager(String path) {
         //make folders and stuff
         initialise(path);
+        newRecording(new Recording("C:/Users/zhugu/Pictures/123"));
+
     }
 
     @Override
     public Recording newRecording(Recording RecordingInSystem) {
-        StringBuilder sb = new StringBuilder(RecordingInSystem.getAbsolutePath());
-        sb.insert(RecordingInSystem.getAbsolutePath().lastIndexOf("/"),"/userCreated");
-        Recording newRecording = new Recording(sb.toString());//make new recordings in the userCreated
+        Recording newRecording = new Recording(currentPath+"/userCreated/"+RecordingInSystem.getName());
         newRecording.mkdirs();//make a directory for this user created recording
-
+        Date day=new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(df.format(day));
         StartRecording();//start the recording in linux command line
-
+        return newRecording;
     }
 
     private void StartRecording() {
@@ -52,33 +57,11 @@ public class RecordingManager implements FileManager{
     //return a list of all the names
     public List<String> getListOfNames() {
         //dummy values for now
-        return new ArrayList<String>() {{
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-            add("test1");
-            add("test2");
-            add("test3");
-            add("test4");
-            add("test5");
-            add("test6");
-
-        }};
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i <= 100; i++) {
+            names.add("test"+i);
+        }
+        return names;
     }
 
     @Override
@@ -98,6 +81,7 @@ public class RecordingManager implements FileManager{
 
     //initialise all folders
     public void initialise(String path){
+        currentPath = path;
     Recording temp = new Recording(path);
     File[] fileList = temp.listFiles();
     int i = 0;
