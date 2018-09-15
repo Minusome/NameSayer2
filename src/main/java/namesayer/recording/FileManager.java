@@ -21,6 +21,8 @@ public interface FileManager {
     //randomise the selected Recording list
     public void RandomiseSelectedList();
 
-    //get the recordings for the name specified
-    public List<Recording> getRecordingsThisName(String name);
+    //get the recordings for the name specified in database
+    public List<Recording> getRecordingsInDatabaseThisName(String name);
+    //get the recordings for the name specified in user's attemps
+    public List<Recording> getRecordingsInUserAttempsForThisName(String name);
 }

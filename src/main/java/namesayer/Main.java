@@ -17,6 +17,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1152, 648));
         primaryStage.show();
         new File("C:/Users/zhugu/Pictures/123").mkdir();
+
     }
 
 
