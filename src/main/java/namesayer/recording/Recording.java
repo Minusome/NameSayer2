@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 public class Recording extends File {
-    private List<Recording> Multiversion = null;
     private int HAVEMULTIVERSION = 0;
     private String name;
 
@@ -12,11 +11,8 @@ public class Recording extends File {
         super(pathname);
     }
 
-    public List<Recording> getRecordingsInthatPath(String pathname){
-        return null;
-    }
-
     public void setFileNameNoEx(String filename) {
+        name = "invalid name";
         if ((filename != null) && (filename.length() > 0)) {
             int dot = filename.lastIndexOf('.');
             int hyphen = filename.lastIndexOf('_');
@@ -24,7 +20,7 @@ public class Recording extends File {
                 name = filename.substring(hyphen, dot);
             }
         }
-        name = "invalid name";
+
     }
 
     public boolean haveMultiVersion(){

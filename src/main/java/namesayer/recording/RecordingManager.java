@@ -5,11 +5,13 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordingManager {
+public class RecordingManager implements FileManager{
 
     private static RecordingManager instance = null;
     private List<Recording> recordingList = new ArrayList<>();
     private List<File> DirectoryList= new ArrayList<>();
+    private List<Recording> newRecordings = new ArrayList<>();
+    private String currentPath = System.getProperty("user.dir");
     public static RecordingManager getInstance(String path) {
         if (instance == null) {
             instance = new RecordingManager(path);
@@ -17,9 +19,34 @@ public class RecordingManager {
         return instance;
     }
 
+    //create a new RecordingManager for all the recordings in that path
     private RecordingManager(String path) {
         //make folders and stuff
         initialise(path);
+    }
+
+    @Override
+    public Recording newRecording(Recording RecordingInSystem) {
+        StringBuilder sb = new StringBuilder(RecordingInSystem.getAbsolutePath());
+        sb.insert(RecordingInSystem.getAbsolutePath().lastIndexOf("/"),"/userCreated");
+        Recording newRecording = new Recording(sb.toString());//make new recordings in the userCreated
+        newRecording.mkdirs();//make a directory for this user created recording
+
+        StartRecording();//start the recording in linux command line
+
+    }
+
+    private void StartRecording() {
+    }
+
+    @Override
+    public boolean deleteRecording(Recording deleteThisRecording) {
+        return false;
+    }
+
+    @Override
+    public boolean RecordingExist(Recording r) {
+        return false;
     }
 
     //return a list of all the names
@@ -54,6 +81,21 @@ public class RecordingManager {
         }};
     }
 
+    @Override
+    public List<Recording> getNewRecordingList() {
+        return null;
+    }
+
+    @Override
+    public void RandomiseSelectedList() {
+
+    }
+
+    @Override
+    public List<Recording> getRecordingsThisName(String name) {
+        return null;
+    }
+
     //initialise all folders
     public void initialise(String path){
     Recording temp = new Recording(path);
@@ -61,7 +103,6 @@ public class RecordingManager {
     int i = 0;
     while(i!=fileList.length){
         fileList[i].mkdirs();//create a folder for every recording
-        System.out.println(fileList[i].getAbsolutePath());
         i++;
     }
     File[] newList = temp.listFiles();
@@ -84,4 +125,6 @@ public class RecordingManager {
             }
         }
     }
+
+
 }
