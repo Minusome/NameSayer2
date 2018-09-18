@@ -1,5 +1,8 @@
 package namesayer.recording;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class NameStorageManager {
@@ -83,16 +87,21 @@ public class NameStorageManager {
         thread.start();
     }
 
-
-
     //Initialize the correct folder hierarchy
     private NameStorageManager() {
     }
 
 
-    public List<Name> getNamesList() {
-        return Collections.unmodifiableList(namesList);
+    public ObservableList<Name> getNamesList() {
+        return FXCollections.observableArrayList(namesList);
     }
+
+    public ObservableList<Name> getSelectedNamesList(){
+        return namesList.stream()
+                        .filter(Name::getSelected)
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
 
 
 }

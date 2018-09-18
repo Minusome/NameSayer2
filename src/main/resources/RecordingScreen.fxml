@@ -50,7 +50,7 @@
                   </Label>
                </children>
             </HBox>
-            <JFXListView fx:id="savedRecordingListView" VBox.vgrow="ALWAYS">
+            <JFXListView fx:id="savedRecordingListView" onMouseClicked="#onSelectedRecordingClicked" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
@@ -68,19 +68,19 @@
                   </Label>
                </children>
             </HBox>
-            <JFXListView fx:id="newRecordingListView" VBox.vgrow="ALWAYS">
+            <JFXListView fx:id="newRecordingListView" onMouseClicked="#onSelectedRecordingClicked" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="20.0" left="30.0" right="30.0" />
                </VBox.margin>
             </JFXListView>
             <HBox alignment="CENTER">
                <children>
-                  <JFXButton buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #f2f2f2;" text="Save">
+                  <JFXButton buttonType="RAISED" onMouseClicked="#onSaveButtonClicked" prefWidth="100.0" style="-fx-background-color: #f2f2f2;" text="Save">
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: #f2f2f2;" text="New">
+                  <JFXButton buttonType="RAISED" onMouseClicked="#onNewButtonClicked" prefWidth="100.0" style="-fx-background-color: #f2f2f2;" text="New">
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
@@ -90,6 +90,11 @@
                   <Insets bottom="30.0" />
                </padding>
             </HBox>
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+         <children>
+            <HBox fx:id="actionViewContainer" prefHeight="100.0" prefWidth="200.0" />
          </children>
       </VBox>
    </children>

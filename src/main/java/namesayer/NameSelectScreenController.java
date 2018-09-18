@@ -5,11 +5,9 @@ import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -18,11 +16,8 @@ import namesayer.recording.NameStorageManager;
 import namesayer.util.EmptySelectionModel;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
-public class NameSelectScreenController implements Initializable {
+public class NameSelectScreenController {
 
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXListView<Name> nameListView;
@@ -31,9 +26,9 @@ public class NameSelectScreenController implements Initializable {
     private NameStorageManager nameStorageManager;
     private ObservableList<Name> listOfNames;
 
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize() {
         nameStorageManager = NameStorageManager.getInstance();
-        listOfNames = FXCollections.observableArrayList(nameStorageManager.getNamesList());
+        listOfNames = nameStorageManager.getNamesList();
 
         nameListView.setCellFactory(value -> new JFXListCell<Name>() {
             JFXCheckBox checkBox = new JFXCheckBox();
@@ -61,13 +56,7 @@ public class NameSelectScreenController implements Initializable {
 
 
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingScreen.fxml"));
-        Parent root = loader.load();
-        RecordingScreenController controller = loader.getController();
-        controller.injectSelectedNames(listOfNames.stream()
-                                                  .filter(name -> name.getSelected())
-                                                  .collect(Collectors.toCollection(FXCollections::observableArrayList)));
-
+        Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
     }
