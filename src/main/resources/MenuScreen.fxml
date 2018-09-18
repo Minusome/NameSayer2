@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -11,13 +12,25 @@
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="50.0" valignment="TOP" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <JFXButton fx:id="practiceButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onPracticeModeClicked" prefHeight="124.0" prefWidth="459.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Practice Mode">
          <font>
             <Font size="36.0" />
          </font>
+         <GridPane.margin>
+            <Insets bottom="20.0" />
+         </GridPane.margin>
+      </JFXButton>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onSelectAudioDatabaseFolder" prefHeight="124.0" prefWidth="459.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Select Names Database" GridPane.rowIndex="1">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin>
       </JFXButton>
    </children>
 </GridPane>
