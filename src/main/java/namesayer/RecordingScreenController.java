@@ -1,7 +1,6 @@
 package namesayer;
 
 import com.jfoenix.controls.JFXListView;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,8 @@ public class RecordingScreenController {
     @FXML private HBox actionViewContainer;
 
     private NameStorageManager storageManager = NameStorageManager.getInstance();
-    private ObservableList<Name> selectedNames = null;
+    private ObservableList<Name> selectedNames;
+    private Name selectedName;
 
 
     public void initialize() {
@@ -32,10 +32,10 @@ public class RecordingScreenController {
 
     @FXML
     public void onSelectedNameClicked(MouseEvent mouseEvent) {
-        Name name = selectedNamesListView.getSelectionModel().getSelectedItem();
-        if (name != null) {
-            savedRecordingListView.setItems(FXCollections.observableArrayList(name.getSavedRecordings()));
-            newRecordingListView.setItems(FXCollections.observableArrayList(name.getTempRecordings()));
+        selectedName = selectedNamesListView.getSelectionModel().getSelectedItem();
+        if (selectedName != null) {
+            savedRecordingListView.setItems(selectedName.getSavedRecordings());
+            newRecordingListView.setItems(selectedName.getTempRecordings());
         }
     }
 
@@ -55,23 +55,24 @@ public class RecordingScreenController {
             PlayerFragmentController controller = loader.getController();
             controller.injectRecording(recording);
             actionViewContainer.getChildren().setAll(root);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
+        selectedName.saveTempRecordings();
     }
 
     public void onNewButtonClicked(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingFragment.fxml"));
-        Parent root = loader.load();
-        RecordingFragmentController controller = loader.getController();
-        controller.injectName(selectedNamesListView.getSelectionModel().getSelectedItem());
-        actionViewContainer.getChildren().setAll(root);
+        if (selectedNames != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingFragment.fxml"));
+            Parent root = loader.load();
+            RecordingFragmentController controller = loader.getController();
+            controller.injectName(selectedName);
+            actionViewContainer.getChildren().setAll(root);
+        }
     }
-
-
 
 }

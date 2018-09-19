@@ -12,7 +12,7 @@ public class RecordingFragmentController {
     }
 
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
-        name.makeNewRecording();
+        name.makeNewRecording("testing");
     }
 
 }
