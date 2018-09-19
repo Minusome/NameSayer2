@@ -40,9 +40,24 @@ public class RecordingScreenController {
     }
 
 
-    public void onSelectedRecordingClicked(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/PlayerFragment.fxml"));
-        actionViewContainer.getChildren().setAll(root);
+    public void onSavedRecordingClicked(MouseEvent mouseEvent) {
+        displayPlayerFragment(savedRecordingListView.getSelectionModel().getSelectedItem());
+    }
+
+    public void onNewRecordingClicked(MouseEvent mouseEvent) {
+        displayPlayerFragment(newRecordingListView.getSelectionModel().getSelectedItem());
+    }
+
+    public void displayPlayerFragment(Recording recording) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlayerFragment.fxml"));
+            Parent root = loader.load();
+            PlayerFragmentController controller = loader.getController();
+            controller.injectRecording(recording);
+            actionViewContainer.getChildren().setAll(root);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -50,9 +65,11 @@ public class RecordingScreenController {
     }
 
     public void onNewButtonClicked(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/RecordingFragment.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingFragment.fxml"));
+        Parent root = loader.load();
         actionViewContainer.getChildren().setAll(root);
     }
+
 
 
 }

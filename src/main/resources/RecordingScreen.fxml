@@ -50,7 +50,7 @@
                   </Label>
                </children>
             </HBox>
-            <JFXListView fx:id="savedRecordingListView" onMouseClicked="#onSelectedRecordingClicked" VBox.vgrow="ALWAYS">
+            <JFXListView fx:id="savedRecordingListView" onMouseClicked="#onSavedRecordingClicked" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
@@ -68,7 +68,7 @@
                   </Label>
                </children>
             </HBox>
-            <JFXListView fx:id="newRecordingListView" onMouseClicked="#onSelectedRecordingClicked" VBox.vgrow="ALWAYS">
+            <JFXListView fx:id="newRecordingListView" onMouseClicked="#onNewRecordingClicked" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="20.0" left="30.0" right="30.0" />
                </VBox.margin>
