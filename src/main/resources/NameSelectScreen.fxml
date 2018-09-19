@@ -21,7 +21,7 @@
         <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <JFXTextField fx:id="nameSearchBar" promptText="Enter a name" GridPane.columnIndex="1">
+        <JFXTextField fx:id="nameSearchBar" onKeyReleased="#onSearchBarKeyTyped" promptText="Enter a name" GridPane.columnIndex="1">
             <font>
                 <Font size="16.0" />
             </font>

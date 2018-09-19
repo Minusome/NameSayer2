@@ -3,12 +3,13 @@ package namesayer.recording;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Name {
+public class Name implements Comparable<Name>{
 
     private String name;
     private Path directory;
@@ -22,7 +23,16 @@ public class Name {
     }
 
     public void makeNewRecording() {
-
+//        try{
+//            Path file = directory.resolve(name + TEMP + AUDIO_EXTENSION);
+//            String cmd = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t 5 -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
+//                    file.toAbsolutePath().toString() + "\"";
+//
+//            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", cmd);
+//            pb.start();
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
     }
 
     public void addSavedRecording(Recording recording) {
@@ -81,5 +91,10 @@ public class Name {
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    @Override
+    public int compareTo(Name o) {
+        return this.getName().compareTo(o.getName());
     }
 }

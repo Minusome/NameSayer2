@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +26,7 @@ public class NameStorageManager {
     private static final Path SAVED_RECORDINGS = Paths.get("saved");
     private static NameStorageManager instance = null;
 
-    private List<Name> namesList = new ArrayList<>();
+    private List<Name> namesList = new LinkedList<>();
 
 
     public static NameStorageManager getInstance() {
@@ -80,6 +81,7 @@ public class NameStorageManager {
                              e.printStackTrace();
                          }
                      });
+                Collections.sort(namesList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -93,7 +95,7 @@ public class NameStorageManager {
 
 
     public ObservableList<Name> getNamesList() {
-        return FXCollections.observableArrayList(namesList);
+        return FXCollections.observableList(namesList);
     }
 
     public ObservableList<Name> getSelectedNamesList(){

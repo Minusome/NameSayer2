@@ -8,7 +8,7 @@ public class PlayerFragmentController {
 
     private Recording recording;
 
-    public void injectRecording(Recording recording){
+    void injectRecording(Recording recording){
         this.recording = recording;
     }
 

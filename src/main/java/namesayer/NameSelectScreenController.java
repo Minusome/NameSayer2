@@ -5,17 +5,20 @@ import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import namesayer.recording.Name;
 import namesayer.recording.NameStorageManager;
 import namesayer.util.EmptySelectionModel;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class NameSelectScreenController {
 
@@ -59,5 +62,19 @@ public class NameSelectScreenController {
         Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
+    }
+
+    @FXML
+    public void onSearchBarKeyTyped(KeyEvent keyEvent) {
+        String userInput = nameSearchBar.getCharacters().toString().toLowerCase();
+        if (userInput.isEmpty()){
+            listOfNames = nameStorageManager.getNamesList();
+        } else {
+            listOfNames = listOfNames.stream()
+                                     .filter(name -> name.getName().toLowerCase().contains(userInput))
+                                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        }
+        //TODO change to bindings if u have time
+        nameListView.setItems(listOfNames);
     }
 }

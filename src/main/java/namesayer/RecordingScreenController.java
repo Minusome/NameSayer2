@@ -67,6 +67,8 @@ public class RecordingScreenController {
     public void onNewButtonClicked(MouseEvent mouseEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingFragment.fxml"));
         Parent root = loader.load();
+        RecordingFragmentController controller = loader.getController();
+        controller.injectName(selectedNamesListView.getSelectionModel().getSelectedItem());
         actionViewContainer.getChildren().setAll(root);
     }
 
