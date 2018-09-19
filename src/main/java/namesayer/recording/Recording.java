@@ -38,7 +38,9 @@ public class Recording {
 
     @Override
     public String toString() {
-        return file.getFileName().toString();
+        return file.getFileName()
+                   .toString()
+                   .replace(".wav", "");
     }
 
 
