@@ -2,15 +2,13 @@ package namesayer.recording;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import namesayer.NameSelectScreenController;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -96,9 +94,14 @@ public class NameStorageManager {
     }
 
     public ObservableList<Name> getSelectedNamesList(){
-        return namesList.stream()
-                        .filter(Name::getSelected)
-                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        ObservableList<Name> list = namesList.stream()
+                .filter(Name::getSelected)
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        if(NameSelectScreenController.RandomToggleOn()){
+            Collections.shuffle(list);
+            return list;
+        }
+        return list;
     }
 
 

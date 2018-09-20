@@ -28,6 +28,7 @@ public class NameSelectScreenController {
 
     private NameStorageManager nameStorageManager;
     private ObservableList<Name> listOfNames;
+    private static boolean randomSelected = false;
 
     public void initialize() {
         nameStorageManager = NameStorageManager.getInstance();
@@ -64,6 +65,17 @@ public class NameSelectScreenController {
         scene.setRoot(root);
     }
 
+    public void setRandom(){
+        if(randomToggle.isDisableAnimation()) {
+            randomSelected = false;
+        }else{
+            randomSelected = true;
+        }
+    }
+
+    public static boolean RandomToggleOn(){
+        return randomSelected;
+    }
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
         String userInput = nameSearchBar.getCharacters().toString().toLowerCase();
