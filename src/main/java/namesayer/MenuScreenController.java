@@ -18,9 +18,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 public class MenuScreenController {
 
@@ -80,12 +78,12 @@ public class MenuScreenController {
                     for (byte aTempBuffer : tempBuffer) {
                         double absoluteVolume = Math.abs(aTempBuffer);
                         sumVolume = sumVolume + absoluteVolume;
-                        if (absoluteVolume > highestVolume){
+                        if (absoluteVolume > highestVolume) {
                             highestVolume = absoluteVolume;
                         }
                     }
                     double volume = (sumVolume / tempBuffer.length) / highestVolume;
-                    Platform.runLater(()->MicrophoneVolume.setProgress(volume));
+                    Platform.runLater(() -> MicrophoneVolume.setProgress(volume));
                     System.out.println(volume);
                 }
             }

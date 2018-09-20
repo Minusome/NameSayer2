@@ -70,6 +70,9 @@ public class NameStorageManager {
                              }
                              Path recordingPath = savedFolder.resolve(path.getFileName());
                              Files.copy(path, recordingPath);
+                             if (Files.notExists(nameFolder.resolve(RATINGS))){
+                                 Files.createFile(nameFolder.resolve(RATINGS));
+                             }
                              Recording recording = new Recording(recordingPath);
                              newName.addSavedRecording(recording);
                          } catch (IOException e) {

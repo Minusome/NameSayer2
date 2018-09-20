@@ -3,31 +3,54 @@ package namesayer.recording;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Properties;
 
-import static namesayer.recording.Config.*;
+import static namesayer.recording.Config.RATINGS;
+import static namesayer.recording.Config.TEMP_RECORDINGS;
+import static namesayer.recording.Config.WAV_EXTENSION;
 
-public class Name implements Comparable<Name>{
+public class Name implements Comparable<Name> {
 
     private String name;
     private Path directory;
     private BooleanProperty selected = new SimpleBooleanProperty(false);
+    private Properties recordingRatingProperties = new Properties();
     private ObservableList<Recording> savedRecordings = FXCollections.observableArrayList();
     private ObservableList<Recording> tempRecordings = FXCollections.observableArrayList();
 
     public Name(String name, Path directory) {
         this.name = name;
         this.directory = directory;
+        savedRecordings.addListener(new ListChangeListener<Recording>() {
+            @Override
+            public void onChanged(Change<? extends Recording> c) {
+                refreshRatingFile();
+            }
+        });
+
+
+    }
+
+    private void refreshRatingFile(){
+        try(OutputStream output = new FileOutputStream(directory.resolve(RATINGS).toAbsolutePath().toString())){
+            recordingRatingProperties.clear();
+            for (Recording recording : savedRecordings){
+                recordingRatingProperties.setProperty(recording.toString(), recording.getRating() + "");
+            }
+            recordingRatingProperties.store(output, "Ratings");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void makeNewRecording(String recordingName) {
-
         Thread thread = new Thread(() -> {
             Path newRecordingPath = directory.resolve(TEMP_RECORDINGS).resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
             String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t 5 -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
@@ -46,6 +69,9 @@ public class Name implements Comparable<Name>{
 
     public void addSavedRecording(Recording recording) {
         savedRecordings.add(recording);
+        recording.ratingProperty().addListener((observable, oldValue, newValue) -> {
+            refreshRatingFile();
+        });
     }
 
 
@@ -59,7 +85,7 @@ public class Name implements Comparable<Name>{
 
 
     public void saveTempRecordings() {
-        savedRecordings.addAll(tempRecordings);
+        savedRecordings.forEach(this::addSavedRecording);
         tempRecordings.clear();
     }
 
