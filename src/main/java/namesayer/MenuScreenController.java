@@ -7,18 +7,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import namesayer.recording.NameStorageManager;
 
-import javax.sound.sampled.*;
-import java.awt.event.ActionListener;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.TargetDataLine;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class MenuScreenController {
 
@@ -29,6 +31,7 @@ public class MenuScreenController {
     private boolean isFirstTimeClickMic = true;
     @FXML private ImageView microphoneTestingButton;
     private Thread tesetingMicThread;
+
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 //        MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);
@@ -45,8 +48,8 @@ public class MenuScreenController {
     }
 
     //reveal the progressbar after microphone button being clicked
-    public void onMicrophoneButtonClicked(){
-        if(isFirstTimeClickMic) {
+    public void onMicrophoneButtonClicked() {
+        if (isFirstTimeClickMic) {
             MicrophoneVolume.setVisible(true);
             Thread thread = new Thread(() -> {
                 TestMicrophone();
@@ -54,7 +57,7 @@ public class MenuScreenController {
             thread.start();
             isFirstTimeClickMic = !isFirstTimeClickMic;
 
-        }else{
+        } else {
             MicrophoneVolume.setVisible(false);
             isFirstTimeClickMic = !isFirstTimeClickMic;
         }
@@ -63,43 +66,31 @@ public class MenuScreenController {
 
     private void TestMicrophone() {
 
-// Obtain and open the line.
-
-//        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);
-
         try {
-            AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100F, 16, 2, 4,
-                    44100F, true);
-            DataLine.Info info = new DataLine.Info(TargetDataLine.class, format); // format is an AudioFormat object //info from computer audio system
-            if (!AudioSystem.isLineSupported(info)) {
-                // Handle the error ...
-                System.out.println("Fuck line not supported");
-            }
-            DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);
-            TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
-            targetLine.open(format);
-            targetLine.start();
+            AudioFormat format = new AudioFormat(8000.0f, 16, 1, true, true);
+            TargetDataLine microphone = AudioSystem.getTargetDataLine(format);
+            microphone.open();
+            microphone.start();
 
-
-//            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-//            sourceLine.open(format);
-//            sourceLine.start();
-
-            int numBytesRead;
-            byte[] targetData = new byte[targetLine.getFormat().getFrameSize()];
+            double highestVolume = 0;
+            byte tempBuffer[] = new byte[1000];
             while (!isFirstTimeClickMic) {
-                targetLine.read(targetData, 0, targetData.length);
-                double  volume =  getLevel(format,targetData)/100;
-//                Platform.runLater(() -> MicrophoneVolume.setProgress((float)volume));
-                MicrophoneVolume.setProgress(volume);
-                System.out.println(volume);
-//                sourceLine.write(targetData, 0, targetData.length);
-//                System.out.println(targetLine.isRunning());
-                Thread.sleep(150);
+                if (microphone.read(tempBuffer, 0, tempBuffer.length) > 0) {
+                    double sumVolume = 0;
+                    for (byte aTempBuffer : tempBuffer) {
+                        double absoluteVolume = Math.abs(aTempBuffer);
+                        sumVolume = sumVolume + absoluteVolume;
+                        if (absoluteVolume > highestVolume){
+                            highestVolume = absoluteVolume;
+                        }
+                    }
+                    double volume = (sumVolume / tempBuffer.length) / highestVolume;
+                    Platform.runLater(()->MicrophoneVolume.setProgress(volume));
+                    System.out.println(volume);
+                }
             }
-        }
-        catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -116,28 +107,5 @@ public class MenuScreenController {
         }
     }
 
-    public static double getLevel(AudioFormat af, byte[] chunk) throws IOException{
-        PCMSigned8Bit converter = new PCMSigned8Bit(af);
-        if(chunk.length != converter.getRequiredChunkByteSize())
-            return -1;
-
-        AudioInputStream ais = converter.convert(chunk);
-        ais.read(chunk, 0, chunk.length);
-
-        long lSum = 0;
-        for(int i=0; i<chunk.length; i++)
-            lSum = lSum + chunk[i];
-
-        double dAvg = lSum / chunk.length;
-        double sumMeanSquare = 0d;
-
-        for(int j=0; j<chunk.length; j++)
-
-            sumMeanSquare = sumMeanSquare + Math.pow(chunk[j] - dAvg, 2d);
-
-        double averageMeanSquare = sumMeanSquare / chunk.length;
-
-        return (Math.pow(averageMeanSquare,0.5d));
-    }
 
 }
