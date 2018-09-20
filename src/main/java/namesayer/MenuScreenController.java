@@ -30,6 +30,7 @@ public class MenuScreenController {
     @FXML private ImageView microphoneTestingButton;
     private Thread tesetingMicThread;
 
+
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 //        MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);

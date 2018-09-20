@@ -34,8 +34,6 @@ public class Name implements Comparable<Name> {
                 refreshRatingFile();
             }
         });
-
-
     }
 
     private void refreshRatingFile(){
@@ -85,7 +83,7 @@ public class Name implements Comparable<Name> {
 
 
     public void saveTempRecordings() {
-        savedRecordings.forEach(this::addSavedRecording);
+        tempRecordings.forEach(this::addSavedRecording);
         tempRecordings.clear();
     }
 
