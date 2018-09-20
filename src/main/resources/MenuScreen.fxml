@@ -3,6 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -19,7 +21,7 @@
       <RowConstraints minHeight="10.0" percentHeight="50.0" valignment="TOP" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <JFXButton fx:id="practiceButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onPracticeModeClicked" prefHeight="124.0" prefWidth="459.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Practice Mode" GridPane.columnIndex="1">
+      <JFXButton fx:id="practiceButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" defaultButton="true" disable="true" onMouseClicked="#onPracticeModeClicked" prefHeight="124.0" prefWidth="459.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Practice Mode" GridPane.columnIndex="1">
          <font>
             <Font size="36.0" />
          </font>
@@ -35,8 +37,12 @@
             <Insets top="20.0" />
          </GridPane.margin>
       </JFXButton>
-      <JFXProgressBar fx:id="MicrophoneVolume" prefHeight="34.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-      <JFXButton fx:id="MicrophoneButton" onAction="#onMicrophoneButtonClicked" prefHeight="34.0" prefWidth="63.0" ripplerFill="#eb0a0a" text="Mic" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+      <JFXProgressBar fx:id="MicrophoneVolume" prefHeight="34.0" progress="0.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+      <ImageView fx:id="MicrophoneButton" fitHeight="52.0" fitWidth="91.0" onMouseClicked="#onMicrophoneButtonClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+         <image>
+            <Image url="@icon/microphone2.png" />
+         </image>
+      </ImageView>
       
    </children>
 </GridPane>

@@ -2,6 +2,7 @@ package namesayer;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,15 +23,16 @@ import java.util.ResourceBundle;
 public class MenuScreenController {
 
     @FXML public JFXProgressBar MicrophoneVolume;
-    @FXML public JFXButton MicrophoneButton;
+    @FXML public ImageView MicrophoneButton;
     @FXML private JFXButton practiceButton;
     private boolean isDirectorySelected = false;
     private boolean isFirstTimeClickMic = true;
-    @FXML private JFXButton microphoneTestingButton;
+    @FXML private ImageView microphoneTestingButton;
     private Thread tesetingMicThread;
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);
+//        MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);
+//        MicrophoneButton.setGraphic(new ImageView("C:\\Users\\zhugu\\Documents\\GitHub\\NameSayer\\src\\icon\\microphone2.png"));
         //unale to load the icon for the microphone for some reason
 //        Image image = new Image(getClass().getResourceAsStream("src/icon/microphone2.png"));
 //        MicrophoneButton.setGraphic(new ImageView(image));
@@ -50,48 +52,50 @@ public class MenuScreenController {
                 TestMicrophone();
             });
             thread.start();
-            tesetingMicThread = thread;
+            isFirstTimeClickMic = !isFirstTimeClickMic;
+
         }else{
             MicrophoneVolume.setVisible(false);
-                tesetingMicThread.interrupt();
+            isFirstTimeClickMic = !isFirstTimeClickMic;
         }
+
     }
 
     private void TestMicrophone() {
-        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100F, 16, 2, 4,
-                44100F, true);
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format); // format is an AudioFormat object //info from computer audio system
 
-        if (!AudioSystem.isLineSupported(info)) {
-            // Handle the error ...
-
-        }
 // Obtain and open the line.
-        DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);
-        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);
+
+//        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class, format);
 
         try {
+            AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100F, 16, 2, 4,
+                    44100F, true);
+            DataLine.Info info = new DataLine.Info(TargetDataLine.class, format); // format is an AudioFormat object //info from computer audio system
+            if (!AudioSystem.isLineSupported(info)) {
+                // Handle the error ...
+                System.out.println("Fuck line not supported");
+            }
+            DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class, format);
             TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
             targetLine.open(format);
             targetLine.start();
 
-            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-            sourceLine.open(format);
-            sourceLine.start();
+
+//            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
+//            sourceLine.open(format);
+//            sourceLine.start();
 
             int numBytesRead;
-            byte[] targetData = new byte[targetLine.getBufferSize() / 5];
-
-            while (true) {
-                numBytesRead = targetLine.read(targetData, 0, targetData.length);
-
-                if (numBytesRead == -1)	break;
-
-                sourceLine.write(targetData, 0, numBytesRead);
-                if(isFirstTimeClickMic){
-                    sourceLine.stop();
-                    sourceLine.close();
-                }
+            byte[] targetData = new byte[targetLine.getFormat().getFrameSize()];
+            while (!isFirstTimeClickMic) {
+                targetLine.read(targetData, 0, targetData.length);
+                double  volume =  getLevel(format,targetData)/100;
+//                Platform.runLater(() -> MicrophoneVolume.setProgress((float)volume));
+                MicrophoneVolume.setProgress(volume);
+                System.out.println(volume);
+//                sourceLine.write(targetData, 0, targetData.length);
+//                System.out.println(targetLine.isRunning());
+                Thread.sleep(150);
             }
         }
         catch (Exception e) {
@@ -108,7 +112,32 @@ public class MenuScreenController {
             NameStorageManager storageManager = NameStorageManager.getInstance();
             storageManager.initialize(selectedDirectory.toPath());
             isDirectorySelected = true;
+            practiceButton.setDisable(false);
         }
+    }
+
+    public static double getLevel(AudioFormat af, byte[] chunk) throws IOException{
+        PCMSigned8Bit converter = new PCMSigned8Bit(af);
+        if(chunk.length != converter.getRequiredChunkByteSize())
+            return -1;
+
+        AudioInputStream ais = converter.convert(chunk);
+        ais.read(chunk, 0, chunk.length);
+
+        long lSum = 0;
+        for(int i=0; i<chunk.length; i++)
+            lSum = lSum + chunk[i];
+
+        double dAvg = lSum / chunk.length;
+        double sumMeanSquare = 0d;
+
+        for(int j=0; j<chunk.length; j++)
+
+            sumMeanSquare = sumMeanSquare + Math.pow(chunk[j] - dAvg, 2d);
+
+        double averageMeanSquare = sumMeanSquare / chunk.length;
+
+        return (Math.pow(averageMeanSquare,0.5d));
     }
 
 }

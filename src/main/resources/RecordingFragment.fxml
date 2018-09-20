@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -10,9 +11,11 @@
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="55.5" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="344.5" minHeight="10.0" prefHeight="344.5" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <JFXButton onMouseClicked="#onRecordingButtonClicked" text="Begin Recording!" />
+      <JFXButton onMouseClicked="#onRecordingButtonClicked" text="Begin Recording!" GridPane.rowIndex="1" />
+      <JFXTextField prefHeight="106.0" prefWidth="600.0" />
    </children>
 </GridPane>
