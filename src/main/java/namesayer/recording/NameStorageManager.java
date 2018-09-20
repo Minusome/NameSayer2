@@ -1,27 +1,29 @@
 package namesayer.recording;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static namesayer.recording.Config.*;
 
 public class NameStorageManager {
 
     private static final Pattern REGEX_NAME_PARSER = Pattern.compile("[a-zA-Z]+(?:\\.wav)");
-    private static final Path CREATIONS_FOLDER = Paths.get(System.getProperty("user.home")).resolve("recordings");
-    private static final Path TEMP_RECORDINGS = Paths.get("temp");
-    private static final Path SAVED_RECORDINGS = Paths.get("saved");
     private static NameStorageManager instance = null;
 
-    private List<Name> namesList = new ArrayList<>();
+    private List<Name> namesList = new LinkedList<>();
 
 
     public static NameStorageManager getInstance() {
@@ -76,6 +78,7 @@ public class NameStorageManager {
                              e.printStackTrace();
                          }
                      });
+                Collections.sort(namesList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,16 +86,21 @@ public class NameStorageManager {
         thread.start();
     }
 
-
-
     //Initialize the correct folder hierarchy
     private NameStorageManager() {
     }
 
 
-    public List<Name> getNamesList() {
-        return Collections.unmodifiableList(namesList);
+    public ObservableList<Name> getNamesList() {
+        return FXCollections.observableList(namesList);
     }
+
+    public ObservableList<Name> getSelectedNamesList(){
+        return namesList.stream()
+                        .filter(Name::getSelected)
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
 
 
 }
