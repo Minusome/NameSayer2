@@ -16,6 +16,8 @@ import javax.sound.sampled.*;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class MenuScreenController {
 
@@ -27,15 +29,11 @@ public class MenuScreenController {
     @FXML private JFXButton microphoneTestingButton;
     private Thread tesetingMicThread;
     @FXML
-<<<<<<< HEAD
     public void initialize(URL location, ResourceBundle resources) {
         MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);
         //unale to load the icon for the microphone for some reason
 //        Image image = new Image(getClass().getResourceAsStream("src/icon/microphone2.png"));
 //        MicrophoneButton.setGraphic(new ImageView(image));
-=======
-    public void initialize() {
->>>>>>> 9adbc9e866f34cea0bb86c06c4d81083ebb92736
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
