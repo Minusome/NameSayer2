@@ -95,6 +95,12 @@ public class MenuScreenController {
 
     }
 
+    public void onSelectLoadPreviousFolder(MouseEvent mouseEvent){
+        //TO BE IMPELEMENTED
+        NameStorageManager storageManager = NameStorageManager.getInstance();
+//        storageManager.loadExistingHierarchy();
+    }
+    
     public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select the audio database for your names");
