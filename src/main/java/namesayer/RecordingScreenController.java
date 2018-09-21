@@ -1,12 +1,14 @@
 package namesayer;
 
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import namesayer.recording.Name;
 import namesayer.recording.NameStorageManager;
 import namesayer.recording.Recording;

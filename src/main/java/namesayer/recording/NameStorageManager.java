@@ -8,13 +8,20 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static namesayer.recording.Config.*;
+import static namesayer.recording.Config.CREATIONS_FOLDER;
+import static namesayer.recording.Config.RATINGS;
+import static namesayer.recording.Config.SAVED_RECORDINGS;
+import static namesayer.recording.Config.TEMP_RECORDINGS;
 
 public class NameStorageManager {
 
@@ -32,7 +39,7 @@ public class NameStorageManager {
     }
 
 
-    public void initialize(Path folderPath){
+    public void initialize(Path folderPath) {
         try {
             if (!Files.isDirectory(CREATIONS_FOLDER)) {
                 Files.createDirectory(CREATIONS_FOLDER);
@@ -47,7 +54,7 @@ public class NameStorageManager {
         //Ensure non-blocking
         Thread thread = new Thread(() -> {
             try (Stream<Path> paths = Files.walk(folderPath)) {
-                HashSet<String> initializedNames = new HashSet<>();
+                Map<String, Name> initializedNames = new HashMap<>();
                 paths.filter(Files::isRegularFile)
                      .forEach(path -> {
                          //Extract name from provided database
@@ -62,15 +69,17 @@ public class NameStorageManager {
                          Name newName = new Name(name, nameFolder);
                          try {
                              //Create sub-folders if not already created
-                             if (!initializedNames.contains(name)) {
+                             if (!initializedNames.containsKey(name)) {
                                  Files.createDirectories(savedFolder);
                                  Files.createDirectories(tempFolder);
-                                 initializedNames.add(name);
+                                 initializedNames.put(name, newName);
                                  namesList.add(newName);
+                             } else {
+                                 newName = initializedNames.get(name);
                              }
                              Path recordingPath = savedFolder.resolve(path.getFileName());
                              Files.copy(path, recordingPath);
-                             if (Files.notExists(nameFolder.resolve(RATINGS))){
+                             if (Files.notExists(nameFolder.resolve(RATINGS))) {
                                  Files.createFile(nameFolder.resolve(RATINGS));
                              }
                              Recording recording = new Recording(recordingPath);
@@ -96,17 +105,16 @@ public class NameStorageManager {
         return FXCollections.observableList(namesList);
     }
 
-    public ObservableList<Name> getSelectedNamesList(){
+    public ObservableList<Name> getSelectedNamesList() {
         ObservableList<Name> list = namesList.stream()
-                .filter(Name::getSelected)
-                .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        if(NameSelectScreenController.RandomToggleOn()){
+                                             .filter(Name::getSelected)
+                                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        if (NameSelectScreenController.RandomToggleOn()) {
             Collections.shuffle(list);
             return list;
         }
         return list;
     }
-
 
 
 }

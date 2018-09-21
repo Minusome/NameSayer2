@@ -14,6 +14,14 @@
     </properties>
 
 
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
         <dependency>
             <groupId>com.jfoenix</groupId>
@@ -29,31 +37,16 @@
             <groupId>de.jensd</groupId>
             <artifactId>fontawesomefx-commons</artifactId>
             <version>8.15</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-controls</artifactId>
-            <version>8.15</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>de.jensd</groupId>
             <artifactId>fontawesomefx-materialdesignfont</artifactId>
             <version>1.7.22-4</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>de.jensd</groupId>
             <artifactId>fontawesomefx-materialicons</artifactId>
             <version>2.2.0-5</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-materialstackicons</artifactId>
-            <version>2.1-5</version>
-            <type>pom</type>
         </dependency>
     </dependencies>
 

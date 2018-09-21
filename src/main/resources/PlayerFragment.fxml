@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import org.controlsfx.control.Rating?>
 
-
-<AnchorPane prefHeight="440.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.PlayerFragmentController">
+<GridPane fx:id="playerCard" alignment="CENTER" prefHeight="70.0" prefWidth="700.0" styleClass="card" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.PlayerFragmentController">
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" percentHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" percentHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <JFXButton layoutX="119.0" layoutY="41.0" onMouseClicked="#onPlayButtonClicked" text="Play">
-         <graphic>
-            <MaterialIconView fill="#567c5f" fontSmoothingType="LCD" glyphName="PLAY_CIRCLE_FILLED" size="30" />
-         </graphic>
-      </JFXButton>
-      <Rating fx:id="rating" layoutX="71.0" layoutY="113.0" prefWidth="406.0" />
+      <Rating fx:id="rating" prefWidth="406.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="3">
+         <children>
+            <JFXSpinner fx:id="spinner" progress="0.0" radius="30.0" startingAngle="0.0" stylesheets="@css/Material.css" />
+            <JFXButton fx:id="playButton" onMouseClicked="#onPlayButtonClicked">
+               <graphic>
+                  <MaterialIconView fx:id="playIcon" fill="#009688" fontSmoothingType="LCD" glyphName="PLAY_CIRCLE_FILLED" size="60" text="" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </StackPane>
    </children>
-</AnchorPane>
+</GridPane>
