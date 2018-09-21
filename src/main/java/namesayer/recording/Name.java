@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,6 +35,20 @@ public class Name implements Comparable<Name> {
                 refreshRatingFile();
             }
         });
+    }
+
+    public void loadPreviousRating() {
+        try{
+            recordingRatingProperties.load(new FileInputStream(directory.toString()+"ratings.txt"));
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        for(Recording r:savedRecordings){
+            r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
+        }
+        for(Recording r:tempRecordings){
+            r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
+        }
     }
 
     private void refreshRatingFile(){

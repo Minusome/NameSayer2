@@ -5,6 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import namesayer.recording.NameStorageManager;
+
+import java.io.File;
+import java.nio.file.Files;
+
 
 public class Main extends Application {
 

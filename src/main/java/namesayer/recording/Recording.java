@@ -5,8 +5,13 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Properties;
+
+import static namesayer.recording.Config.CREATIONS_FOLDER;
 
 public class Recording {
 
@@ -21,6 +26,13 @@ public class Recording {
     public Recording(Path file) {
         this(file, false);
     }
+
+//    public Recording(Path file, boolean isLoadingPreviousRating,boolean isCreatedByUser){
+//        this(file, isCreatedByUser);
+//        loadPreviousRating();
+//    }
+
+
 
     public Recording(Path file, boolean isCreatedByUser) {
         this.file = file;

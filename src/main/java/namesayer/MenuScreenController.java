@@ -25,6 +25,7 @@ public class MenuScreenController {
     @FXML public JFXProgressBar MicrophoneVolume;
     @FXML public ImageView MicrophoneButton;
     @FXML private JFXButton practiceButton;
+    @FXML private JFXButton loadExistingDataBaseButton;
     private boolean isDirectorySelected = false;
     private boolean isFirstTimeClickMic = true;
     @FXML private ImageView microphoneTestingButton;
