@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
@@ -18,6 +19,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class MenuScreenController {
@@ -34,6 +36,7 @@ public class MenuScreenController {
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+
 //        MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);
 //        MicrophoneButton.setGraphic(new ImageView("C:\\Users\\zhugu\\Documents\\GitHub\\NameSayer\\src\\icon\\microphone2.png"));
         //unale to load the icon for the microphone for some reason
@@ -97,10 +100,23 @@ public class MenuScreenController {
 
     public void onSelectLoadPreviousFolder(MouseEvent mouseEvent){
         //TO BE IMPELEMENTED
-        NameStorageManager storageManager = NameStorageManager.getInstance();
-//        storageManager.loadExistingHierarchy();
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        chooser.setTitle("Select the existing database for your names");
+        File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
+        if (selectedDirectory != null) {
+            NameStorageManager storageManager = NameStorageManager.getInstance();
+            storageManager.loadExistingHierarchy(selectedDirectory.toPath());
+            isDirectorySelected = true;
+            practiceButton.setDisable(false);
+        }
     }
-    
+
+
+    public void printl(){
+        System.out.println("Mouse Detected!");
+    }
+
     public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Select the audio database for your names");

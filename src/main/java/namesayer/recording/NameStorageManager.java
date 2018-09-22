@@ -33,36 +33,41 @@ public class NameStorageManager {
     }
 
     //load existing database hierarchy
-    public void loadExistingHierarchy(File folderPath){
-        try(DirectoryStream<Path> stream = Files.newDirectoryStream(CREATIONS_FOLDER)){
-            for(Path e : stream){
+    public void loadExistingHierarchy(Path folderPath){
+            namesList = new LinkedList<>();
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
+                for (Path e : stream) {
 //                System.out.println(e.getFileName());
-                //clear namesList
-                namesList = new LinkedList<>();
-                //initialise nameList with all the directories
-                Name temp = new Name(e.getFileName().toString(),e);
-                //load rating stored in the txt file
-                temp.loadPreviousRating();
+                    //clear namesList
 
-                namesList.add(temp);
-                try(DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString()+"/saved").toPath())){
-                    for(Path p : stream1){
-                        temp.addSavedRecording(new Recording(p));//add saved recordings to corresponding name
+                    //initialise nameList with all the directories
+                    Name temp = new Name(e.getFileName().toString(), e);
+                    System.out.println(e.getFileName().toString());
+                    namesList.add(temp);
+                    try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/saved").toPath())) {
+
+                    //                        System.out.println(e.toString());
+//load rating stored in the txt file
+                        temp.loadPreviousRating();
+                        for (Path p : stream1) {
+                            temp.addSavedRecording(new Recording(p));//add saved recordings to corresponding name
+//                            System.out.println(p.toString());
+                        }
+                    } catch (IOException e1) {
+
                     }
-                }catch(IOException e1){
+                    try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/temp").toPath())) {
+                        for (Path p : stream1) {
+                            temp.addSavedRecording(new Recording(p, true));//add user created recordings to corresponding name
+                        }
+                    } catch (IOException e1) {
+
+                    }
 
                 }
-                try(DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString()+"/temp").toPath())){
-                    for(Path p : stream1){
-                        temp.addSavedRecording(new Recording(p,true));//add user created recordings to corresponding name
-                    }
-                }catch(IOException e1){
+            } catch (IOException e) {
 
-                }
             }
-        }catch(IOException e){
-
-        }
     }
 
     public void initialize(Path folderPath){

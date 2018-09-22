@@ -39,16 +39,18 @@ public class Name implements Comparable<Name> {
 
     public void loadPreviousRating() {
         try{
-            recordingRatingProperties.load(new FileInputStream(directory.toString()+"ratings.txt"));
+            recordingRatingProperties.load(new FileInputStream(directory.toString()+"/ratings.txt"));
+            System.out.println(recordingRatingProperties);
         }catch(IOException e){
             e.printStackTrace();
         }
         for(Recording r:savedRecordings){
             r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
+            System.out.println(r.getRating());
         }
-        for(Recording r:tempRecordings){
-            r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
-        }
+//        for(Recording r:tempRecordings){
+//            r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
+//        }
     }
 
     private void refreshRatingFile(){
