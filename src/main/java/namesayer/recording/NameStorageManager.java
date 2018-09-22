@@ -6,6 +6,7 @@ import namesayer.NameSelectScreenController;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -38,6 +39,38 @@ public class NameStorageManager {
         return instance;
     }
 
+    //load existing database hierarchy
+    public void loadExistingHierarchy(File folderPath){
+        try(DirectoryStream<Path> stream = Files.newDirectoryStream(CREATIONS_FOLDER)){
+            for(Path e : stream){
+//                System.out.println(e.getFileName());
+                //clear namesList
+                namesList = new LinkedList<>();
+                //initialise nameList with all the directories
+                Name temp = new Name(e.getFileName().toString(),e);
+                //load rating stored in the txt file
+                temp.loadPreviousRating();
+
+                namesList.add(temp);
+                try(DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString()+"/saved").toPath())){
+                    for(Path p : stream1){
+                        temp.addSavedRecording(new Recording(p));//add saved recordings to corresponding name
+                    }
+                }catch(IOException e1){
+
+                }
+                try(DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString()+"/temp").toPath())){
+                    for(Path p : stream1){
+                        temp.addSavedRecording(new Recording(p,true));//add user created recordings to corresponding name
+                    }
+                }catch(IOException e1){
+
+                }
+            }
+        }catch(IOException e){
+
+        }
+    }
 
     public void initialize(Path folderPath) {
         try {

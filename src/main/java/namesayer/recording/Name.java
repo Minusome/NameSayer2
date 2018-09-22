@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,14 +37,28 @@ public class Name implements Comparable<Name> {
         });
     }
 
-    private void refreshRatingFile(){
-        try(OutputStream output = new FileOutputStream(directory.resolve(RATINGS).toAbsolutePath().toString())){
+    public void loadPreviousRating() {
+        try {
+            recordingRatingProperties.load(new FileInputStream(directory.toString() + "ratings.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (Recording r : savedRecordings) {
+            r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
+        }
+        for (Recording r : tempRecordings) {
+            r.setRating(Double.valueOf(recordingRatingProperties.getProperty(r.toString())));
+        }
+    }
+
+    private void refreshRatingFile() {
+        try (OutputStream output = new FileOutputStream(directory.resolve(RATINGS).toAbsolutePath().toString())) {
             recordingRatingProperties.clear();
-            for (Recording recording : savedRecordings){
+            for (Recording recording : savedRecordings) {
                 recordingRatingProperties.setProperty(recording.toString(), recording.getRating() + "");
             }
             recordingRatingProperties.store(output, "Ratings");
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -51,7 +66,7 @@ public class Name implements Comparable<Name> {
     public void makeNewRecording(String recordingName) {
         Thread thread = new Thread(() -> {
             Path newRecordingPath = directory.resolve(TEMP_RECORDINGS).resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
-            String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t 5 -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
+            String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t 3 -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
                     newRecordingPath.toString() + "\"";
             ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", command);
             try {

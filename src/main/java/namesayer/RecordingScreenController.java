@@ -1,14 +1,13 @@
 package namesayer;
 
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.effects.JFXDepthManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import namesayer.recording.Name;
 import namesayer.recording.NameStorageManager;
 import namesayer.recording.Recording;
@@ -68,7 +67,7 @@ public class RecordingScreenController {
     }
 
     public void onNewButtonClicked(MouseEvent mouseEvent) throws IOException {
-        if (selectedNames != null) {
+        if (selectedName != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingFragment.fxml"));
             Parent root = loader.load();
             RecordingFragmentController controller = loader.getController();
@@ -77,4 +76,13 @@ public class RecordingScreenController {
         }
     }
 
+    public void onBackButtonClicked(MouseEvent mouseEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/NameSelectScreen.fxml"));
+            Scene scene = selectedNamesListView.getScene();
+            scene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

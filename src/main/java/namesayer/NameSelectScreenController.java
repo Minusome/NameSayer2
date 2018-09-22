@@ -65,21 +65,23 @@ public class NameSelectScreenController {
         scene.setRoot(root);
     }
 
-    public void setRandom(){
-        if(randomToggle.isDisableAnimation()) {
+    public void setRandom() {
+        if (randomToggle.isDisableAnimation()) {
             randomSelected = false;
-        }else{
+        } else {
             randomSelected = true;
         }
     }
 
-    public static boolean RandomToggleOn(){
+    public static boolean RandomToggleOn() {
         return randomSelected;
     }
+
+
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
         String userInput = nameSearchBar.getCharacters().toString().toLowerCase();
-        if (userInput.isEmpty()){
+        if (userInput.isEmpty()) {
             listOfNames = nameStorageManager.getNamesList();
         } else {
             listOfNames = listOfNames.stream()
@@ -88,5 +90,15 @@ public class NameSelectScreenController {
         }
         //TODO change to bindings if u have time
         nameListView.setItems(listOfNames);
+    }
+
+    public void onBackButtonClicked(MouseEvent mouseEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
+            Scene scene = nameSearchBar.getScene();
+            scene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
