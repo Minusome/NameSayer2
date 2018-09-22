@@ -43,6 +43,13 @@
             <Image url="@icon/microphone2.png" />
          </image>
       </ImageView>
+      <JFXButton fx:id="loadExistingDataBaseButton" alignment="CENTER" buttonType="RAISED" onMouseClicked="#onSelectLoadPreviousFolder" prefHeight="124.0" prefWidth="459.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Load" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets bottom="20.0" top="170.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="36.0" />
+         </font></JFXButton>
       
    </children>
 </GridPane>
