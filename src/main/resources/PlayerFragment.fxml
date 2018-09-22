@@ -22,7 +22,7 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Rating fx:id="rating" prefWidth="406.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Rating fx:id="rating" prefWidth="406.0" rating="-1.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
          <children>
             <JFXSpinner fx:id="spinner" progress="0.0" radius="30.0" startingAngle="0.0" stylesheets="@css/Material.css" StackPane.alignment="CENTER">

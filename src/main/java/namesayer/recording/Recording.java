@@ -16,7 +16,7 @@ public class Recording {
 
     private Path recordingPath;
     private boolean isCreatedByUser;
-    private DoubleProperty rating = new SimpleDoubleProperty(0.0);
+    private DoubleProperty rating = new SimpleDoubleProperty();
 
 
     //This needs to be here to prevent garbage collection

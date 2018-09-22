@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import namesayer.NameSelectScreenController;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -39,42 +41,50 @@ public class NameStorageManager {
         return instance;
     }
 
-    //load existing database hierarchy
-    public void loadExistingHierarchy(Path folderPath){
-            namesList = new LinkedList<>();
-            try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
-                for (Path e : stream) {
-//                System.out.println(e.getFileName());
-                    //clear namesList
 
-                    //initialise nameList with all the directories
-                    Name temp = new Name(e.getFileName().toString(), e);
-                    System.out.println(e.getFileName().toString());
-                    namesList.add(temp);
-                    try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/saved").toPath())) {
+    //load existing database hierarchy
+    public void loadExistingHierarchy(Path folderPath) {
+        namesList = new LinkedList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
+            for (Path e : stream) {
+//                System.out.println(e.getFileName());
+                //clear namesList
+
+                //initialise nameList with all the directories
+                Name temp = new Name(e.getFileName().toString(), e);
+                System.out.println(e.getFileName().toString());
+                namesList.add(temp);
+                Properties ratingProperties = new Properties();
+
+                ratingProperties.load(new FileInputStream(e.resolve(RATINGS).toFile()));
+
+                try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(e.resolve(SAVED_RECORDINGS))) {
 
                     //                        System.out.println(e.toString());
 //load rating stored in the txt file
-                        temp.loadPreviousRating();
-                        for (Path p : stream1) {
-                            temp.addSavedRecording(new Recording(p));//add saved recordings to corresponding name
+                    for (Path p : stream1) {
+                        Recording recording = new Recording(p);
+                        double rating = Double.valueOf(ratingProperties.getProperty(recording.toString()));
+                        recording.setRating(rating);
+                        temp.addSavedRecording(recording);//add saved recordings to corresponding name
 //                            System.out.println(p.toString());
-                        }
-                    } catch (IOException e1) {
-
                     }
-                    try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/temp").toPath())) {
-                        for (Path p : stream1) {
-                            temp.addSavedRecording(new Recording(p, true));//add user created recordings to corresponding name
-                        }
-                    } catch (IOException e1) {
 
-                    }
+                } catch (IOException e1) {
 
                 }
-            } catch (IOException e) {
+                try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/temp").toPath())) {
+                    for (Path p : stream1) {
+                        temp.addSavedRecording(new Recording(p, true));//add user created recordings to corresponding name
+                    }
+                } catch (IOException e1) {
+
+                }
 
             }
+        } catch (IOException e) {
+
+        }
     }
 
     public void initialize(Path folderPath) {
