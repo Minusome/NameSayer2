@@ -14,6 +14,7 @@ import java.nio.file.Path;
 
 public class Recording {
 
+
     private Path recordingPath;
     private boolean isCreatedByUser;
     private DoubleProperty rating = new SimpleDoubleProperty();
@@ -49,6 +50,10 @@ public class Recording {
         return rating.get();
     }
 
+    public Path getRecordingPath() {
+        return recordingPath;
+    }
+
     public double getLength() {
         double durationInSeconds = 0.0;
         try{
@@ -78,5 +83,18 @@ public class Recording {
                             .replace(".wav", "");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Recording recording = (Recording) o;
+
+        return recordingPath != null ? recordingPath.equals(recording.recordingPath) : recording.recordingPath == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return recordingPath != null ? recordingPath.hashCode() : 0;
+    }
 }

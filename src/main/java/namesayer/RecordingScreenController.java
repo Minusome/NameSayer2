@@ -1,34 +1,67 @@
 package namesayer;
 
+import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXSnackbar;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import namesayer.recording.Name;
 import namesayer.recording.NameStorageManager;
 import namesayer.recording.Recording;
+import namesayer.util.RecordingListCell;
 
 import java.io.IOException;
 
 
 public class RecordingScreenController {
+    @FXML private GridPane parentPane;
     @FXML private JFXListView<Name> selectedNamesListView;
     @FXML private JFXListView<Recording> savedRecordingListView;
     @FXML private JFXListView<Recording> newRecordingListView;
     @FXML private HBox actionViewContainer;
+    private JFXSnackbar bar;
 
     private NameStorageManager storageManager = NameStorageManager.getInstance();
-    private ObservableList<Name> selectedNames;
+    private ObservableList<Name> names;
+
     private Name selectedName;
 
 
     public void initialize() {
-        selectedNames = storageManager.getSelectedNamesList();
-        selectedNamesListView.setItems(selectedNames);
+        names = storageManager.getSelectedNamesList();
+        selectedNamesListView.setCellFactory(param -> new JFXListCell<Name>() {
+            @Override
+            public void updateItem(Name item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    MaterialIconView icon = new MaterialIconView(MaterialIcon.PERSON);
+                    icon.setFill(Paint.valueOf("#757575"));
+                    setGraphic(icon);
+                }
+            }
+        });
+        savedRecordingListView.setCellFactory(param -> createRecordingCell());
+        newRecordingListView.setCellFactory(param -> createRecordingCell());
+        selectedNamesListView.setItems(names);
+        bar = new JFXSnackbar(parentPane);
+        bar.getStylesheets().addAll("/css/Material.css");
+    }
+
+    private RecordingListCell createRecordingCell() {
+        RecordingListCell cell = new RecordingListCell();
+        cell.injectParent(this);
+        return cell;
     }
 
     @FXML
@@ -42,11 +75,17 @@ public class RecordingScreenController {
 
 
     public void onSavedRecordingClicked(MouseEvent mouseEvent) {
-        displayPlayerFragment(savedRecordingListView.getSelectionModel().getSelectedItem());
+        Recording selected = savedRecordingListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            displayPlayerFragment(selected);
+        }
     }
 
     public void onNewRecordingClicked(MouseEvent mouseEvent) {
-        displayPlayerFragment(newRecordingListView.getSelectionModel().getSelectedItem());
+        Recording selected = newRecordingListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            displayPlayerFragment(selected);
+        }
     }
 
     public void displayPlayerFragment(Recording recording) {
@@ -63,7 +102,16 @@ public class RecordingScreenController {
 
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        selectedName.saveTempRecordings();
+        if (selectedName != null) {
+            if (selectedName.getTempRecordings().isEmpty()) {
+                bar.enqueue(new JFXSnackbar.SnackbarEvent("No new recordings have been created"));
+                return;
+            }
+            selectedName.saveTempRecordings();
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Recordings are now saved"));
+        } else {
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
+        }
     }
 
     public void onNewButtonClicked(MouseEvent mouseEvent) throws IOException {
@@ -73,6 +121,8 @@ public class RecordingScreenController {
             RecordingFragmentController controller = loader.getController();
             controller.injectName(selectedName);
             actionViewContainer.getChildren().setAll(root);
+        } else {
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
         }
     }
 
@@ -84,5 +134,13 @@ public class RecordingScreenController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Name getSelectedName() {
+        return selectedName;
+    }
+
+    public void hidePlayer() {
+        actionViewContainer.getChildren().clear();
     }
 }

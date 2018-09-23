@@ -29,7 +29,9 @@ public class RecordingFragmentController {
     }
 
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
-        name.makeNewRecording("Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        String temp = "Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String recordingName = temp.replace(" ", "_");
+        name.makeNewRecording(recordingName);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(spinner.progressProperty(), 0)),
                 new KeyFrame(Duration.seconds(3), new KeyValue(spinner.progressProperty(), 1)));

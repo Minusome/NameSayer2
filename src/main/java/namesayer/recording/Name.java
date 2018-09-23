@@ -10,10 +10,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
 import static namesayer.recording.Config.RATINGS;
+import static namesayer.recording.Config.SAVED_RECORDINGS;
 import static namesayer.recording.Config.TEMP_RECORDINGS;
 import static namesayer.recording.Config.WAV_EXTENSION;
 
@@ -71,6 +73,22 @@ public class Name implements Comparable<Name> {
         recording.ratingProperty().addListener((observable, oldValue, newValue) -> {
             refreshRatingFile();
         });
+    }
+
+    public void removeRecording(Recording recording){
+        try{
+            if (savedRecordings.contains(recording)) {
+                Files.deleteIfExists(recording.getRecordingPath());
+                savedRecordings.remove(recording);
+            }
+            if (tempRecordings.contains(recording)) {
+                Files.deleteIfExists(recording.getRecordingPath());
+                tempRecordings.remove(recording);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
