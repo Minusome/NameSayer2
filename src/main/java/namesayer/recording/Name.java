@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,7 +14,6 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import static namesayer.recording.Config.RATINGS;
-import static namesayer.recording.Config.SAVED_RECORDINGS;
 import static namesayer.recording.Config.TEMP_RECORDINGS;
 import static namesayer.recording.Config.WAV_EXTENSION;
 
@@ -43,6 +41,9 @@ public class Name implements Comparable<Name> {
         try (OutputStream output = new FileOutputStream(directory.resolve(RATINGS).toAbsolutePath().toString())) {
             recordingRatingProperties.clear();
             for (Recording recording : savedRecordings) {
+                recordingRatingProperties.setProperty(recording.toString(), recording.getRating() + "");
+            }
+            for (Recording recording : tempRecordings) {
                 recordingRatingProperties.setProperty(recording.toString(), recording.getRating() + "");
             }
             recordingRatingProperties.store(output, "Ratings");
@@ -75,8 +76,8 @@ public class Name implements Comparable<Name> {
         });
     }
 
-    public void removeRecording(Recording recording){
-        try{
+    public void removeRecording(Recording recording) {
+        try {
             if (savedRecordings.contains(recording)) {
                 Files.deleteIfExists(recording.getRecordingPath());
                 savedRecordings.remove(recording);
@@ -88,6 +89,12 @@ public class Name implements Comparable<Name> {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void removeTempRecordings() {
+        for (Recording recording : tempRecordings) {
+            removeRecording(recording);
         }
     }
 

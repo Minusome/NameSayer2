@@ -84,6 +84,8 @@ public class NameStorageManager {
             }
         } catch (IOException e) {
 
+        } finally {
+            Collections.sort(namesList);
         }
     }
 
@@ -109,7 +111,10 @@ public class NameStorageManager {
                          Matcher matcher = REGEX_NAME_PARSER.matcher(path.getFileName().toString());
                          String name = "unrecognized";
                          if (matcher.find()) {
-                             name = matcher.group(0).replace(".wav", "");
+                             name = matcher.group(0).replace(".wav", "").toLowerCase();
+                             if (!name.isEmpty()){
+                                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                             }
                          }
                          Path nameFolder = CREATIONS_FOLDER.resolve(name);
                          Path tempFolder = nameFolder.resolve(TEMP_RECORDINGS);
@@ -148,6 +153,17 @@ public class NameStorageManager {
     private NameStorageManager() {
     }
 
+    public void clear(){
+        namesList.clear();
+    }
+
+    public void saveAllTempRecordings(){
+        namesList.forEach(Name::saveTempRecordings);
+    }
+
+    public void removeAllTempRecordings(){
+        namesList.forEach(Name::removeTempRecordings);
+    }
 
     public ObservableList<Name> getNamesList() {
         return FXCollections.observableList(namesList);

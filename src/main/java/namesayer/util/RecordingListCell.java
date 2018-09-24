@@ -23,7 +23,6 @@ public class RecordingListCell extends JFXListCell<Recording> {
     @FXML private Label itemLabel;
     @FXML private HBox listItemHBox;
     @FXML private JFXButton deleteButton;
-    @FXML private JFXButton editButton;
     private RecordingScreenController parent;
     private Recording recording;
 
@@ -37,7 +36,6 @@ public class RecordingListCell extends JFXListCell<Recording> {
             listItemHBox.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    editButton.setVisible(true);
                     deleteButton.setVisible(true);
                 }
             });
@@ -45,12 +43,10 @@ public class RecordingListCell extends JFXListCell<Recording> {
             listItemHBox.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    editButton.setVisible(false);
                     deleteButton.setVisible(false);
                 }
             });
             deleteButton.setText("");
-            editButton.setText("");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,10 +74,6 @@ public class RecordingListCell extends JFXListCell<Recording> {
         }
     }
 
-    @FXML
-    public void onEditButtonClicked(MouseEvent mouseEvent) {
-
-    }
 
     @FXML
     public void onDeleteButtonClicked(MouseEvent mouseEvent) {
