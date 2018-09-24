@@ -17,6 +17,11 @@ import namesayer.recording.Recording;
 
 import java.io.IOException;
 
+
+
+/**
+ * Represents a custom listCell which displays a delete button and dialog to prompt the user
+ */
 public class RecordingListCell extends JFXListCell<Recording> {
 
 

@@ -4,6 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 
+/**
+ * Model needed to support checkboxes in ListView
+ */
 public class EmptySelectionModel<T> extends MultipleSelectionModel<T> {
     @Override
     public ObservableList<Integer> getSelectedIndices() {

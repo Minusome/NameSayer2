@@ -28,6 +28,10 @@ public class RecordingFragmentController {
         this.name = name;
     }
 
+    /**
+     * Animates the recording button
+     * @param mouseEvent
+     */
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         String temp = "Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String recordingName = temp.replace(" ", "_");

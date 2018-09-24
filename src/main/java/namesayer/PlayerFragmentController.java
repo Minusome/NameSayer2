@@ -32,6 +32,10 @@ public class PlayerFragmentController {
         rating.ratingProperty().bindBidirectional(recording.ratingProperty());
     }
 
+    /**
+     * Animates the play button
+     * @param mouseEvent
+     */
     @FXML
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
         recording.playAudio();

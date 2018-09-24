@@ -44,6 +44,8 @@ public class RecordingScreenController {
 
     public void initialize() {
         names = storageManager.getSelectedNamesList();
+
+        //custom listCell with nice icons
         selectedNamesListView.setCellFactory(param -> new JFXListCell<Name>() {
             @Override
             public void updateItem(Name item, boolean empty) {
@@ -57,6 +59,7 @@ public class RecordingScreenController {
                 }
             }
         });
+        //use custom Recording Listcells which support delete functionality
         savedRecordingListView.setCellFactory(param -> createRecordingCell());
         newRecordingListView.setCellFactory(param -> createRecordingCell());
         selectedNamesListView.setItems(names);
@@ -94,6 +97,11 @@ public class RecordingScreenController {
         }
     }
 
+    /**
+     * Show the playerFragment
+     *
+     * @param recording
+     */
     public void displayPlayerFragment(Recording recording) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlayerFragment.fxml"));
@@ -106,7 +114,11 @@ public class RecordingScreenController {
         }
     }
 
-
+    /**
+     * Saves temp recordings into saved list
+     *
+     * @param mouseEvent
+     */
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         if (selectedName != null) {
             if (selectedName.getTempRecordings().isEmpty()) {
@@ -120,6 +132,12 @@ public class RecordingScreenController {
         }
     }
 
+    /**
+     * Allows user to make a new recording
+     *
+     * @param mouseEvent
+     * @throws IOException
+     */
     public void onNewButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (selectedName != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingFragment.fxml"));
@@ -132,6 +150,12 @@ public class RecordingScreenController {
         }
     }
 
+
+    /**
+     * Prompts the user to save all recordings before going back a screen
+     *
+     * @param mouseEvent
+     */
     public void onBackButtonClicked(MouseEvent mouseEvent) {
         JFXAlert alert = new JFXAlert((Stage) parentPane.getScene().getWindow());
         alert.initModality(Modality.NONE);
@@ -159,7 +183,7 @@ public class RecordingScreenController {
         alert.show();
     }
 
-    private void previousScreen(){
+    private void previousScreen() {
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("/NameSelectScreen.fxml"));

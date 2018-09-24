@@ -44,32 +44,26 @@ public class NameStorageManager {
     }
 
 
-    //load existing database hierarchy
+    /**
+     * load existing database hierarchy
+     */
     public void loadExistingHierarchy(Path folderPath, Button button) {
         namesList = new LinkedList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
             for (Path e : stream) {
-//                System.out.println(e.getFileName());
-                //clear namesList
-
-                //initialise nameList with all the directories
                 Name temp = new Name(e.getFileName().toString(), e);
-                System.out.println(e.getFileName().toString());
                 namesList.add(temp);
                 Properties ratingProperties = new Properties();
 
+                //load the properties
                 ratingProperties.load(new FileInputStream(e.resolve(RATINGS).toFile()));
-
                 try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(e.resolve(SAVED_RECORDINGS))) {
 
-                    //                        System.out.println(e.toString());
-//load rating stored in the txt file
                     for (Path p : stream1) {
                         Recording recording = new Recording(p);
                         double rating = Double.valueOf(ratingProperties.getProperty(recording.toString()));
                         recording.setRating(rating);
                         temp.addSavedRecording(recording);//add saved recordings to corresponding name
-//                            System.out.println(p.toString());
                     }
 
                 } catch (IOException e1) {
@@ -80,7 +74,7 @@ public class NameStorageManager {
                         temp.addSavedRecording(new Recording(p, true));//add user created recordings to corresponding name
                     }
                 } catch (IOException e1) {
-
+                    e1.printStackTrace();
                 }
                 Collections.sort(namesList);
                 Platform.runLater(() -> button.setDisable(false));
@@ -92,6 +86,10 @@ public class NameStorageManager {
         }
     }
 
+
+    /**
+     * Create new database hierarchy
+     */
     public void initialize(Path folderPath, Button button) {
         try {
             if (!Files.isDirectory(CREATIONS_FOLDER)) {
@@ -115,7 +113,7 @@ public class NameStorageManager {
                          String name = "unrecognized";
                          if (matcher.find()) {
                              name = matcher.group(0).replace(".wav", "").toLowerCase();
-                             if (!name.isEmpty()){
+                             if (!name.isEmpty()) {
                                  name = name.substring(0, 1).toUpperCase() + name.substring(1);
                              }
                          }
@@ -144,6 +142,7 @@ public class NameStorageManager {
                              e.printStackTrace();
                          }
                      });
+                //sorts the final list
                 Collections.sort(namesList);
                 Platform.runLater(() -> button.setDisable(false));
             } catch (IOException e) {
@@ -153,19 +152,18 @@ public class NameStorageManager {
         thread.start();
     }
 
-    //Initialize the correct folder hierarchy
     private NameStorageManager() {
     }
 
-    public void clear(){
+    public void clear() {
         namesList.clear();
     }
 
-    public void saveAllTempRecordings(){
+    public void saveAllTempRecordings() {
         namesList.forEach(Name::saveTempRecordings);
     }
 
-    public void removeAllTempRecordings(){
+    public void removeAllTempRecordings() {
         namesList.forEach(Name::removeTempRecordings);
     }
 

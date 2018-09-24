@@ -40,6 +40,7 @@ public class NameSelectScreenController {
         nameStorageManager = NameStorageManager.getInstance();
         listOfNames = nameStorageManager.getNamesList();
 
+        //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new JFXListCell<Name>() {
             JFXCheckBox checkBox = new JFXCheckBox();
             Name recycledName = null;
@@ -66,7 +67,9 @@ public class NameSelectScreenController {
         bar.getStylesheets().addAll("/css/Material.css");
     }
 
-
+    /**
+     * Loads the RecordingScreen
+     */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (nameStorageManager.getSelectedNamesList().isEmpty()){
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
@@ -90,6 +93,9 @@ public class NameSelectScreenController {
     }
 
 
+    /**Refreshes the current list whenever the user types a key
+     * This performs a search functionality
+     */
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
         String userInput = nameSearchBar.getCharacters().toString().toLowerCase();

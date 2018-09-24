@@ -57,8 +57,10 @@ public class MenuScreenController {
         }
     }
 
+    /**
+     * Set the microphone level using a moving average from TargetLine buffer
+     */
     private void testMicrophone() {
-
         try {
             AudioFormat format = new AudioFormat(8000.0f, 16, 1, true, true);
             TargetDataLine microphone = AudioSystem.getTargetDataLine(format);
@@ -79,7 +81,6 @@ public class MenuScreenController {
                     }
                     double volume = (sumVolume / tempBuffer.length) / highestVolume;
                     Platform.runLater(() -> MicrophoneVolume.setProgress(volume));
-                    System.out.println(volume);
                 }
             }
         } catch (Exception e) {
@@ -88,6 +89,7 @@ public class MenuScreenController {
 
     }
 
+    //imports the files hierarchy
     public void onSelectLoadPreviousFolder(MouseEvent mouseEvent) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.home")));

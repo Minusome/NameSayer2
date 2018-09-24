@@ -14,16 +14,12 @@ import java.nio.file.Path;
 
 public class Recording {
 
-
-
-
     private Path recordingPath;
     private boolean isCreatedByUser;
+
+    //Property to store the rating which is binded to ratings file
     private DoubleProperty rating = new SimpleDoubleProperty(3.0);
 
-
-    //This needs to be here to prevent garbage collection
-    private MediaPlayer player;
 
     public Recording(Path recordingPath) {
         this(recordingPath, false);
@@ -34,6 +30,7 @@ public class Recording {
         this.isCreatedByUser = isCreatedByUser;
     }
 
+    //Play audio using bash command
     public void playAudio() {
         Thread thread = new Thread(() -> {
             String command = "ffplay -nodisp -autoexit -loglevel quiet \"" + recordingPath.toAbsolutePath().toString() + "\"";
@@ -60,6 +57,7 @@ public class Recording {
         this.recordingPath = recordingPath;
     }
 
+    //Calculates the length
     public double getLength() {
         double durationInSeconds = 0.0;
         try{

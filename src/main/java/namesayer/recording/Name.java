@@ -25,6 +25,8 @@ public class Name implements Comparable<Name> {
     private Path directory;
     private BooleanProperty selected = new SimpleBooleanProperty(false);
     private Properties recordingRatingProperties = new Properties();
+
+    //Store recordings as observables so we can bind them through viewmodel pattern
     private ObservableList<Recording> savedRecordings = FXCollections.observableArrayList();
     private ObservableList<Recording> tempRecordings = FXCollections.observableArrayList();
 
@@ -39,6 +41,9 @@ public class Name implements Comparable<Name> {
         });
     }
 
+    /**
+     * Syncs the rating properties with the file
+     */
     private void refreshRatingFile() {
         try (OutputStream output = new FileOutputStream(directory.resolve(RATINGS).toAbsolutePath().toString())) {
             recordingRatingProperties.clear();
@@ -54,6 +59,9 @@ public class Name implements Comparable<Name> {
         }
     }
 
+    /**
+     * Create a new recording using FFMPEG
+     */
     public void makeNewRecording(String recordingName) {
         Thread thread = new Thread(() -> {
             Path newRecordingPath = directory.resolve(TEMP_RECORDINGS).resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
