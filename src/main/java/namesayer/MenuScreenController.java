@@ -96,10 +96,9 @@ public class MenuScreenController {
         if (selectedDirectory != null) {
             NameStorageManager storageManager = NameStorageManager.getInstance();
             storageManager.clear();
-            storageManager.loadExistingHierarchy(selectedDirectory.toPath());
+            storageManager.loadExistingHierarchy(selectedDirectory.toPath(), practiceButton);
             loadNewDataBaseButton.setDisable(true);
             loadExistingDataBaseButton.setDisable(true);
-            practiceButton.setDisable(false);
         }
     }
 
@@ -110,7 +109,7 @@ public class MenuScreenController {
         if (selectedDirectory != null) {
             NameStorageManager storageManager = NameStorageManager.getInstance();
             storageManager.clear();
-            storageManager.initialize(selectedDirectory.toPath());
+            storageManager.initialize(selectedDirectory.toPath(), practiceButton);
             loadNewDataBaseButton.setDisable(true);
             loadExistingDataBaseButton.setDisable(true);
             practiceButton.setDisable(false);

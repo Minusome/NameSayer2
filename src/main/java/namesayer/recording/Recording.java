@@ -15,6 +15,8 @@ import java.nio.file.Path;
 public class Recording {
 
 
+
+
     private Path recordingPath;
     private boolean isCreatedByUser;
     private DoubleProperty rating = new SimpleDoubleProperty(3.0);
@@ -52,6 +54,10 @@ public class Recording {
 
     public Path getRecordingPath() {
         return recordingPath;
+    }
+
+    public void setRecordingPath(Path recordingPath) {
+        this.recordingPath = recordingPath;
     }
 
     public double getLength() {

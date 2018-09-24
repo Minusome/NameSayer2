@@ -1,7 +1,9 @@
 package namesayer.recording;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import namesayer.NameSelectScreenController;
 
 import java.io.File;
@@ -43,7 +45,7 @@ public class NameStorageManager {
 
 
     //load existing database hierarchy
-    public void loadExistingHierarchy(Path folderPath) {
+    public void loadExistingHierarchy(Path folderPath, Button button) {
         namesList = new LinkedList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
             for (Path e : stream) {
@@ -80,16 +82,17 @@ public class NameStorageManager {
                 } catch (IOException e1) {
 
                 }
-
+                Collections.sort(namesList);
+                Platform.runLater(() -> button.setDisable(false));
             }
         } catch (IOException e) {
 
         } finally {
-            Collections.sort(namesList);
+
         }
     }
 
-    public void initialize(Path folderPath) {
+    public void initialize(Path folderPath, Button button) {
         try {
             if (!Files.isDirectory(CREATIONS_FOLDER)) {
                 Files.createDirectory(CREATIONS_FOLDER);
@@ -142,6 +145,7 @@ public class NameStorageManager {
                          }
                      });
                 Collections.sort(namesList);
+                Platform.runLater(() -> button.setDisable(false));
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,6 @@
 package namesayer.recording;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import static namesayer.recording.Config.RATINGS;
+import static namesayer.recording.Config.SAVED_RECORDINGS;
 import static namesayer.recording.Config.TEMP_RECORDINGS;
 import static namesayer.recording.Config.WAV_EXTENSION;
 
@@ -61,7 +63,7 @@ public class Name implements Comparable<Name> {
             try {
                 Process process = builder.start();
                 process.waitFor();
-                tempRecordings.add(new Recording(newRecordingPath, true));
+                Platform.runLater(() -> tempRecordings.add(new Recording(newRecordingPath, true)));
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -109,7 +111,17 @@ public class Name implements Comparable<Name> {
 
 
     public void saveTempRecordings() {
-        tempRecordings.forEach(this::addSavedRecording);
+        tempRecordings.forEach(recording -> {
+            Path newPath = directory.resolve(SAVED_RECORDINGS)
+                                    .resolve(recording.getRecordingPath().getFileName());
+            try {
+                Files.copy(recording.getRecordingPath(), newPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            recording.setRecordingPath(newPath);
+            addSavedRecording(recording);
+        });
         tempRecordings.clear();
     }
 
