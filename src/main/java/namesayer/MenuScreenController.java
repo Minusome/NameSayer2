@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
@@ -19,29 +18,21 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class MenuScreenController {
 
     @FXML public JFXProgressBar MicrophoneVolume;
     @FXML public ImageView MicrophoneButton;
+    @FXML private JFXButton loadNewDataBaseButton;
     @FXML private JFXButton practiceButton;
     @FXML private JFXButton loadExistingDataBaseButton;
-    private boolean isDirectorySelected = false;
     private boolean isFirstTimeClickMic = true;
     @FXML private ImageView microphoneTestingButton;
-    private Thread tesetingMicThread;
 
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
-//        MicrophoneButton.setOnMouseClicked(event -> isFirstTimeClickMic = !isFirstTimeClickMic);
-//        MicrophoneButton.setGraphic(new ImageView("C:\\Users\\zhugu\\Documents\\GitHub\\NameSayer\\src\\icon\\microphone2.png"));
-        //unale to load the icon for the microphone for some reason
-//        Image image = new Image(getClass().getResourceAsStream("src/icon/microphone2.png"));
-//        MicrophoneButton.setGraphic(new ImageView(image));
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
@@ -55,7 +46,7 @@ public class MenuScreenController {
         if (isFirstTimeClickMic) {
             MicrophoneVolume.setVisible(true);
             Thread thread = new Thread(() -> {
-                TestMicrophone();
+                testMicrophone();
             });
             thread.start();
             isFirstTimeClickMic = !isFirstTimeClickMic;
@@ -64,10 +55,9 @@ public class MenuScreenController {
             MicrophoneVolume.setVisible(false);
             isFirstTimeClickMic = !isFirstTimeClickMic;
         }
-
     }
 
-    private void TestMicrophone() {
+    private void testMicrophone() {
 
         try {
             AudioFormat format = new AudioFormat(8000.0f, 16, 1, true, true);
@@ -98,23 +88,19 @@ public class MenuScreenController {
 
     }
 
-    public void onSelectLoadPreviousFolder(MouseEvent mouseEvent){
-        //TO BE IMPELEMENTED
+    public void onSelectLoadPreviousFolder(MouseEvent mouseEvent) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setInitialDirectory(new File(System.getProperty("user.home")));
         chooser.setTitle("Select the existing database for your names");
         File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
         if (selectedDirectory != null) {
             NameStorageManager storageManager = NameStorageManager.getInstance();
+            storageManager.clear();
             storageManager.loadExistingHierarchy(selectedDirectory.toPath());
-            isDirectorySelected = true;
+            loadNewDataBaseButton.setDisable(true);
+            loadExistingDataBaseButton.setDisable(true);
             practiceButton.setDisable(false);
         }
-    }
-
-
-    public void printl(){
-        System.out.println("Mouse Detected!");
     }
 
     public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
@@ -123,8 +109,10 @@ public class MenuScreenController {
         File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
         if (selectedDirectory != null) {
             NameStorageManager storageManager = NameStorageManager.getInstance();
+            storageManager.clear();
             storageManager.initialize(selectedDirectory.toPath());
-            isDirectorySelected = true;
+            loadNewDataBaseButton.setDisable(true);
+            loadExistingDataBaseButton.setDisable(true);
             practiceButton.setDisable(false);
         }
     }

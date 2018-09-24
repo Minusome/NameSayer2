@@ -1,8 +1,10 @@
 package namesayer;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.collections.FXCollections;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import namesayer.recording.Name;
 import namesayer.recording.NameStorageManager;
 import namesayer.util.EmptySelectionModel;
@@ -22,9 +25,12 @@ import java.util.stream.Collectors;
 
 public class NameSelectScreenController {
 
+    @FXML private GridPane parentPane;
+    @FXML private JFXButton nextButton;
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXListView<Name> nameListView;
     @FXML private JFXToggleButton randomToggle;
+    private JFXSnackbar bar;
 
     private NameStorageManager nameStorageManager;
     private ObservableList<Name> listOfNames;
@@ -56,10 +62,16 @@ public class NameSelectScreenController {
         nameListView.setSelectionModel(new EmptySelectionModel<>());
         nameListView.setItems(listOfNames);
         nameListView.setExpanded(false);
+        bar = new JFXSnackbar(parentPane);
+        bar.getStylesheets().addAll("/css/Material.css");
     }
 
 
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
+        if (nameStorageManager.getSelectedNamesList().isEmpty()){
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
+            return;
+        }
         Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
@@ -100,5 +112,13 @@ public class NameSelectScreenController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
+        listOfNames.forEach(name -> name.setSelected(true));
+    }
+
+    public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
+        listOfNames.forEach(name -> name.setSelected(false));
     }
 }

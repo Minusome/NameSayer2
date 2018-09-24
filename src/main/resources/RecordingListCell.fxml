@@ -17,10 +17,6 @@
                 <Insets left="10.0" />
             </padding></Label>
         <Region HBox.hgrow="ALWAYS" />
-      <JFXButton fx:id="editButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onEditButtonClicked" text="Button" visible="false" HBox.hgrow="NEVER">
-         <graphic>
-            <MaterialIconView glyphName="EDIT" strokeType="OUTSIDE" strokeWidth="0.0" />
-         </graphic></JFXButton>
       <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onDeleteButtonClicked" text="Button" visible="false" HBox.hgrow="NEVER">
          <graphic>
             <MaterialIconView glyphName="DELETE" strokeType="OUTSIDE" strokeWidth="0.0" />

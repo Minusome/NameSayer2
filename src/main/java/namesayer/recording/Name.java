@@ -91,6 +91,12 @@ public class Name implements Comparable<Name> {
         }
     }
 
+    public void removeTempRecordings(){
+        for (Recording recording : tempRecordings){
+            removeRecording(recording);
+        }
+    }
+
 
     public ObservableList<Recording> getSavedRecordings() {
         return FXCollections.unmodifiableObservableList(savedRecordings);
