@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,19 +15,21 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import namesayer.model.Name;
-//import namesayer.util.NameStorageManager;
-import namesayer.model.PartialName;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.NameStorageManager;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+//import namesayer.util.NameStorageManager;
 
 public class NameSelectScreenController {
 
@@ -89,6 +90,12 @@ public class NameSelectScreenController {
     }
 
 
+
+
+
+    /**
+     * Works but probably should be cleaned up
+     */
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
 
@@ -135,5 +142,15 @@ public class NameSelectScreenController {
 
     public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
 //        partialNames.forEach(name -> name.setSelected(false));
+    }
+
+    public void onFileInsertClicked(MouseEvent mouseEvent) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Select .txt file containing list of names");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".txt", "*.txt"));
+        File selectedFile = chooser.showOpenDialog(randomToggle.getScene().getWindow());
+        if (selectedFile != null) {
+            return;
+        }
     }
 }
