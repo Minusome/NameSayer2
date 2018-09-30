@@ -16,6 +16,23 @@
     -fx-background-color: #673AB7;
 }
 
+.animated-option-button {
+    -fx-background-color: #009688;
+    -fx-background-radius: 50px;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 50px;
+    -fx-min-width: -fx-pref-width;
+    -fx-max-width: -fx-pref-width;
+    -fx-min-height: -fx-pref-height;
+    -fx-max-height: -fx-pref-height;
+    -jfx-button-type: RAISED;
+
+}
+
+.animated-option-button .jfx-rippler {
+    -jfx-rippler-fill: rgb(113, 118, 114);
+}
+
 .shadow {
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
 }

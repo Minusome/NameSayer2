@@ -1,77 +1,77 @@
 package namesayer;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-import javafx.collections.FXCollections;
+import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import namesayer.recording.Name;
 import namesayer.recording.NameStorageManager;
 import namesayer.util.EmptySelectionModel;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class NameSelectScreenController {
 
     @FXML private GridPane parentPane;
-    @FXML private JFXButton nextButton;
     @FXML private JFXTextField nameSearchBar;
-    @FXML private JFXListView<Name> nameListView;
+    @FXML private JFXListView<String> nameListView;
     @FXML private JFXToggleButton randomToggle;
     private JFXSnackbar bar;
 
+
     private NameStorageManager nameStorageManager;
     private ObservableList<Name> listOfNames;
+    private SuggestionProvider<String> suggestions;
+    private HashSet<String> autoCompletions = new HashSet<>();
+    private int userInputNameLength = 0;
     private static boolean randomSelected = false;
+
 
     public void initialize() {
         nameStorageManager = NameStorageManager.getInstance();
         listOfNames = nameStorageManager.getNamesList();
 
         //Use custom ListCell with checkboxes
-        nameListView.setCellFactory(value -> new JFXListCell<Name>() {
-            JFXCheckBox checkBox = new JFXCheckBox();
-            Name recycledName = null;
-
-            @Override
-            public void updateItem(Name item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    if (recycledName != null) {
-                        checkBox.selectedProperty().unbindBidirectional(recycledName.selectedProperty());
-                    }
-                    checkBox.selectedProperty().bindBidirectional(item.selectedProperty());
-                    recycledName = item;
-                    setGraphic(checkBox);
-                }
-            }
-        });
+        nameListView.setCellFactory(value -> new JFXListCell<>());
         nameListView.setSelectionModel(new EmptySelectionModel<>());
-        nameListView.setItems(listOfNames);
         nameListView.setExpanded(false);
+        nameListView.setPlaceholder(new Label("Please names you wish to practise"));
         bar = new JFXSnackbar(parentPane);
         bar.getStylesheets().addAll("/css/Material.css");
+
+
+        for (Name name : listOfNames) {
+            autoCompletions.add(name.toString());
+        }
+
+        suggestions = SuggestionProvider.create(autoCompletions);
+        AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(nameSearchBar, suggestions);
+        binding.setPrefWidth(500);
     }
 
     /**
      * Loads the RecordingScreen
      */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
-        if (nameStorageManager.getSelectedNamesList().isEmpty()){
+        if (nameStorageManager.getSelectedNamesList().isEmpty()) {
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
             return;
         }
@@ -81,11 +81,7 @@ public class NameSelectScreenController {
     }
 
     public void setRandom() {
-        if (randomToggle.isDisableAnimation()) {
-            randomSelected = false;
-        } else {
-            randomSelected = true;
-        }
+        randomSelected = !randomToggle.isDisableAnimation();
     }
 
     public static boolean RandomToggleOn() {
@@ -93,21 +89,28 @@ public class NameSelectScreenController {
     }
 
 
-    /**Refreshes the current list whenever the user types a key
-     * This performs a search functionality
-     */
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
-        String userInput = nameSearchBar.getCharacters().toString().toLowerCase();
-        if (userInput.isEmpty()) {
-            listOfNames = nameStorageManager.getNamesList();
-        } else {
-            listOfNames = listOfNames.stream()
-                                     .filter(name -> name.getName().toLowerCase().contains(userInput))
-                                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        String currentName = nameSearchBar.getCharacters().toString().trim();
+        List<String> nameComponents = Arrays.asList(currentName.split("[\\s-]+"));
+        if (!currentName.isEmpty() && nameComponents.size() != userInputNameLength) {
+            if (autoCompletions.contains(nameComponents.get(nameComponents.size() - 1))) {
+                suggestions.clearSuggestions();
+                suggestions.addPossibleSuggestions(
+                        autoCompletions.stream()
+                                       .map(s -> currentName + " " + s)
+                                       .collect(Collectors.toSet()));
+                userInputNameLength = nameComponents.size();
+            }
+        } else if (currentName.isEmpty()) {
+            suggestions.clearSuggestions();
+            suggestions.addPossibleSuggestions(autoCompletions);
+            userInputNameLength = 0;
         }
-        //TODO change to bindings if u have time
-        nameListView.setItems(listOfNames);
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            nameListView.getItems().add(currentName);
+            nameSearchBar.clear();
+        }
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {

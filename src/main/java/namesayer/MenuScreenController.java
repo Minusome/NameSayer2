@@ -17,8 +17,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class MenuScreenController {
 
@@ -31,8 +29,8 @@ public class MenuScreenController {
     @FXML private ImageView microphoneTestingButton;
 
 
-    @FXML
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize() {
+        practiceButton.setDisable(false);
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
