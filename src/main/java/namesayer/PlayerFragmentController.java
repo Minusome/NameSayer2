@@ -29,7 +29,7 @@ public class PlayerFragmentController {
 
     void injectRecording(Recording recording) {
         this.recording = recording;
-        rating.ratingProperty().bindBidirectional(recording.ratingProperty());
+//        rating.ratingProperty().bindBidirectional(recording.ratingProperty());
     }
 
     /**

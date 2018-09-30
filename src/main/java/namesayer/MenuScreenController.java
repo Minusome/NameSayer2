@@ -3,6 +3,7 @@ package namesayer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,13 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
+import namesayer.model.PartialName;
 import namesayer.util.NameStorageManager;
+//import namesayer.util.NameStorageManager;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class MenuScreenController {
 
@@ -26,11 +30,15 @@ public class MenuScreenController {
     @FXML private JFXButton practiceButton;
     @FXML private JFXButton loadExistingDataBaseButton;
     private boolean isFirstTimeClickMic = true;
+    private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
     @FXML private ImageView microphoneTestingButton;
 
 
     public void initialize() {
         practiceButton.setDisable(false);
+        nameStorageManager.load();
+        List<PartialName> namesList = nameStorageManager.checkOK();
+        System.out.println(namesList.size());
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
@@ -87,34 +95,34 @@ public class MenuScreenController {
 
     }
 
-    //imports the files hierarchy
-    public void onSelectLoadPreviousFolder(MouseEvent mouseEvent) {
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        chooser.setTitle("Select the existing database for your names");
-        File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
-        if (selectedDirectory != null) {
-            NameStorageManager storageManager = NameStorageManager.getInstance();
-            storageManager.clear();
-            storageManager.loadExistingHierarchy(selectedDirectory.toPath(), practiceButton);
-            loadNewDataBaseButton.setDisable(true);
-            loadExistingDataBaseButton.setDisable(true);
-        }
-    }
+//    //imports the files hierarchy
+//    public void onSelectLoadPreviousFolder(MouseEvent mouseEvent) {
+//        DirectoryChooser chooser = new DirectoryChooser();
+//        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+//        chooser.setTitle("Select the existing database for your names");
+//        File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
+//        if (selectedDirectory != null) {
+//            NameStorageManager storageManager = NameStorageManager.getInstance();
+//            storageManager.clear();
+//            storageManager.loadExistingHierarchy(selectedDirectory.toPath(), practiceButton);
+//            loadNewDataBaseButton.setDisable(true);
+//            loadExistingDataBaseButton.setDisable(true);
+//        }
+//    }
 
-    public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Select the audio database for your names");
-        File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
-        if (selectedDirectory != null) {
-            NameStorageManager storageManager = NameStorageManager.getInstance();
-            storageManager.clear();
-            storageManager.initialize(selectedDirectory.toPath(), practiceButton);
-            loadNewDataBaseButton.setDisable(true);
-            loadExistingDataBaseButton.setDisable(true);
-            practiceButton.setDisable(false);
-        }
-    }
+//    public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
+//        DirectoryChooser chooser = new DirectoryChooser();
+//        chooser.setTitle("Select the audio database for your names");
+//        File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
+//        if (selectedDirectory != null) {
+//            NameStorageManager storageManager = NameStorageManager.getInstance();
+//            storageManager.clear();
+//            storageManager.initialize(selectedDirectory.toPath(), practiceButton);
+//            loadNewDataBaseButton.setDisable(true);
+//            loadExistingDataBaseButton.setDisable(true);
+//            practiceButton.setDisable(false);
+//        }
+//    }
 
 
 }

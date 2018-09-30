@@ -12,7 +12,6 @@ import static namesayer.util.Config.WAV_EXTENSION;
 
 public class CompleteName extends Name {
 
-
     private ObservableList<CompleteNameRecording> tempRecordings = FXCollections.observableArrayList();
     private ObservableList<CompleteNameRecording> savedRecordings = FXCollections.observableArrayList();
 

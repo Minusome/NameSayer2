@@ -94,7 +94,7 @@ public class RecordingListCell extends JFXListCell<Recording> {
         okButton.getStyleClass().add("dialog-accept");
         closeButton.setOnAction(event -> alert.hideWithAnimation());
         okButton.setOnAction(event -> {
-            parent.getSelectedName().removeRecording(recording);
+//            parent.getSelectedName().removeRecording(recording);
             parent.hidePlayer();
             alert.hideWithAnimation();
         });

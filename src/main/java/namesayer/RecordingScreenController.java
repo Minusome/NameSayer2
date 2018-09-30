@@ -21,7 +21,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import namesayer.model.Name;
-import namesayer.util.NameStorageManager;
+//import namesayer.util.NameStorageManager;
 import namesayer.model.Recording;
 import namesayer.util.RecordingListCell;
 
@@ -36,14 +36,14 @@ public class RecordingScreenController {
     @FXML private HBox actionViewContainer;
     private JFXSnackbar bar;
 
-    private NameStorageManager storageManager = NameStorageManager.getInstance();
+//    private NameStorageManager storageManager = NameStorageManager.getInstance();
     private ObservableList<Name> names;
 
     private Name selectedName;
 
 
     public void initialize() {
-        names = storageManager.getSelectedNamesList();
+//        names = storageManager.getSelectedNamesList();
 
         //custom listCell with nice icons
         selectedNamesListView.setCellFactory(param -> new JFXListCell<Name>() {
@@ -74,13 +74,13 @@ public class RecordingScreenController {
     }
 
     @FXML
-    public void onSelectedNameClicked(MouseEvent mouseEvent) {
-        selectedName = selectedNamesListView.getSelectionModel().getSelectedItem();
-        if (selectedName != null) {
-            savedRecordingListView.setItems(selectedName.getSavedRecordings());
-            newRecordingListView.setItems(selectedName.getTempRecordings());
-        }
-    }
+//    public void onSelectedNameClicked(MouseEvent mouseEvent) {
+//        selectedName = selectedNamesListView.getSelectionModel().getSelectedItem();
+//        if (selectedName != null) {
+//            savedRecordingListView.setItems(selectedName.getSavedRecordings());
+//            newRecordingListView.setItems(selectedName.getTempRecordings());
+//        }
+//    }
 
 
     public void onSavedRecordingClicked(MouseEvent mouseEvent) {
@@ -119,18 +119,18 @@ public class RecordingScreenController {
      *
      * @param mouseEvent
      */
-    public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        if (selectedName != null) {
-            if (selectedName.getTempRecordings().isEmpty()) {
-                bar.enqueue(new JFXSnackbar.SnackbarEvent("No new recordings have been created"));
-                return;
-            }
-            selectedName.saveTempRecordings();
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Recordings are now saved"));
-        } else {
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
-        }
-    }
+//    public void onSaveButtonClicked(MouseEvent mouseEvent) {
+//        if (selectedName != null) {
+//            if (selectedName.getTempRecordings().isEmpty()) {
+//                bar.enqueue(new JFXSnackbar.SnackbarEvent("No new recordings have been created"));
+//                return;
+//            }
+//            selectedName.saveTempRecordings();
+//            bar.enqueue(new JFXSnackbar.SnackbarEvent("Recordings are now saved"));
+//        } else {
+//            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
+//        }
+//    }
 
     /**
      * Allows user to make a new model
@@ -156,32 +156,32 @@ public class RecordingScreenController {
      *
      * @param mouseEvent
      */
-    public void onBackButtonClicked(MouseEvent mouseEvent) {
-        JFXAlert alert = new JFXAlert((Stage) parentPane.getScene().getWindow());
-        alert.initModality(Modality.NONE);
-        alert.setOverlayClose(false);
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Label("Do you want to save your changes?"));
-        layout.setBody(new Label("Would you like to save all temporary recordings? " +
-                "Selecting no will cause them to be deleted"));
-        JFXButton closeButton = new JFXButton("No");
-        JFXButton okButton = new JFXButton("Yes");
-        closeButton.getStyleClass().add("dialog-accept");
-        okButton.getStyleClass().add("dialog-accept");
-        closeButton.setOnAction(event -> {
-            storageManager.removeAllTempRecordings();
-            alert.hideWithAnimation();
-            previousScreen();
-        });
-        okButton.setOnAction(event -> {
-            storageManager.saveAllTempRecordings();
-            alert.hideWithAnimation();
-            previousScreen();
-        });
-        layout.setActions(closeButton, okButton);
-        alert.setContent(layout);
-        alert.show();
-    }
+//    public void onBackButtonClicked(MouseEvent mouseEvent) {
+//        JFXAlert alert = new JFXAlert((Stage) parentPane.getScene().getWindow());
+//        alert.initModality(Modality.NONE);
+//        alert.setOverlayClose(false);
+//        JFXDialogLayout layout = new JFXDialogLayout();
+//        layout.setHeading(new Label("Do you want to save your changes?"));
+//        layout.setBody(new Label("Would you like to save all temporary recordings? " +
+//                "Selecting no will cause them to be deleted"));
+//        JFXButton closeButton = new JFXButton("No");
+//        JFXButton okButton = new JFXButton("Yes");
+//        closeButton.getStyleClass().add("dialog-accept");
+//        okButton.getStyleClass().add("dialog-accept");
+//        closeButton.setOnAction(event -> {
+//            storageManager.removeAllTempRecordings();
+//            alert.hideWithAnimation();
+//            previousScreen();
+//        });
+//        okButton.setOnAction(event -> {
+//            storageManager.saveAllTempRecordings();
+//            alert.hideWithAnimation();
+//            previousScreen();
+//        });
+//        layout.setActions(closeButton, okButton);
+//        alert.setContent(layout);
+//        alert.show();
+//    }
 
     private void previousScreen() {
         Parent root = null;

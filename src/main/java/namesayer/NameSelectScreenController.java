@@ -17,7 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import namesayer.model.Name;
-import namesayer.util.NameStorageManager;
+//import namesayer.util.NameStorageManager;
 import namesayer.util.EmptySelectionModel;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
@@ -37,7 +37,7 @@ public class NameSelectScreenController {
     private JFXSnackbar bar;
 
 
-    private NameStorageManager nameStorageManager;
+//    private NameStorageManager nameStorageManager;
     private ObservableList<Name> listOfNames;
     private SuggestionProvider<String> suggestions;
     private HashSet<String> autoCompletions = new HashSet<>();
@@ -46,8 +46,8 @@ public class NameSelectScreenController {
 
 
     public void initialize() {
-        nameStorageManager = NameStorageManager.getInstance();
-        listOfNames = nameStorageManager.getNamesList();
+//        nameStorageManager = NameStorageManager.getInstance();
+//        listOfNames = nameStorageManager.getNamesList();
 
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new JFXListCell<>());
@@ -71,10 +71,10 @@ public class NameSelectScreenController {
      * Loads the RecordingScreen
      */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
-        if (nameStorageManager.getSelectedNamesList().isEmpty()) {
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
-            return;
-        }
+//        if (nameStorageManager.getSelectedNamesList().isEmpty()) {
+//            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
+//            return;
+//        }
         Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
@@ -123,11 +123,11 @@ public class NameSelectScreenController {
         }
     }
 
-    public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
-        listOfNames.forEach(name -> name.setSelected(true));
-    }
+//    public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
+//        listOfNames.forEach(name -> name.setSelected(true));
+//    }
 
-    public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
-        listOfNames.forEach(name -> name.setSelected(false));
-    }
+//    public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
+//        listOfNames.forEach(name -> name.setSelected(false));
+//    }
 }
