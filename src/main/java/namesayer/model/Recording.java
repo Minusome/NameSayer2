@@ -12,7 +12,6 @@ public abstract class Recording {
 
     private Path recordingPath;
 
-
     public Recording(Path recordingPath) {
         this.recordingPath = recordingPath;
     }

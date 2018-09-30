@@ -7,17 +7,18 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static namesayer.model.Config.TEMP_RECORDINGS;
-import static namesayer.model.Config.WAV_EXTENSION;
+import static namesayer.util.Config.TEMP_RECORDINGS;
+import static namesayer.util.Config.WAV_EXTENSION;
 
-public class PractiseName extends Name {
-
-    private ObservableList<PractiseNameRecording> userMadeRecordings = FXCollections.observableArrayList();
-    private ObservableList<PractiseNameRecording> savedRecordings = FXCollections.observableArrayList();
+public class CompleteName extends Name {
 
 
-    public PractiseName(String name, Path directory) {
-        super(name, directory);
+    private ObservableList<CompleteNameRecording> tempRecordings = FXCollections.observableArrayList();
+    private ObservableList<CompleteNameRecording> savedRecordings = FXCollections.observableArrayList();
+
+
+    public CompleteName(String name) {
+        super(name);
     }
 
     public void makeNewRecording(String recordingName) {
@@ -29,7 +30,7 @@ public class PractiseName extends Name {
             try {
                 Process process = builder.start();
                 process.waitFor();
-                Platform.runLater(() -> userMadeRecordings.add(new PractiseNameRecording(newRecordingPath)));
+                Platform.runLater(() -> tempRecordings.add(new CompleteNameRecording(newRecordingPath)));
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }

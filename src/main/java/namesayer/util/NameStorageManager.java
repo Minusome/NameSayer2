@@ -25,10 +25,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static namesayer.model.Config.CREATIONS_FOLDER;
-import static namesayer.model.Config.RATINGS;
-import static namesayer.model.Config.SAVED_RECORDINGS;
-import static namesayer.model.Config.TEMP_RECORDINGS;
+import static namesayer.util.Config.CREATIONS_FOLDER;
+import static namesayer.util.Config.RATINGS;
+import static namesayer.util.Config.SAVED_RECORDINGS;
+import static namesayer.util.Config.TEMP_RECORDINGS;
 
 public class NameStorageManager {
 

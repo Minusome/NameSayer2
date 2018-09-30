@@ -1,4 +1,4 @@
-package namesayer.model;
+package namesayer.util;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
