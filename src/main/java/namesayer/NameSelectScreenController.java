@@ -40,7 +40,6 @@ public class NameSelectScreenController {
 
 
     private NameStorageManager nameStorageManager;
-    private ObservableList<PartialName> partialNames;
     private SuggestionProvider<String> suggestions;
     private HashSet<String> autoCompletions = new HashSet<>();
     private int userInputNameLength = 0;
@@ -49,7 +48,6 @@ public class NameSelectScreenController {
 
     public void initialize() {
         nameStorageManager = NameStorageManager.getInstance();
-        partialNames = nameStorageManager.getPartialNames();
 
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new JFXListCell<>());
@@ -60,7 +58,7 @@ public class NameSelectScreenController {
         bar.getStylesheets().addAll("/css/Material.css");
 
 
-        for (Name name : partialNames) {
+        for (Name name : nameStorageManager.getPartialNames()) {
             autoCompletions.add(name.toString());
         }
 
@@ -73,10 +71,10 @@ public class NameSelectScreenController {
      * Loads the RecordingScreen
      */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
-//        if (nameStorageManager.getSelectedNamesList().isEmpty()) {
-//            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
-//            return;
-//        }
+        if (nameListView.getItems().isEmpty()) {
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
+            return;
+        }
         Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
