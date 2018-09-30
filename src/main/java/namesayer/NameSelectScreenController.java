@@ -18,7 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import namesayer.model.Name;
 //import namesayer.util.NameStorageManager;
+import namesayer.model.PartialName;
 import namesayer.util.EmptySelectionModel;
+import namesayer.util.NameStorageManager;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -37,8 +39,8 @@ public class NameSelectScreenController {
     private JFXSnackbar bar;
 
 
-//    private NameStorageManager nameStorageManager;
-    private ObservableList<Name> listOfNames;
+    private NameStorageManager nameStorageManager;
+    private ObservableList<PartialName> partialNames;
     private SuggestionProvider<String> suggestions;
     private HashSet<String> autoCompletions = new HashSet<>();
     private int userInputNameLength = 0;
@@ -46,8 +48,8 @@ public class NameSelectScreenController {
 
 
     public void initialize() {
-//        nameStorageManager = NameStorageManager.getInstance();
-//        listOfNames = nameStorageManager.getNamesList();
+        nameStorageManager = NameStorageManager.getInstance();
+        partialNames = nameStorageManager.getPartialNames();
 
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new JFXListCell<>());
@@ -58,7 +60,7 @@ public class NameSelectScreenController {
         bar.getStylesheets().addAll("/css/Material.css");
 
 
-        for (Name name : listOfNames) {
+        for (Name name : partialNames) {
             autoCompletions.add(name.toString());
         }
 
@@ -91,14 +93,20 @@ public class NameSelectScreenController {
 
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
-        String currentName = nameSearchBar.getCharacters().toString().trim();
+
+        String currentName = nameSearchBar.getCharacters().toString();
         List<String> nameComponents = Arrays.asList(currentName.split("[\\s-]+"));
+        boolean readyForSuggestion = (currentName.lastIndexOf(" ") == currentName.length() - 1);
+        currentName = currentName.trim();
+
         if (!currentName.isEmpty() && nameComponents.size() != userInputNameLength) {
-            if (autoCompletions.contains(nameComponents.get(nameComponents.size() - 1))) {
+            if (autoCompletions.contains(nameComponents.get(nameComponents.size() - 1)) &&
+                    (readyForSuggestion)) {
                 suggestions.clearSuggestions();
+                String finalCurrentName = currentName;
                 suggestions.addPossibleSuggestions(
                         autoCompletions.stream()
-                                       .map(s -> currentName + " " + s)
+                                       .map(s -> finalCurrentName + " " + s)
                                        .collect(Collectors.toSet()));
                 userInputNameLength = nameComponents.size();
             }
@@ -123,11 +131,11 @@ public class NameSelectScreenController {
         }
     }
 
-//    public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
-//        listOfNames.forEach(name -> name.setSelected(true));
-//    }
+    public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
+//        partialNames.forEach(name -> name.setSelected(true));
+    }
 
-//    public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
-//        listOfNames.forEach(name -> name.setSelected(false));
-//    }
+    public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
+//        partialNames.forEach(name -> name.setSelected(false));
+    }
 }

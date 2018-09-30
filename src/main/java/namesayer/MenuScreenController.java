@@ -92,7 +92,6 @@ public class MenuScreenController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 //    //imports the files hierarchy

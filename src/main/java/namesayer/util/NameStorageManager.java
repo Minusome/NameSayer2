@@ -1,5 +1,7 @@
 package namesayer.util;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import namesayer.model.PartialName;
 import namesayer.model.PartialNameRecording;
 
@@ -22,7 +24,7 @@ public class NameStorageManager {
     private static final Pattern REGEX_NAME_PARSER = Pattern.compile("[a-zA-Z]+(?:\\.wav)");
     private static NameStorageManager instance = null;
 
-    private List<PartialName> namesList = new LinkedList<>();
+    private List<PartialName> partialNames = new LinkedList<>();
 
 
     public static NameStorageManager getInstance() {
@@ -54,12 +56,11 @@ public class NameStorageManager {
 //                                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
 //                             }
                      }
-
                      PartialName newName;
                      if (!initializedNames.containsKey(name)) {
                          newName = new PartialName(name);
                          initializedNames.put(name, newName);
-                         namesList.add(newName);
+                         partialNames.add(newName);
                      } else {
                          newName = initializedNames.get(name);
                      }
@@ -69,25 +70,29 @@ public class NameStorageManager {
                      System.out.println(recording);
                  });
             //sorts the final list
-            Collections.sort(namesList);
+            Collections.sort(partialNames);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public ObservableList<PartialName> getPartialNames() {
+        return FXCollections.observableList(partialNames);
+    }
+
     public List<PartialName> checkOK(){
-        return namesList;
+        return partialNames;
     }
 //
 //    /**
 //     * load existing database hierarchy
 //     */
 //    public void loadExistingHierarchy(Path folderPath, Button button) {
-//        namesList = new LinkedList<>();
+//        partialNames = new LinkedList<>();
 //        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
 //            for (Path e : stream) {
 //                Name temp = new Name(e.getFileName().toString(), e);
-//                namesList.add(temp);
+//                partialNames.add(temp);
 //                Properties ratingProperties = new Properties();
 //
 //                //load the properties
@@ -111,7 +116,7 @@ public class NameStorageManager {
 //                } catch (IOException e1) {
 //                    e1.printStackTrace();
 //                }
-//                Collections.sort(namesList);
+//                Collections.sort(partialNames);
 //                Platform.runLater(() -> button.setDisable(false));
 //            }
 //        } catch (IOException e) {
@@ -162,7 +167,7 @@ public class NameStorageManager {
 //                                 Files.createDirectories(savedFolder);
 //                                 Files.createDirectories(tempFolder);
 //                                 initializedNames.put(name, newName);
-//                                 namesList.add(newName);
+//                                 partialNames.add(newName);
 //                             } else {
 //                                 newName = initializedNames.get(name);
 //                             }
@@ -178,7 +183,7 @@ public class NameStorageManager {
 //                         }
 //                     });
 //                //sorts the final list
-//                Collections.sort(namesList);
+//                Collections.sort(partialNames);
 //                Platform.runLater(() -> button.setDisable(false));
 //            } catch (IOException e) {
 //                e.printStackTrace();
@@ -191,23 +196,23 @@ public class NameStorageManager {
     }
 
     public void clear() {
-        namesList.clear();
+        partialNames.clear();
     }
 
 //    public void saveAllTempRecordings() {
-//        namesList.forEach(Name::saveTempRecordings);
+//        partialNames.forEach(Name::saveTempRecordings);
 //    }
 //
 //    public void removeAllTempRecordings() {
-//        namesList.forEach(Name::removeTempRecordings);
+//        partialNames.forEach(Name::removeTempRecordings);
 //    }
 
 //    public ObservableList<Name> getNamesList() {
-//        return FXCollections.observableList(namesList);
+//        return FXCollections.observableList(partialNames);
 //    }
 //
 //    public ObservableList<Name> getSelectedNamesList() {
-//        ObservableList<Name> list = namesList.stream()
+//        ObservableList<Name> list = partialNames.stream()
 //                                             .filter(Name::getSelected)
 //                                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
 //        if (NameSelectScreenController.RandomToggleOn()) {
