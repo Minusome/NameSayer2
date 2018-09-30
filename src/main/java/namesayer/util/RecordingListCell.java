@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import namesayer.RecordingScreenController;
-import namesayer.recording.Recording;
+import namesayer.model.Recording;
 
 import java.io.IOException;
 
@@ -87,7 +87,7 @@ public class RecordingListCell extends JFXListCell<Recording> {
         alert.setOverlayClose(false);
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Label("Are you sure you want to delete " + recording));
-        layout.setBody(new Label("This recording will be deleted permanently. Would you like to continue?"));
+        layout.setBody(new Label("This model will be deleted permanently. Would you like to continue?"));
         JFXButton closeButton = new JFXButton("No");
         JFXButton okButton = new JFXButton("Yes");
         closeButton.getStyleClass().add("dialog-accept");

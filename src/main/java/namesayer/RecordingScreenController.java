@@ -20,9 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import namesayer.recording.Name;
-import namesayer.recording.NameStorageManager;
-import namesayer.recording.Recording;
+import namesayer.model.Name;
+import namesayer.util.NameStorageManager;
+import namesayer.model.Recording;
 import namesayer.util.RecordingListCell;
 
 import java.io.IOException;
@@ -133,7 +133,7 @@ public class RecordingScreenController {
     }
 
     /**
-     * Allows user to make a new recording
+     * Allows user to make a new model
      *
      * @param mouseEvent
      * @throws IOException

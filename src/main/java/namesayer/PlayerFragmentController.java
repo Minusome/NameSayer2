@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import namesayer.recording.Recording;
+import namesayer.model.Recording;
 import org.controlsfx.control.Rating;
 
 public class PlayerFragmentController {

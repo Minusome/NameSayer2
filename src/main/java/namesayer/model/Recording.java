@@ -1,9 +1,5 @@
-package namesayer.recording;
+package namesayer.model;
 
-
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.media.MediaPlayer;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -12,23 +8,15 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class Recording {
+public abstract class Recording {
 
     private Path recordingPath;
-    private boolean isCreatedByUser;
-
-    //Property to store the rating which is binded to ratings file
-    private DoubleProperty rating = new SimpleDoubleProperty(3.0);
 
 
     public Recording(Path recordingPath) {
-        this(recordingPath, false);
+        this.recordingPath = recordingPath;
     }
 
-    public Recording(Path recordingPath, boolean isCreatedByUser) {
-        this.recordingPath = recordingPath;
-        this.isCreatedByUser = isCreatedByUser;
-    }
 
     //Play audio using bash command
     public void playAudio() {
@@ -45,10 +33,6 @@ public class Recording {
         thread.start();
     }
 
-    public double getRating() {
-        return rating.get();
-    }
-
     public Path getRecordingPath() {
         return recordingPath;
     }
@@ -60,25 +44,18 @@ public class Recording {
     //Calculates the length
     public double getLength() {
         double durationInSeconds = 0.0;
-        try{
+        try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(recordingPath.toFile());
             AudioFormat format = audioInputStream.getFormat();
             long frames = audioInputStream.getFrameLength();
-            durationInSeconds = (frames+0.0) / format.getFrameRate();
+            durationInSeconds = (frames + 0.0) / format.getFrameRate();
 
-        } catch (UnsupportedAudioFileException|IOException e){
+        } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
         return durationInSeconds;
     }
 
-    public DoubleProperty ratingProperty() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating.set(rating);
-    }
 
     @Override
     public String toString() {

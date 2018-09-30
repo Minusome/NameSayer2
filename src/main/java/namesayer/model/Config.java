@@ -1,4 +1,4 @@
-package namesayer.recording;
+package namesayer.model;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

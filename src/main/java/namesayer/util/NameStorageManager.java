@@ -1,10 +1,12 @@
-package namesayer.recording;
+package namesayer.util;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import namesayer.NameSelectScreenController;
+import namesayer.model.Name;
+import namesayer.model.Recording;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,10 +25,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static namesayer.recording.Config.CREATIONS_FOLDER;
-import static namesayer.recording.Config.RATINGS;
-import static namesayer.recording.Config.SAVED_RECORDINGS;
-import static namesayer.recording.Config.TEMP_RECORDINGS;
+import static namesayer.model.Config.CREATIONS_FOLDER;
+import static namesayer.model.Config.RATINGS;
+import static namesayer.model.Config.SAVED_RECORDINGS;
+import static namesayer.model.Config.TEMP_RECORDINGS;
 
 public class NameStorageManager {
 

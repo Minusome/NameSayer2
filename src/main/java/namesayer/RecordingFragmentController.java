@@ -8,7 +8,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
-import namesayer.recording.Name;
+import namesayer.model.Name;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,7 +29,7 @@ public class RecordingFragmentController {
     }
 
     /**
-     * Animates the recording button
+     * Animates the model button
      * @param mouseEvent
      */
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {

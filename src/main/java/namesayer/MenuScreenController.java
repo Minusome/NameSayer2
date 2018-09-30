@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
-import namesayer.recording.NameStorageManager;
+import namesayer.util.NameStorageManager;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
