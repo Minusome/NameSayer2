@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.model.Name;
+import namesayer.util.NameConcatenateTask;
 import namesayer.view.CompleteNameLoadingCell;
 import namesayer.view.EmptySelectionModel;
 import namesayer.util.NameStorageManager;
@@ -75,6 +76,7 @@ public class NameSelectScreenController {
     private void addToListView(String string){
         if (!nameListView.getItems().contains(string)){
             nameListView.getItems().add(string);
+            new Thread(new NameConcatenateTask(string)).start();
         }
     }
 
@@ -87,10 +89,6 @@ public class NameSelectScreenController {
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
             return;
         }
-//        if (!isLoaded){
-//            Task<ResultWrapper> task = new NameConcatenateTask("catherine watson");
-//            task.run();
-//        }
 
 
 //        Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));

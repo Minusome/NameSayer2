@@ -2,6 +2,7 @@ package namesayer.util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import namesayer.model.CompleteName;
 import namesayer.model.PartialName;
 import namesayer.model.PartialNameRecording;
 
@@ -28,7 +29,7 @@ public class NameStorageManager {
     private static NameStorageManager instance = null;
 
     private List<PartialName> partialNames = new LinkedList<>();
-
+    private List<CompleteName> completeNames = new LinkedList<>();
 
     public static NameStorageManager getInstance() {
         if (instance == null) {
@@ -104,6 +105,9 @@ public class NameStorageManager {
         }
     }
 
+    public void addCompleteName(CompleteName name) {
+        completeNames.add(name);
+    }
 
 //
 //    /**

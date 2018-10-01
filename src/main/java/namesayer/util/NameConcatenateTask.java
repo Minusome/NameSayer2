@@ -14,13 +14,12 @@ import java.util.List;
 import static namesayer.util.Config.COMBINED_NAMES;
 import static namesayer.util.Config.DATABSE_FOLDER;
 import static namesayer.util.Config.WAV_EXTENSION;
-import static namesayer.util.NameConcatenateTask.ResultWrapper;
 
 
 /**
  * Parses user requested names into CompleteNames where available
  */
-public class NameConcatenateTask extends Task<ResultWrapper> {
+public class NameConcatenateTask extends Task<Void> {
 
     private String userRequestedName;
 
@@ -28,18 +27,6 @@ public class NameConcatenateTask extends Task<ResultWrapper> {
         this.userRequestedName = userRequestedNames;
     }
 
-    public static class ResultWrapper {
-
-        public enum Status {ALL_FOUND, NONE_FOUND, PARTIALLY_FOUND}
-
-        private CompleteName completeName;
-        private Status status;
-
-        public ResultWrapper(CompleteName completeName, Status status) {
-            this.completeName = completeName;
-            this.status = status;
-        }
-    }
 
     /**
      * Invoked when the Task is executed, the call method must be overridden and
@@ -54,7 +41,7 @@ public class NameConcatenateTask extends Task<ResultWrapper> {
      *                   background operation
      */
     @Override
-    protected ResultWrapper call() throws Exception {
+    protected Void call() throws Exception {
         NameStorageManager manager = NameStorageManager.getInstance();
         String[] components = userRequestedName.split("[\\s-]+");
         List<PartialName> discoveredNames = new ArrayList<>();
@@ -65,8 +52,9 @@ public class NameConcatenateTask extends Task<ResultWrapper> {
             }
         }
         if (discoveredNames.size() == 0) {
-            return new ResultWrapper(null, ResultWrapper.Status.NONE_FOUND);
+            return null;
         }
+
         StringBuilder command = new StringBuilder("sox");
         for (PartialName name : discoveredNames) {
             PartialNameRecording recording = name.getRecording();
@@ -93,12 +81,8 @@ public class NameConcatenateTask extends Task<ResultWrapper> {
 
         CompleteName completeName = new CompleteName(userRequestedName);
         completeName.setExemplar(new CompleteNameRecording(recordingPath));
-
-        if (discoveredNames.size() == components.length) {
-            return new ResultWrapper(completeName, ResultWrapper.Status.ALL_FOUND);
-        } else {
-            return new ResultWrapper(completeName, ResultWrapper.Status.PARTIALLY_FOUND);
-        }
+        manager.addCompleteName(completeName);
+        return null;
     }
 
 
