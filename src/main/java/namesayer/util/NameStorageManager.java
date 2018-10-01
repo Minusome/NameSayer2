@@ -76,6 +76,8 @@ public class NameStorageManager {
         }
     }
 
+
+
     public ObservableList<PartialName> getPartialNames() {
         return FXCollections.observableList(partialNames);
     }

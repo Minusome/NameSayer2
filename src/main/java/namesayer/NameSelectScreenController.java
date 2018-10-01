@@ -24,10 +24,12 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //import namesayer.util.NameStorageManager;
 
@@ -45,6 +47,7 @@ public class NameSelectScreenController {
     private HashSet<String> autoCompletions = new HashSet<>();
     private int userInputNameLength = 0;
     private static boolean randomSelected = false;
+    private boolean isLoaded = false;
 
 
     public void initialize() {
@@ -68,14 +71,28 @@ public class NameSelectScreenController {
         binding.setPrefWidth(500);
     }
 
+
+    private void addToListView(String string){
+        if (!nameListView.getItems().contains(string)){
+            nameListView.getItems().add(string);
+        }
+    }
+
+
     /**
      * Loads the RecordingScreen
      */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (nameListView.getItems().isEmpty()) {
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name first"));
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
             return;
         }
+        if (!isLoaded){
+
+
+        }
+
+
         Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
@@ -121,7 +138,7 @@ public class NameSelectScreenController {
             userInputNameLength = 0;
         }
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            nameListView.getItems().add(currentName);
+            addToListView(currentName);
             nameSearchBar.clear();
         }
     }
@@ -135,6 +152,8 @@ public class NameSelectScreenController {
             e.printStackTrace();
         }
     }
+
+
 
     public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
 //        partialNames.forEach(name -> name.setSelected(true));
@@ -150,7 +169,11 @@ public class NameSelectScreenController {
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".txt", "*.txt"));
         File selectedFile = chooser.showOpenDialog(randomToggle.getScene().getWindow());
         if (selectedFile != null) {
-            return;
+            try (Stream<String> stream = Files.lines(selectedFile.toPath())) {
+                stream.forEach(this::addToListView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
