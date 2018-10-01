@@ -15,5 +15,9 @@ public class PartialName extends Name {
         recordings.add(recording);
     }
 
+    //TODO For now just return the first recording
+    public PartialNameRecording getRecording(){
+        return recordings.get(0);
+    }
 
 }

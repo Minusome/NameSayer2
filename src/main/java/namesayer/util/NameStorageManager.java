@@ -17,7 +17,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static namesayer.util.Config.COMBINED_NAMES;
 import static namesayer.util.Config.DATABSE_FOLDER;
+import static namesayer.util.Config.USER_ATTEMPTS;
 
 public class NameStorageManager {
 
@@ -36,14 +38,6 @@ public class NameStorageManager {
 
 
     public void load() {
-        try {
-            if (!Files.isDirectory(DATABSE_FOLDER)) {
-                Files.createDirectory(DATABSE_FOLDER);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         try (Stream<Path> paths = Files.walk(DATABSE_FOLDER)) {
             Map<String, PartialName> initializedNames = new HashMap<>();
             paths.forEach(path -> {
@@ -82,9 +76,16 @@ public class NameStorageManager {
         return FXCollections.observableList(partialNames);
     }
 
-    public List<PartialName> checkOK(){
-        return partialNames;
+    public PartialName findPartialNameFromString(String s){
+        for (PartialName pn : partialNames) {
+            if (pn.toString().equals(s)) {
+                return pn;
+            }
+        }
+        return null;
     }
+
+
 //
 //    /**
 //     * load existing database hierarchy
@@ -195,6 +196,16 @@ public class NameStorageManager {
 //    }
 
     private NameStorageManager() {
+        try {
+            if (!Files.isDirectory(DATABSE_FOLDER.resolve(COMBINED_NAMES))) {
+                Files.createDirectory(DATABSE_FOLDER.resolve(COMBINED_NAMES));
+            }
+            if (!Files.isDirectory(DATABSE_FOLDER.resolve(USER_ATTEMPTS))) {
+                Files.createDirectory(DATABSE_FOLDER.resolve(USER_ATTEMPTS));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void clear() {

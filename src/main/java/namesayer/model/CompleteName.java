@@ -12,9 +12,10 @@ import static namesayer.util.Config.WAV_EXTENSION;
 
 public class CompleteName extends Name {
 
+
+    private CompleteNameRecording exemplar;
     private ObservableList<CompleteNameRecording> tempRecordings = FXCollections.observableArrayList();
     private ObservableList<CompleteNameRecording> savedRecordings = FXCollections.observableArrayList();
-
 
     public CompleteName(String name) {
         super(name);
@@ -36,4 +37,9 @@ public class CompleteName extends Name {
         });
         thread.start();
     }
+
+    public void setExemplar(CompleteNameRecording exemplar) {
+        this.exemplar = exemplar;
+    }
+
 }

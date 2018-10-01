@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.model.Name;
 import namesayer.util.EmptySelectionModel;
+import namesayer.util.NameConcatenateTask;
 import namesayer.util.NameStorageManager;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
@@ -30,6 +32,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static namesayer.util.NameConcatenateTask.ResultWrapper;
 
 //import namesayer.util.NameStorageManager;
 
@@ -88,14 +92,14 @@ public class NameSelectScreenController {
             return;
         }
         if (!isLoaded){
-
-
+            Task<ResultWrapper> task = new NameConcatenateTask("catherine watson");
+            task.run();
         }
 
 
-        Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
-        Scene scene = nameSearchBar.getScene();
-        scene.setRoot(root);
+//        Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
+//        Scene scene = nameSearchBar.getScene();
+//        scene.setRoot(root);
     }
 
     public void setRandom() {

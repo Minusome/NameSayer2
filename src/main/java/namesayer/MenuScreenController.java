@@ -37,8 +37,6 @@ public class MenuScreenController {
     public void initialize() {
         practiceButton.setDisable(false);
         nameStorageManager.load();
-        List<PartialName> namesList = nameStorageManager.checkOK();
-        System.out.println(namesList.size());
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
