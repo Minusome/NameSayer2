@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.model.Name;
+import namesayer.util.CompleteNameLoadingCell;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.NameConcatenateTask;
 import namesayer.util.NameStorageManager;
@@ -58,7 +59,7 @@ public class NameSelectScreenController {
         nameStorageManager = NameStorageManager.getInstance();
 
         //Use custom ListCell with checkboxes
-        nameListView.setCellFactory(value -> new JFXListCell<>());
+        nameListView.setCellFactory(value -> new CompleteNameLoadingCell());
         nameListView.setSelectionModel(new EmptySelectionModel<>());
         nameListView.setExpanded(false);
         nameListView.setPlaceholder(new Label("Please names you wish to practise"));
@@ -91,10 +92,10 @@ public class NameSelectScreenController {
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
             return;
         }
-        if (!isLoaded){
-            Task<ResultWrapper> task = new NameConcatenateTask("catherine watson");
-            task.run();
-        }
+//        if (!isLoaded){
+//            Task<ResultWrapper> task = new NameConcatenateTask("catherine watson");
+//            task.run();
+//        }
 
 
 //        Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));

@@ -8,6 +8,7 @@ import namesayer.model.PartialNameRecording;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,6 +36,8 @@ public class NameStorageManager {
         }
         return instance;
     }
+
+
 
 
     public void load() {
@@ -83,6 +86,25 @@ public class NameStorageManager {
             }
         }
         return null;
+    }
+
+
+    public Result queryUserRequestedName(String userRequestedName){
+        String[] components = userRequestedName.split("[\\s-]+");
+        List<PartialName> discoveredNames = new ArrayList<>();
+        for (String s : components) {
+            PartialName name = findPartialNameFromString(s);
+            if (name != null) {
+                discoveredNames.add(name);
+            }
+        }
+        if (discoveredNames.size() == 0) {
+            return Result.NONE_FOUND;
+        } else if (discoveredNames.size() == components.length) {
+            return Result.ALL_FOUND;
+        } else {
+            return Result.PARTIALLY_FOUND;
+        }
     }
 
 
