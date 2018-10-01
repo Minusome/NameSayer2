@@ -1,4 +1,4 @@
-package namesayer.util;
+package namesayer.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

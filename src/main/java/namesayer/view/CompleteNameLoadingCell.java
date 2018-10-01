@@ -1,4 +1,4 @@
-package namesayer.util;
+package namesayer.view;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import namesayer.util.NameStorageManager;
+import namesayer.util.Result;
 
 import java.io.IOException;
 

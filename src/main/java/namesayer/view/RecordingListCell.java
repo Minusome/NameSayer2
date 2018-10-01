@@ -1,4 +1,4 @@
-package namesayer.util;
+package namesayer.view;
 
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;

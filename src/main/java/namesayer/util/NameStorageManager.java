@@ -37,9 +37,6 @@ public class NameStorageManager {
         return instance;
     }
 
-
-
-
     public void load() {
         try (Stream<Path> paths = Files.walk(DATABSE_FOLDER)) {
             Map<String, PartialName> initializedNames = new HashMap<>();
