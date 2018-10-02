@@ -57,20 +57,26 @@ public class NameConcatenateTask extends Task<Void> {
 
         StringBuilder command = new StringBuilder("sox");
         for (PartialName name : discoveredNames) {
-            PartialNameRecording recording = name.getRecording();
+            PartialNameRecording partialNameRecording = name.getRecording();
             command.append(" \"")
-                   .append(recording.getRecordingPath().toAbsolutePath().toString())
+                   .append(partialNameRecording.getRecordingPath().toAbsolutePath().toString())
                    .append("\"");
         }
         //TODO change the naming convention for combined names
 
-        Path recordingPath = DATABSE_FOLDER.resolve(COMBINED_NAMES)
-                                           .resolve(userRequestedName.replace(" ", "_") + WAV_EXTENSION);
+        Path completeRecordingPath = DATABSE_FOLDER.resolve(COMBINED_NAMES)
+                                                   .resolve(userRequestedName.replace(" ", "_") + WAV_EXTENSION);
 
         command.append(" \"")
-               .append(recordingPath.toAbsolutePath().toString())
+               .append(completeRecordingPath.toAbsolutePath().toString())
                .append("\"");
 
+//
+//        URL url = getClass().getResource("/script/combine.sh");
+//        Path script = Paths.get(url.toURI());
+//        System.out.println(script.toString());
+//        System.out.println(command.toString());
+//
         ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", command.toString());
         try {
             Process process = builder.start();
@@ -80,7 +86,7 @@ public class NameConcatenateTask extends Task<Void> {
         }
 
         CompleteName completeName = new CompleteName(userRequestedName);
-        completeName.setExemplar(new CompleteNameRecording(recordingPath));
+        completeName.setExemplar(new CompleteNameRecording(completeRecordingPath));
         manager.addCompleteName(completeName);
         return null;
     }
