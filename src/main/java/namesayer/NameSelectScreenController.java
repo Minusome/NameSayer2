@@ -88,12 +88,11 @@ public class NameSelectScreenController {
         if (nameListView.getItems().isEmpty()) {
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
             return;
+        } else {
+            Parent root = FXMLLoader.load(getClass().getResource("/AssessmentScreen.fxml"));
+            Scene scene = nameSearchBar.getScene();
+            scene.setRoot(root);
         }
-
-
-//        Parent root = FXMLLoader.load(getClass().getResource("/RecordingScreen.fxml"));
-//        Scene scene = nameSearchBar.getScene();
-//        scene.setRoot(root);
     }
 
     public void setRandom() {
