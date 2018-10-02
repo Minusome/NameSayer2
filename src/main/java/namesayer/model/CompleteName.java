@@ -42,4 +42,8 @@ public class CompleteName extends Name {
         this.exemplar = exemplar;
     }
 
+    public CompleteNameRecording getExemplar() {
+        return exemplar;
+    }
+
 }

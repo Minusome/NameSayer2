@@ -109,6 +109,10 @@ public class NameStorageManager {
         completeNames.add(name);
     }
 
+    public List<CompleteName> getCompleteNames() {
+        return Collections.unmodifiableList(completeNames);
+    }
+
 //
 //    /**
 //     * load existing database hierarchy

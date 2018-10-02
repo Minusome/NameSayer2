@@ -28,7 +28,7 @@
       <String fx:value="shadow" />
    </styleClass>
    <children>
-      <Label text="Label" GridPane.columnIndex="1">
+      <Label fx:id="label" text="Label" GridPane.columnIndex="1">
          <font>
             <Font size="32.0" />
          </font>
