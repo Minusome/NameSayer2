@@ -6,8 +6,12 @@ import namesayer.model.CompleteNameRecording;
 import namesayer.model.PartialName;
 import namesayer.model.PartialNameRecording;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,32 +59,28 @@ public class NameConcatenateTask extends Task<Void> {
             return null;
         }
 
-        StringBuilder command = new StringBuilder("sox");
+        URL url = getClass().getResource("/script/combine.sh");
+        Path script = Paths.get(url.toURI());
+        StringBuilder stringBuilder = new StringBuilder();
         for (PartialName name : discoveredNames) {
             PartialNameRecording partialNameRecording = name.getRecording();
-            command.append(" \"")
-                   .append(partialNameRecording.getRecordingPath().toAbsolutePath().toString())
-                   .append("\"");
+            stringBuilder.append(partialNameRecording.getRecordingPath().toAbsolutePath().toString()).append(" ");
         }
         //TODO change the naming convention for combined names
 
         Path completeRecordingPath = DATABSE_FOLDER.resolve(COMBINED_NAMES)
                                                    .resolve(userRequestedName.replace(" ", "_") + WAV_EXTENSION);
 
-        command.append(" \"")
-               .append(completeRecordingPath.toAbsolutePath().toString())
-               .append("\"");
+        stringBuilder.append(completeRecordingPath.toAbsolutePath().toString()).append(" ");
 
-//
-//        URL url = getClass().getResource("/script/combine.sh");
-//        Path script = Paths.get(url.toURI());
-//        System.out.println(script.toString());
-//        System.out.println(command.toString());
-//
-        ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", command.toString());
+        System.out.println(script.toString() + " " + stringBuilder.toString());
+
         try {
-            Process process = builder.start();
-            process.waitFor();
+            ProcessBuilder builder = new ProcessBuilder(script.toString(), stringBuilder.toString());
+            builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
+            builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+            builder.redirectError(ProcessBuilder.Redirect.INHERIT);
+            builder.start().waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
