@@ -1,10 +1,11 @@
-package namesayer.util;
+package namesayer.persist;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import namesayer.model.CompleteName;
 import namesayer.model.PartialName;
 import namesayer.model.PartialNameRecording;
+import namesayer.util.Result;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,6 +38,7 @@ public class NameStorageManager {
         }
         return instance;
     }
+
 
     public void load() {
         try (Stream<Path> paths = Files.walk(DATABSE_FOLDER)) {

@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import namesayer.util.NameStorageManager;
+import namesayer.persist.NameStorageManager;
 import namesayer.util.Result;
 
 import java.io.IOException;

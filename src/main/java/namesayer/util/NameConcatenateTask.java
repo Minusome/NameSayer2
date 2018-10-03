@@ -5,10 +5,9 @@ import namesayer.model.CompleteName;
 import namesayer.model.CompleteNameRecording;
 import namesayer.model.PartialName;
 import namesayer.model.PartialNameRecording;
+import namesayer.persist.NameStorageManager;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;

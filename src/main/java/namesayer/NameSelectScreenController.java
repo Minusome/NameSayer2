@@ -19,7 +19,7 @@ import namesayer.model.Name;
 import namesayer.util.NameConcatenateTask;
 import namesayer.view.CompleteNameLoadingCell;
 import namesayer.view.EmptySelectionModel;
-import namesayer.util.NameStorageManager;
+import namesayer.persist.NameStorageManager;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//import namesayer.util.NameStorageManager;
+//import namesayer.persist.NameStorageManager;
 
 public class NameSelectScreenController {
 

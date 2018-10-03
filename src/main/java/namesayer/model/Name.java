@@ -6,7 +6,7 @@ public abstract class Name implements Comparable<Name> {
 
     protected String name;
 
-    static Path directory;
+//    static Path directory;
 
     public Name(String name) {
         this.name = name;
@@ -16,9 +16,9 @@ public abstract class Name implements Comparable<Name> {
         return name;
     }
 
-    public static void setDirectory(Path directory) {
-        Name.directory = directory;
-    }
+//    public static void setDirectory(Path directory) {
+//        Name.directory = directory;
+//    }
 
     @Override
     public String toString() {

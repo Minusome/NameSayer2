@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import namesayer.model.Name;
-//import namesayer.util.NameStorageManager;
+//import namesayer.persist.NameStorageManager;
 import namesayer.model.Recording;
 import namesayer.view.RecordingListCell;
 
