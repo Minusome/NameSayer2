@@ -8,14 +8,18 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import namesayer.persist.AssessmentSession;
+import namesayer.view.TransitionFactory;
+import org.controlsfx.control.Rating;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -26,6 +30,11 @@ import static namesayer.view.TransitionFactory.cardDoubleSlideTransition;
 
 public class AssessmentScreenController {
 
+    @FXML private JFXButton replayButton;
+    @FXML private JFXButton ratingButton;
+    @FXML private JFXButton saveButton;
+    @FXML private GridPane ratingCard;
+    @FXML private Rating rating;
     @FXML private JFXSpinner recordingSpinner;
     @FXML private JFXButton nextButton;
     @FXML private StackPane cardPane;
@@ -35,8 +44,8 @@ public class AssessmentScreenController {
     //Must set session when initializing this scene
     private AssessmentSession session;
 
-
     private boolean recordingComplete = false;
+    private boolean editButtonToggle = false;
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
@@ -46,7 +55,10 @@ public class AssessmentScreenController {
 
     public void initialize() {
         playingSpinner.setProgress(1);
-        loadNewCard(true);
+        recordingSpinner.setProgress(1);
+        replayButton.setDisable(true);
+        ratingButton.setDisable(true);
+        saveButton.setDisable(true);
     }
 
 
@@ -105,13 +117,20 @@ public class AssessmentScreenController {
     public void startRecording() {
         String temp = "Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String recordingName = temp.replace(" ", "_");
-        session.makeNewRecording(recordingName);
+        session.makeNewRecording(
+                recordingName,
+                event -> rating.ratingProperty().bindBidirectional(session.getCurrentRecording().ratingProperty())
+        );
         recordingSpinner.setVisible(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
-                new KeyFrame(Duration.seconds(session.getExemplar().getLength()), event -> recordingSpinner.setVisible(false), new KeyValue(recordingSpinner.progressProperty(), 1)));
+                new KeyFrame(Duration.seconds(session.getExemplar().getLength()), new KeyValue(recordingSpinner.progressProperty(), 1)));
         timeline.play();
+        rating.ratingProperty().unbind();
         recordingComplete = true;
+        replayButton.setDisable(false);
+        ratingButton.setDisable(false);
+        saveButton.setDisable(false);
     }
 
 
@@ -121,8 +140,17 @@ public class AssessmentScreenController {
         }
     }
 
-    public void onEditButtonClicked(MouseEvent mouseEvent) {
 
+    public void onEditButtonClicked(MouseEvent mouseEvent) {
+        TranslateTransition animation;
+        if (!editButtonToggle) {
+            animation = TransitionFactory.slideUpTransition(ratingCard);
+            editButtonToggle = true;
+        } else {
+            animation = TransitionFactory.slideDownTransition(ratingCard);
+            editButtonToggle = false;
+        }
+        animation.play();
     }
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {

@@ -30,4 +30,21 @@ public class TransitionFactory {
         return new SequentialTransition(moveLeft, moveLeft2);
     }
 
+    public static TranslateTransition slideUpTransition(Node node) {
+        TranslateTransition moveUp = new TranslateTransition(Duration.millis(200), node);
+        moveUp.setFromY(100);
+        moveUp.setToY(0);
+        node.setVisible(true);
+        return moveUp;
+    }
+
+    public static TranslateTransition slideDownTransition(Node node) {
+        TranslateTransition moveDown = new TranslateTransition(Duration.millis(200), node);
+        moveDown.setFromY(0);
+        moveDown.setToY(100);
+        moveDown.setOnFinished(event -> node.setVisible(false));
+        return moveDown;
+    }
+
+
 }

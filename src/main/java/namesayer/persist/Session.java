@@ -1,5 +1,8 @@
 package namesayer.persist;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import namesayer.model.CompleteName;
 import namesayer.model.CompleteRecording;
 
@@ -37,7 +40,7 @@ public abstract class Session {
         return currentName;
     }
 
-    public void makeNewRecording(String recordingName) {
+    public void makeNewRecording(String recordingName, EventHandler<ActionEvent> onFinished) {
         Thread thread = new Thread(() -> {
             Path newRecordingPath = DATABSE_FOLDER.resolve(USER_ATTEMPTS).resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
             String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t " + currentName.getExemplar().getLength() + " -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
@@ -47,6 +50,7 @@ public abstract class Session {
                 Process process = builder.start();
                 process.waitFor();
                 addNewRecording(new CompleteRecording(newRecordingPath));
+                Platform.runLater(() -> onFinished.handle(new ActionEvent()));
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }

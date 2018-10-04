@@ -17,6 +17,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 
+import static namesayer.persist.Session.SessionType.ASSESSMENT;
+
 public class MenuScreenController {
 
     @FXML public JFXProgressBar MicrophoneVolume;
@@ -38,7 +40,7 @@ public class MenuScreenController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/NameSelectScreen.fxml"));
         Parent root = loader.load();
         NameSelectScreenController controller = loader.getController();
-        controller.setSessionType(SessionType.ASSESSMENT);
+        controller.setSessionType(ASSESSMENT);
         scene.setRoot(root);
     }
 

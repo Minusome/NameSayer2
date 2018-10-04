@@ -49,5 +49,11 @@ public class AssessmentSession extends Session {
         NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName, recording);
     }
 
+    public CompleteRecording getCurrentRecording() {
+        return userAttempts.get(currentName);
+    }
+
+
+
 
 }

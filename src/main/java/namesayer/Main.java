@@ -9,6 +9,8 @@ import namesayer.persist.NameStorageManager;
 
 
 public class Main extends Application {
+    //TODO Implement Rewards screen
+    //TODO Make the card number display actually work
 
 
     @Override

@@ -94,7 +94,7 @@ public class NameSelectScreenController {
      */
     public void setSessionType(SessionType sessionType) {
         this.sessionType = sessionType;
-        if (sessionType.equals(SessionType.ASSESSMENT)) {
+        if (sessionType.equals(ASSESSMENT)) {
             assessmentSession = new AssessmentSession();
         } else {
             practiseSession = new PractiseSession();
@@ -109,7 +109,7 @@ public class NameSelectScreenController {
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
         } else {
             Parent root = null;
-            if (sessionType.equals(SessionType.ASSESSMENT)) {
+            if (sessionType.equals(ASSESSMENT)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
                 root = loader.load();
                 AssessmentScreenController controller = loader.getController();
