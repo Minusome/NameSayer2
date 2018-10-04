@@ -130,5 +130,6 @@ public class PractiseScreenController {
         }
         practiseListView.setItems(recordings);
         practiseListView.refresh();
+        cardPane.requestFocus();
     }
 }

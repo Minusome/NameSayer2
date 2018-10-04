@@ -53,36 +53,44 @@
                         <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
                      </GridPane.margin>
                   </Label>
-                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <HBox alignment="CENTER" style="-fx-background-color: #E8E8E8;" styleClass="shadow" GridPane.columnSpan="4" GridPane.rowIndex="1">
                      <children>
-                        <JFXSpinner fx:id="playingSpinner" progress="0.0" radius="50.0" startingAngle="0.0" stylesheets="@css/Material.css" StackPane.alignment="CENTER">
-                           <StackPane.margin>
-                              <Insets bottom="2.0" right="2.0" />
-                           </StackPane.margin>
-                        </JFXSpinner>
-                        <JFXButton fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onPlayButtonClicked">
-                           <graphic>
-                              <MaterialIconView fx:id="playIcon" fill="#009688" fontSmoothingType="LCD" glyphName="PLAY_ARROW" size="80" />
-                           </graphic>
-                        </JFXButton>
+                        <StackPane>
+                           <children>
+                              <JFXSpinner fx:id="playingSpinner" progress="1.0" radius="50.0" startingAngle="0.0" stylesheets="@css/Material.css" StackPane.alignment="CENTER">
+                                 <StackPane.margin>
+                                    <Insets bottom="2.0" right="2.0" />
+                                 </StackPane.margin>
+                              </JFXSpinner>
+                              <JFXButton fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onPlayButtonClicked">
+                                 <graphic>
+                                    <MaterialIconView fx:id="playIcon" fill="#009688" fontSmoothingType="LCD" glyphName="PLAY_ARROW" size="80" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" right="20.0" top="10.0" />
+                           </HBox.margin>
+                        </StackPane>
+                        <StackPane>
+                           <children>
+                              <JFXSpinner fx:id="recordingSpinner" progress="1.0" radius="50.0" startingAngle="0.0" stylesheets="@css/Material.css">
+                                 <StackPane.margin>
+                                    <Insets bottom="2.0" right="2.0" />
+                                 </StackPane.margin>
+                              </JFXSpinner>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRecordingButtonClicked" text="Button">
+                                 <graphic>
+                                    <MaterialIconView fill="#009688" glyphName="MIC" size="80" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="20.0" top="10.0" />
+                           </HBox.margin>
+                        </StackPane>
                      </children>
-                     <GridPane.margin>
-                        <Insets right="30.0" top="30.0" />
-                     </GridPane.margin>
-                  </StackPane>
-                  <StackPane GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <children>
-                        <JFXSpinner fx:id="recordingSpinner" progress="0.0" radius="50.0" startingAngle="0.0" stylesheets="@css/Material.css" />
-                        <JFXButton contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRecordingButtonClicked" text="Button">
-                           <graphic>
-                              <MaterialIconView fill="#009688" glyphName="MIC" size="80" />
-                           </graphic>
-                        </JFXButton>
-                     </children>
-                     <GridPane.margin>
-                        <Insets left="30.0" top="30.0" />
-                     </GridPane.margin>
-                  </StackPane>
+                  </HBox>
                   <StackPane alignment="TOP_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
                      <children>
                         <Label text="01/05" textFill="#838383">

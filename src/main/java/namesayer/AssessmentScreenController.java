@@ -51,6 +51,7 @@ public class AssessmentScreenController {
         this.session = session;
         label.setText(session.getCurrentName().toString());
         disableButtons(true, false);
+        cardPane.requestFocus();
     }
 
     public void initialize() {
@@ -71,6 +72,7 @@ public class AssessmentScreenController {
         session.next();
         label.setText(session.getCurrentName().toString());
         nextButton.setDisable(!session.hasNext());
+        cardPane.requestFocus();
     }
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
