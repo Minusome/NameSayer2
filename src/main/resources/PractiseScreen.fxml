@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.PractiseScreenController">
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="75.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <StackPane fx:id="cardPane" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <GridPane prefHeight="420.0" prefWidth="480.0" stylesheets="@css/Material.css">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="60.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <styleClass>
+                  <String fx:value="card" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <children>
+                  <Label fx:id="label" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="4">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <JFXSpinner fx:id="playingSpinner" progress="0.0" radius="50.0" startingAngle="0.0" stylesheets="@css/Material.css" StackPane.alignment="CENTER">
+                           <StackPane.margin>
+                              <Insets bottom="2.0" right="2.0" />
+                           </StackPane.margin>
+                        </JFXSpinner>
+                        <JFXButton fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onPlayButtonClicked">
+                           <graphic>
+                              <MaterialIconView fx:id="playIcon" fill="#009688" fontSmoothingType="LCD" glyphName="PLAY_ARROW" size="80" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                     <GridPane.margin>
+                        <Insets right="30.0" top="30.0" />
+                     </GridPane.margin>
+                  </StackPane>
+                  <StackPane GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <JFXSpinner fx:id="recordingSpinner" progress="0.0" radius="50.0" startingAngle="0.0" stylesheets="@css/Material.css" />
+                        <JFXButton contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRecordingButtonClicked" text="Button">
+                           <graphic>
+                              <MaterialIconView fill="#009688" glyphName="MIC" size="80" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                     <GridPane.margin>
+                        <Insets left="30.0" top="30.0" />
+                     </GridPane.margin>
+                  </StackPane>
+                  <StackPane alignment="TOP_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
+                     <children>
+                        <Label text="01/05" textFill="#838383">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets right="20.0" top="20.0" />
+                           </StackPane.margin>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <JFXListView fx:id="practiseListView" GridPane.columnSpan="4" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="35.0" left="35.0" right="35.0" top="10.0" />
+                     </GridPane.margin>
+                  </JFXListView>
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+      <JFXButton fx:id="nextButton" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onNextButtonClicked" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <graphic>
+            <MaterialIconView glyphName="ARROW_FORWARD" size="30" />
+         </graphic>
+      </JFXButton>
+      <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <StackPane>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </StackPane>
+            <StackPane>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </StackPane>
+            <StackPane>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </StackPane>
+         </children>
+         <GridPane.margin>
+            <Insets top="15.0" />
+         </GridPane.margin>
+      </HBox>
+      <JFXButton fx:id="prevButton" contentDisplay="GRAPHIC_ONLY" disable="true" onMouseClicked="#onPrevButtonClicked" GridPane.rowIndex="1">
+         <graphic>
+            <MaterialIconView glyphName="ARROW_BACK" size="30" />
+         </graphic>
+      </JFXButton>
+   </children>
+</GridPane>

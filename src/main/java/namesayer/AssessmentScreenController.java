@@ -49,27 +49,25 @@ public class AssessmentScreenController {
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
-        nextButton.setDisable(!session.hasNext());
         label.setText(session.getCurrentName().toString());
+        disableButtons(true, false);
     }
 
     public void initialize() {
         playingSpinner.setProgress(1);
         recordingSpinner.setProgress(1);
-        replayButton.setDisable(true);
-        ratingButton.setDisable(true);
-        saveButton.setDisable(true);
     }
 
 
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
-        SequentialTransition transition = cardDoubleSlideTransition(cardPane, LEFT, event -> loadNewCard(true));
+        SequentialTransition transition = cardDoubleSlideTransition(cardPane, LEFT, event -> loadNewCard());
         transition.play();
+        disableButtons(true, false);
     }
 
     //enable loading cards backwards and forwards
     //disable the button if its the last card
-    private void loadNewCard(boolean isNext) {
+    private void loadNewCard() {
         session.next();
         label.setText(session.getCurrentName().toString());
         nextButton.setDisable(!session.hasNext());
@@ -77,13 +75,15 @@ public class AssessmentScreenController {
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
         session.getExemplar().playAudio();
-        boolean isNextDisable = nextButton.isDisable();
-        nextButton.setDisable(true);
+        disableButtons(true, true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
-                new KeyFrame(Duration.seconds(session.getExemplar().getLength()), event -> {
-                    nextButton.setDisable(isNextDisable);
-                }, new KeyValue(playingSpinner.progressProperty(), 1)));
+                new KeyFrame(
+                        Duration.seconds(session.getExemplar().getLength()),
+                        event -> disableButtons(false, false),
+                        new KeyValue(playingSpinner.progressProperty(), 1)
+                )
+        );
         timeline.play();
     }
 
@@ -115,6 +115,7 @@ public class AssessmentScreenController {
     }
 
     public void startRecording() {
+        disableButtons(true, true);
         String temp = "Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String recordingName = temp.replace(" ", "_");
         session.makeNewRecording(
@@ -124,13 +125,15 @@ public class AssessmentScreenController {
         recordingSpinner.setVisible(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
-                new KeyFrame(Duration.seconds(session.getExemplar().getLength()), new KeyValue(recordingSpinner.progressProperty(), 1)));
+                new KeyFrame(
+                        Duration.seconds(session.getExemplar().getLength()),
+                        event -> disableButtons(false, false),
+                        new KeyValue(recordingSpinner.progressProperty(), 1)
+                )
+        );
         timeline.play();
         rating.ratingProperty().unbind();
         recordingComplete = true;
-        replayButton.setDisable(false);
-        ratingButton.setDisable(false);
-        saveButton.setDisable(false);
     }
 
 
@@ -156,4 +159,18 @@ public class AssessmentScreenController {
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         session.saveUserRecording();
     }
+
+
+    private void disableButtons(boolean disableButtons, boolean disableArrows) {
+        if (disableArrows) {
+            nextButton.setDisable(true);
+        } else {
+            nextButton.setDisable(!session.hasNext() || !recordingComplete);
+        }
+        replayButton.setDisable(disableButtons);
+        ratingButton.setDisable(disableButtons);
+        saveButton.setDisable(disableButtons);
+    }
+
+
 }

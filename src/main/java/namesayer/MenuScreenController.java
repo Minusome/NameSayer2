@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import namesayer.persist.NameStorageManager;
+import namesayer.persist.Session;
 //import namesayer.persist.NameStorageManager;
 
 import javax.sound.sampled.AudioFormat;
@@ -18,6 +19,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 
 import static namesayer.persist.Session.SessionType.ASSESSMENT;
+import static namesayer.persist.Session.SessionType.PRACTISE;
 
 public class MenuScreenController {
 
@@ -36,12 +38,7 @@ public class MenuScreenController {
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
-        Scene scene = practiceButton.getScene();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/NameSelectScreen.fxml"));
-        Parent root = loader.load();
-        NameSelectScreenController controller = loader.getController();
-        controller.setSessionType(ASSESSMENT);
-        scene.setRoot(root);
+        loadNextScreen(PRACTISE);
     }
 
     //reveal the progressbar after microphone button being clicked
@@ -89,6 +86,19 @@ public class MenuScreenController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void onAssessModeClicked(MouseEvent mouseEvent) throws IOException {
+        loadNextScreen(ASSESSMENT);
+    }
+
+    private void loadNextScreen(Session.SessionType assessment) throws IOException {
+        Scene scene = practiceButton.getScene();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/NameSelectScreen.fxml"));
+        Parent root = loader.load();
+        NameSelectScreenController controller = loader.getController();
+        controller.setSessionType(assessment);
+        scene.setRoot(root);
     }
 
 //    //imports the files hierarchy

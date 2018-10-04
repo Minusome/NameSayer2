@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<HBox fx:id="listItemHBox" alignment="CENTER_LEFT" prefHeight="40.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label fx:id="itemLabel" contentDisplay="CENTER" text="Label" textAlignment="CENTER" HBox.hgrow="NEVER">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+            <padding>
+                <Insets left="10.0" />
+            </padding></Label>
+        <Region HBox.hgrow="ALWAYS" />
+      <JFXButton fx:id="playButton" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onPlayButtonClicked" HBox.hgrow="NEVER">
+         <graphic>
+            <MaterialIconView glyphName="PLAY_CIRCLE_FILLED" size="20" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="rateButton" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRateButtonClicked" HBox.hgrow="NEVER">
+         <graphic>
+            <MaterialIconView glyphName="STAR" size="20" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onMouseClicked="#onDeleteButtonClicked" HBox.hgrow="NEVER">
+         <graphic>
+            <MaterialIconView glyphName="DELETE" size="20" strokeType="OUTSIDE" strokeWidth="0.0" />
+         </graphic></JFXButton>
+    </children>
+</HBox>

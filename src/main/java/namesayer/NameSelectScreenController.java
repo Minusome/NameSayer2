@@ -115,7 +115,10 @@ public class NameSelectScreenController {
                 AssessmentScreenController controller = loader.getController();
                 controller.injectSession(assessmentSession);
             } else {
-                //TODO not implemented
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PractiseScreen.fxml"));
+                root = loader.load();
+                PractiseScreenController controller = loader.getController();
+                controller.injectSession(practiseSession);
             }
             Scene scene = nameSearchBar.getScene();
             scene.setRoot(root);

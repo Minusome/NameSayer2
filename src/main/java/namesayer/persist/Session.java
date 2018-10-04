@@ -49,8 +49,10 @@ public abstract class Session {
             try {
                 Process process = builder.start();
                 process.waitFor();
-                addNewRecording(new CompleteRecording(newRecordingPath));
-                Platform.runLater(() -> onFinished.handle(new ActionEvent()));
+                Platform.runLater(() -> {
+                    addNewRecording(new CompleteRecording(newRecordingPath));
+                    onFinished.handle(new ActionEvent());
+                });
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }

@@ -35,8 +35,14 @@ public class PractiseSession extends Session {
     }
 
     public ObservableList<CompleteRecording> getRecordingsForCurrentName() {
-        return userAttempts.get(currentName);
+        return FXCollections.unmodifiableObservableList(userAttempts.get(currentName));
     }
+
+    public void removeRecordingForCurrentName(CompleteRecording recording) {
+        userAttempts.get(currentName).remove(recording);
+    }
+
+
 
 
 
