@@ -90,7 +90,7 @@ public class NameConcatenateTask extends Task<Void> {
 
         CompleteName completeName = new CompleteName(userRequestedName);
         completeName.setExemplar(new CompleteRecording(completeRecordingPath));
-        session.add(completeName);
+        session.addName(completeName);
         return null;
     }
 

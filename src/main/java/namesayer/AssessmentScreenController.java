@@ -15,14 +15,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import namesayer.model.CompleteName;
-import namesayer.model.Recording;
-import namesayer.persist.NameStorageManager;
+import namesayer.persist.AssessmentSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static namesayer.view.TransitionFactory.Direction.LEFT;
 import static namesayer.view.TransitionFactory.cardDoubleSlideTransition;
@@ -35,16 +32,19 @@ public class AssessmentScreenController {
     @FXML private Label label;
     @FXML private JFXSpinner playingSpinner;
 
+    //Must set session when initializing this scene
+    private AssessmentSession session;
 
-    private Recording recording;
-    private CompleteName name;
-    private List<CompleteName> completeNames;
-    private int listIndex;
+
     private boolean recordingComplete = false;
 
-    public void initialize() throws IOException {
-        completeNames = NameStorageManager.getInstance().getCompleteNames();
-        listIndex = -1;
+    public void injectSession(AssessmentSession session) {
+        this.session = session;
+        nextButton.setDisable(!session.hasNext());
+        label.setText(session.getCurrentName().toString());
+    }
+
+    public void initialize() {
         playingSpinner.setProgress(1);
         loadNewCard(true);
     }
@@ -58,19 +58,18 @@ public class AssessmentScreenController {
     //enable loading cards backwards and forwards
     //disable the button if its the last card
     private void loadNewCard(boolean isNext) {
-        name = (isNext) ? completeNames.get(++listIndex) : completeNames.get(--listIndex);
-        nextButton.setDisable(listIndex == completeNames.size() - 1);
-        label.setText(name.getName());
-        recording = name.getExemplar();
+        session.next();
+        label.setText(session.getCurrentName().toString());
+        nextButton.setDisable(!session.hasNext());
     }
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
-        recording.playAudio();
+        session.getExemplar().playAudio();
         boolean isNextDisable = nextButton.isDisable();
         nextButton.setDisable(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
-                new KeyFrame(Duration.seconds(recording.getLength()), event -> {
+                new KeyFrame(Duration.seconds(session.getExemplar().getLength()), event -> {
                     nextButton.setDisable(isNextDisable);
                 }, new KeyValue(playingSpinner.progressProperty(), 1)));
         timeline.play();
@@ -92,7 +91,6 @@ public class AssessmentScreenController {
                 alert.hideWithAnimation();
             });
             okButton.setOnAction(event -> {
-                name.deleteAllTempRecording();
                 startRecording();
                 alert.hideWithAnimation();
             });
@@ -107,11 +105,11 @@ public class AssessmentScreenController {
     public void startRecording() {
         String temp = "Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String recordingName = temp.replace(" ", "_");
-        name.makeNewTempRecording(recordingName);
+        session.makeNewRecording(recordingName);
         recordingSpinner.setVisible(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
-                new KeyFrame(Duration.seconds(recording.getLength()), event -> recordingSpinner.setVisible(false), new KeyValue(recordingSpinner.progressProperty(), 1)));
+                new KeyFrame(Duration.seconds(session.getExemplar().getLength()), event -> recordingSpinner.setVisible(false), new KeyValue(recordingSpinner.progressProperty(), 1)));
         timeline.play();
         recordingComplete = true;
     }
@@ -119,7 +117,7 @@ public class AssessmentScreenController {
 
     public void onReplayButtonClicked(MouseEvent mouseEvent) {
         if (recordingComplete) {
-            name.compareUserAttemptWithExemplar();
+            session.compareUserAttemptWithExemplar();
         }
     }
 
@@ -128,6 +126,6 @@ public class AssessmentScreenController {
     }
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        name.saveTempRecordings();
+        session.saveUserRecording();
     }
 }

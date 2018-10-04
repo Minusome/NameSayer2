@@ -25,6 +25,11 @@ import static namesayer.util.Config.COMBINED_NAMES;
 import static namesayer.util.Config.DATABSE_FOLDER;
 import static namesayer.util.Config.USER_ATTEMPTS;
 
+
+/**
+ * Persists names which are stored 5eva
+ * DO NOT USE for names which are only being stored temporarily (i.e. might be deleted later)
+ */
 public class NameStorageManager {
 
     private static final Pattern REGEX_NAME_PARSER = Pattern.compile("[a-zA-Z]+(?:\\.wav)");
@@ -115,12 +120,12 @@ public class NameStorageManager {
 
     public void persistCompleteRecordingsForName(CompleteName newName, List<CompleteRecording> newRecordings) {
         for (CompleteName storedName : completeNames) {
-            if (storedName.equals(newName)){
-                storedName.getRecordings().addAll(newRecordings);
+            if (storedName.equals(newName)) {
+                storedName.getPersistentRecordings().addAll(newRecordings);
                 return;
             }
         }
-        newRecordings.forEach(newName::addRecording);
+        newRecordings.forEach(newName::persistRecording);
         completeNames.add(newName);
     }
 
@@ -134,7 +139,7 @@ public class NameStorageManager {
 //        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
 //            for (Path e : stream) {
 //                Name temp = new Name(e.getFileName().toString(), e);
-//                partialNames.add(temp);
+//                partialNames.addName(temp);
 //                Properties ratingProperties = new Properties();
 //
 //                //load the properties
@@ -145,7 +150,7 @@ public class NameStorageManager {
 //                        Recording recording = new Recording(p);
 //                        double rating = Double.valueOf(ratingProperties.getProperty(recording.toString()));
 //                        recording.setRating(rating);
-//                        temp.addSavedRecording(recording);//add saved recordings to corresponding name
+//                        temp.addSavedRecording(recording);//addName saved recordings to corresponding name
 //                    }
 //
 //                } catch (IOException e1) {
@@ -153,7 +158,7 @@ public class NameStorageManager {
 //                }
 //                try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/temp").toPath())) {
 //                    for (Path p : stream1) {
-//                        temp.addSavedRecording(new Recording(p, true));//add user created recordings to corresponding name
+//                        temp.addSavedRecording(new Recording(p, true));//addName user created recordings to corresponding name
 //                    }
 //                } catch (IOException e1) {
 //                    e1.printStackTrace();
@@ -209,7 +214,7 @@ public class NameStorageManager {
 //                                 Files.createDirectories(savedFolder);
 //                                 Files.createDirectories(tempFolder);
 //                                 initializedNames.put(name, newName);
-//                                 partialNames.add(newName);
+//                                 partialNames.addName(newName);
 //                             } else {
 //                                 newName = initializedNames.get(name);
 //                             }

@@ -7,10 +7,6 @@ public class Name implements Comparable<Name> {
     public Name(String name) {
         this.name = name;
     }
-    public String getName() {
-        return name;
-    }
-
 
     @Override
     public String toString() {
@@ -34,6 +30,6 @@ public class Name implements Comparable<Name> {
 
     @Override
     public int compareTo(Name o) {
-        return this.getName().compareTo(o.getName());
+        return this.toString().compareTo(o.toString());
     }
 }

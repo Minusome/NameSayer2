@@ -160,8 +160,8 @@ public class RecordingScreenController {
 //                "Selecting no will cause them to be deleted"));
 //        JFXButton closeButton = new JFXButton("No");
 //        JFXButton okButton = new JFXButton("Yes");
-//        closeButton.getStyleClass().add("dialog-accept");
-//        okButton.getStyleClass().add("dialog-accept");
+//        closeButton.getStyleClass().addName("dialog-accept");
+//        okButton.getStyleClass().addName("dialog-accept");
 //        closeButton.setOnAction(event -> {
 //            storageManager.removeAllTempRecordings();
 //            alert.hideWithAnimation();

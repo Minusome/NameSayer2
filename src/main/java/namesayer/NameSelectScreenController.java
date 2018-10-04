@@ -16,10 +16,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.model.Name;
+import namesayer.persist.AssessmentSession;
+import namesayer.persist.NameStorageManager;
+import namesayer.persist.PractiseSession;
+import namesayer.persist.Session;
 import namesayer.util.NameConcatenateTask;
 import namesayer.view.CompleteNameLoadingCell;
 import namesayer.view.EmptySelectionModel;
-import namesayer.persist.NameStorageManager;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -32,7 +35,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//import namesayer.persist.NameStorageManager;
+import static namesayer.persist.Session.*;
+import static namesayer.persist.Session.SessionType.*;
+
 
 public class NameSelectScreenController {
 
@@ -45,8 +50,9 @@ public class NameSelectScreenController {
 
     private SuggestionProvider<String> suggestions;
     private HashSet<String> autoCompletions = new HashSet<>();
-
-
+    private SessionType sessionType;
+    private AssessmentSession assessmentSession;
+    private PractiseSession practiseSession;
 
     private int userInputNameLength = 0;
     private static boolean randomSelected = false;
@@ -75,13 +81,25 @@ public class NameSelectScreenController {
     }
 
 
-    private void addToListView(String string){
-        if (!nameListView.getItems().contains(string)){
+    private void addToListView(String string) {
+        if (!nameListView.getItems().contains(string)) {
             nameListView.getItems().add(string);
-            new Thread(new NameConcatenateTask(string)).start();
+            Session session = (sessionType.equals(ASSESSMENT)) ? assessmentSession : practiseSession;
+            new Thread(new NameConcatenateTask(session, string)).start();
         }
     }
 
+    /**
+     * The sessionType must be set after initializing this scene
+     */
+    public void setSessionType(SessionType sessionType) {
+        this.sessionType = sessionType;
+        if (sessionType.equals(SessionType.ASSESSMENT)) {
+            assessmentSession = new AssessmentSession();
+        } else {
+            practiseSession = new PractiseSession();
+        }
+    }
 
     /**
      * Loads the RecordingScreen
@@ -89,9 +107,16 @@ public class NameSelectScreenController {
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (nameListView.getItems().isEmpty()) {
             bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
-            return;
         } else {
-            Parent root = FXMLLoader.load(getClass().getResource("/AssessmentScreen.fxml"));
+            Parent root = null;
+            if (sessionType.equals(SessionType.ASSESSMENT)) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
+                root = loader.load();
+                AssessmentScreenController controller = loader.getController();
+                controller.injectSession(assessmentSession);
+            } else {
+                //TODO not implemented
+            }
             Scene scene = nameSearchBar.getScene();
             scene.setRoot(root);
         }
@@ -104,9 +129,6 @@ public class NameSelectScreenController {
     public static boolean RandomToggleOn() {
         return randomSelected;
     }
-
-
-
 
 
     /**
@@ -151,7 +173,6 @@ public class NameSelectScreenController {
             e.printStackTrace();
         }
     }
-
 
 
     public void onSelectAllButtonClicked(MouseEvent mouseEvent) {

@@ -35,7 +35,10 @@ public class MenuScreenController {
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
         Scene scene = practiceButton.getScene();
-        Parent root = FXMLLoader.load(getClass().getResource("/NameSelectScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/NameSelectScreen.fxml"));
+        Parent root = loader.load();
+        NameSelectScreenController controller = loader.getController();
+        controller.setSessionType(SessionType.ASSESSMENT);
         scene.setRoot(root);
     }
 

@@ -5,9 +5,13 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class CompleteName extends Name{
+public class CompleteName extends Name {
 
-    private ObservableList<CompleteRecording> completeRecordings = FXCollections.observableArrayList();
+    /**
+     * These recordings are permanently associated with this name
+     * NameStorageManager accesses this list, any other class will only be able to see an empty list
+     */
+    private ObservableList<CompleteRecording> persistentRecordings = FXCollections.observableArrayList();
 
     private CompleteRecording exemplar;
 
@@ -15,12 +19,12 @@ public class CompleteName extends Name{
         super(name);
     }
 
-    public void addRecording(CompleteRecording recording) {
-        completeRecordings.add(recording);
+    public void persistRecording(CompleteRecording recording) {
+        persistentRecordings.add(recording);
     }
 
-    public List<CompleteRecording> getRecordings() {
-        return completeRecordings;
+    public List<CompleteRecording> getPersistentRecordings() {
+        return persistentRecordings;
     }
 
     public CompleteRecording getExemplar() {
