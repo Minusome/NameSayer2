@@ -5,11 +5,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 import java.nio.file.Path;
 
-public class PartialNameRecording extends Recording {
+public class PartialRecording extends Recording {
 
     private BooleanProperty isBadQuality = new SimpleBooleanProperty(false);
 
-    public PartialNameRecording(Path recordingPath) {
+    public PartialRecording(Path recordingPath) {
         super(recordingPath);
     }
 

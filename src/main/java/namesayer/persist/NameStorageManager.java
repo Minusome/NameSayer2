@@ -3,8 +3,9 @@ package namesayer.persist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import namesayer.model.CompleteName;
+import namesayer.model.CompleteRecording;
 import namesayer.model.PartialName;
-import namesayer.model.PartialNameRecording;
+import namesayer.model.PartialRecording;
 import namesayer.util.Result;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class NameStorageManager {
     private static final Pattern REGEX_NAME_PARSER = Pattern.compile("[a-zA-Z]+(?:\\.wav)");
     private static NameStorageManager instance = null;
 
+    //TODO should probably be some kind of map
     private List<PartialName> partialNames = new LinkedList<>();
     private List<CompleteName> completeNames = new LinkedList<>();
 
@@ -44,28 +46,28 @@ public class NameStorageManager {
         try (Stream<Path> paths = Files.walk(DATABSE_FOLDER)) {
             Map<String, PartialName> initializedNames = new HashMap<>();
             paths.forEach(path -> {
-                     //Extract name from provided database
-                     Matcher matcher = REGEX_NAME_PARSER.matcher(path.getFileName().toString());
-                     String name = "unrecognized";
-                     if (matcher.find()) {
-                         name = matcher.group(0).replace(".wav", "").toLowerCase();
+                //Extract name from provided database
+                Matcher matcher = REGEX_NAME_PARSER.matcher(path.getFileName().toString());
+                String name = "unrecognized";
+                if (matcher.find()) {
+                    name = matcher.group(0).replace(".wav", "").toLowerCase();
 //                             if (!name.isEmpty()) {
 //                                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
 //                             }
-                     }
-                     PartialName newName;
-                     if (!initializedNames.containsKey(name)) {
-                         newName = new PartialName(name);
-                         initializedNames.put(name, newName);
-                         partialNames.add(newName);
-                     } else {
-                         newName = initializedNames.get(name);
-                     }
+                }
+                PartialName newName;
+                if (!initializedNames.containsKey(name)) {
+                    newName = new PartialName(name);
+                    initializedNames.put(name, newName);
+                    partialNames.add(newName);
+                } else {
+                    newName = initializedNames.get(name);
+                }
 
-                     PartialNameRecording recording = new PartialNameRecording(path);
-                     newName.addDatabaseRecording(recording);
-                     System.out.println(recording);
-                 });
+                PartialRecording recording = new PartialRecording(path);
+                newName.addRecording(recording);
+                System.out.println(recording);
+            });
             //sorts the final list
             Collections.sort(partialNames);
         } catch (IOException e) {
@@ -74,12 +76,16 @@ public class NameStorageManager {
     }
 
 
-
     public ObservableList<PartialName> getPartialNames() {
-        return FXCollections.observableList(partialNames);
+        return FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(partialNames));
     }
 
-    public PartialName findPartialNameFromString(String s){
+
+    public ObservableList<CompleteName> getCompleteNames() {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(completeNames));
+    }
+
+    public PartialName findPartialNameFromString(String s) {
         for (PartialName pn : partialNames) {
             if (pn.toString().equals(s)) {
                 return pn;
@@ -89,7 +95,7 @@ public class NameStorageManager {
     }
 
 
-    public Result queryUserRequestedName(String userRequestedName){
+    public Result queryUserRequestedName(String userRequestedName) {
         String[] components = userRequestedName.split("[\\s-]+");
         List<PartialName> discoveredNames = new ArrayList<>();
         for (String s : components) {
@@ -107,13 +113,17 @@ public class NameStorageManager {
         }
     }
 
-    public void addCompleteName(CompleteName name) {
-        completeNames.add(name);
+    public void persistCompleteRecordingsForName(CompleteName newName, List<CompleteRecording> newRecordings) {
+        for (CompleteName storedName : completeNames) {
+            if (storedName.equals(newName)){
+                storedName.getRecordings().addAll(newRecordings);
+                return;
+            }
+        }
+        newRecordings.forEach(newName::addRecording);
+        completeNames.add(newName);
     }
 
-    public List<CompleteName> getCompleteNames() {
-        return Collections.unmodifiableList(completeNames);
-    }
 
 //
 //    /**

@@ -5,11 +5,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 import java.nio.file.Path;
 
-public class CompleteNameRecording extends Recording{
+public class CompleteRecording extends Recording{
 
     private DoubleProperty rating = new SimpleDoubleProperty(3.0);
 
-    public CompleteNameRecording(Path recordingPath) {
+    public CompleteRecording(Path recordingPath) {
         super(recordingPath);
     }
 

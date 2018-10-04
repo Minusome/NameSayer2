@@ -1,24 +1,16 @@
 package namesayer.model;
 
-import java.nio.file.Path;
-
-public abstract class Name implements Comparable<Name> {
+public class Name implements Comparable<Name> {
 
     protected String name;
-
-//    static Path directory;
 
     public Name(String name) {
         this.name = name;
     }
-
     public String getName() {
         return name;
     }
 
-//    public static void setDirectory(Path directory) {
-//        Name.directory = directory;
-//    }
 
     @Override
     public String toString() {

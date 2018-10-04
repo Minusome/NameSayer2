@@ -3,21 +3,24 @@ package namesayer.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class PartialName extends Name {
+import java.util.List;
 
-    private ObservableList<PartialNameRecording> recordings = FXCollections.observableArrayList();
+public class PartialName extends Name{
+
+    private ObservableList<PartialRecording> partialRecordings = FXCollections.observableArrayList();
 
     public PartialName(String name) {
         super(name);
     }
 
-    public void addDatabaseRecording(PartialNameRecording recording) {
-        recordings.add(recording);
+    public void addRecording(PartialRecording recording) {
+        partialRecordings.add(recording);
     }
 
-    //TODO For now just return the first recording
-    public PartialNameRecording getRecording(){
-        return recordings.get(0);
+    public List<PartialRecording> getRecordings() {
+        return partialRecordings;
     }
+
+
 
 }

@@ -36,9 +36,6 @@ public abstract class Recording {
         return recordingPath;
     }
 
-    public void setRecordingPath(Path recordingPath) {
-        this.recordingPath = recordingPath;
-    }
 
     //Calculates the length
     public double getLength() {

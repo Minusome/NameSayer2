@@ -2,10 +2,11 @@ package namesayer.util;
 
 import javafx.concurrent.Task;
 import namesayer.model.CompleteName;
-import namesayer.model.CompleteNameRecording;
+import namesayer.model.CompleteRecording;
 import namesayer.model.PartialName;
-import namesayer.model.PartialNameRecording;
+import namesayer.model.PartialRecording;
 import namesayer.persist.NameStorageManager;
+import namesayer.persist.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,9 +26,11 @@ import static namesayer.util.Config.WAV_EXTENSION;
 public class NameConcatenateTask extends Task<Void> {
 
     private String userRequestedName;
+    private Session session;
 
-    public NameConcatenateTask(String userRequestedNames) {
+    public NameConcatenateTask(Session session, String userRequestedNames) {
         this.userRequestedName = userRequestedNames;
+        this.session = session;
     }
 
 
@@ -62,8 +65,9 @@ public class NameConcatenateTask extends Task<Void> {
         Path script = Paths.get(url.toURI());
         StringBuilder stringBuilder = new StringBuilder();
         for (PartialName name : discoveredNames) {
-            PartialNameRecording partialNameRecording = name.getRecording();
-            stringBuilder.append(partialNameRecording.getRecordingPath().toAbsolutePath().toString()).append(" ");
+            //TODO make this get the recording with the best quality
+            PartialRecording partialRecording = name.getRecordings().get(0);
+            stringBuilder.append(partialRecording.getRecordingPath().toAbsolutePath().toString()).append(" ");
         }
         //TODO change the naming convention for combined names
 
@@ -85,8 +89,8 @@ public class NameConcatenateTask extends Task<Void> {
         }
 
         CompleteName completeName = new CompleteName(userRequestedName);
-        completeName.setExemplar(new CompleteNameRecording(completeRecordingPath));
-        manager.addCompleteName(completeName);
+        completeName.setExemplar(new CompleteRecording(completeRecordingPath));
+        session.add(completeName);
         return null;
     }
 

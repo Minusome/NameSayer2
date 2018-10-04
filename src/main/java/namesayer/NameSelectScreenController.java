@@ -43,16 +43,18 @@ public class NameSelectScreenController {
     private JFXSnackbar bar;
 
 
-    private NameStorageManager nameStorageManager;
     private SuggestionProvider<String> suggestions;
     private HashSet<String> autoCompletions = new HashSet<>();
+
+
+
     private int userInputNameLength = 0;
     private static boolean randomSelected = false;
     private boolean isLoaded = false;
 
 
     public void initialize() {
-        nameStorageManager = NameStorageManager.getInstance();
+        NameStorageManager nameStorageManager = NameStorageManager.getInstance();
 
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new CompleteNameLoadingCell());
