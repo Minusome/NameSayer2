@@ -3,8 +3,9 @@ package namesayer.persist;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import namesayer.model.CompleteName;
-import namesayer.model.CompleteRecording;
+import namesayer.model.CompositeName;
+import namesayer.model.CompositeRecording;
+import namesayer.model.Exemplar;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,25 +18,25 @@ import static namesayer.util.Config.WAV_EXTENSION;
 
 public abstract class Session {
 
-    protected List<CompleteName> namesList = new LinkedList<>();
+    protected List<CompositeName> namesList = new LinkedList<>();
     protected int currentIndex = 0;
-    protected CompleteName currentName;
+    protected CompositeName currentName;
 
     public enum SessionType {
         ASSESSMENT, PRACTISE
     }
 
 
-    public void addName(CompleteName completeName) {
-        namesList.add(completeName);
+    public void addName(CompositeName compositeName) {
+        namesList.add(compositeName);
     }
 
-    public CompleteName getCurrentName() {
+    public CompositeName getCurrentName() {
         currentName = namesList.get(currentIndex);
         return currentName;
     }
 
-    public CompleteName next() {
+    public CompositeName next() {
         currentName = namesList.get(++currentIndex);
         return currentName;
     }
@@ -50,7 +51,7 @@ public abstract class Session {
                 Process process = builder.start();
                 process.waitFor();
                 Platform.runLater(() -> {
-                    addNewRecording(new CompleteRecording(newRecordingPath));
+                    addNewRecording(new CompositeRecording(newRecordingPath));
                     onFinished.handle(new ActionEvent());
                 });
             } catch (IOException | InterruptedException e) {
@@ -60,13 +61,13 @@ public abstract class Session {
         thread.start();
     }
 
-    protected abstract void addNewRecording(CompleteRecording recording);
+    protected abstract void addNewRecording(CompositeRecording recording);
 
     public boolean hasNext() {
         return !(currentIndex == namesList.size() - 1);
     }
 
-    public CompleteRecording getExemplar() {
+    public Exemplar getExemplar() {
         return currentName.getExemplar();
     }
 

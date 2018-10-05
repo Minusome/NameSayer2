@@ -2,8 +2,8 @@ package namesayer.persist;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import namesayer.model.CompleteName;
-import namesayer.model.CompleteRecording;
+import namesayer.model.CompositeName;
+import namesayer.model.CompositeRecording;
 import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.util.Result;
@@ -37,7 +37,7 @@ public class NameStorageManager {
 
     //TODO should probably be some kind of map
     private List<PartialName> partialNames = new LinkedList<>();
-    private List<CompleteName> completeNames = new LinkedList<>();
+    private List<CompositeName> compositeNames = new LinkedList<>();
 
     public static NameStorageManager getInstance() {
         if (instance == null) {
@@ -86,8 +86,8 @@ public class NameStorageManager {
     }
 
 
-    public ObservableList<CompleteName> getCompleteNames() {
-        return FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(completeNames));
+    public ObservableList<CompositeName> getCompositeNames() {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableArrayList(compositeNames));
     }
 
     public PartialName findPartialNameFromString(String s) {
@@ -118,15 +118,15 @@ public class NameStorageManager {
         }
     }
 
-    public void persistCompleteRecordingsForName(CompleteName newName, List<CompleteRecording> newRecordings) {
-        for (CompleteName storedName : completeNames) {
+    public void persistCompleteRecordingsForName(CompositeName newName, List<CompositeRecording> newRecordings) {
+        for (CompositeName storedName : compositeNames) {
             if (storedName.equals(newName)) {
-                storedName.getPersistentRecordings().addAll(newRecordings);
+                storedName.getUserAttempts().addAll(newRecordings);
                 return;
             }
         }
-        newRecordings.forEach(newName::persistRecording);
-        completeNames.add(newName);
+        newRecordings.forEach(newName::addUserAttempt);
+        compositeNames.add(newName);
     }
 
 

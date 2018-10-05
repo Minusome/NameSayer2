@@ -1,6 +1,6 @@
 package namesayer.model;
 
-public class Name implements Comparable<Name> {
+public abstract class Name implements Comparable<Name> {
 
     protected String name;
 

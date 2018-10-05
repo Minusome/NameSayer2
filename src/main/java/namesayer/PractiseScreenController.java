@@ -14,8 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import namesayer.model.CompleteName;
-import namesayer.model.CompleteRecording;
+import namesayer.model.CompositeName;
+import namesayer.model.CompositeRecording;
 import namesayer.persist.PractiseSession;
 import namesayer.view.EmptySelectionModel;
 import namesayer.view.PractiseListCell;
@@ -29,7 +29,7 @@ import static namesayer.view.TransitionFactory.cardDoubleSlideTransition;
 
 public class PractiseScreenController {
 
-    @FXML private JFXListView<CompleteRecording> practiseListView;
+    @FXML private JFXListView<CompositeRecording> practiseListView;
     @FXML private JFXSpinner recordingSpinner;
     @FXML private JFXButton nextButton;
     @FXML private JFXButton prevButton;
@@ -57,7 +57,7 @@ public class PractiseScreenController {
     }
 
     private void loadNewCard(boolean isNext) {
-        CompleteName name = (isNext) ? session.next() : session.prev();
+        CompositeName name = (isNext) ? session.next() : session.prev();
         label.setText(name.toString());
         disableArrows(false);
         refreshList();
@@ -124,8 +124,8 @@ public class PractiseScreenController {
     }
 
     public void refreshList() {
-        ObservableList<CompleteRecording> recordings = session.getRecordingsForCurrentName();
-        for (CompleteRecording recording : recordings) {
+        ObservableList<CompositeRecording> recordings = session.getRecordingsForCurrentName();
+        for (CompositeRecording recording : recordings) {
             System.out.println(recording);
         }
         practiseListView.setItems(recordings);

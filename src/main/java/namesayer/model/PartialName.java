@@ -17,7 +17,7 @@ public class PartialName extends Name{
         partialRecordings.add(recording);
     }
 
-    public List<PartialRecording> getRecordings() {
+    public ObservableList<PartialRecording> getRecordings() {
         return partialRecordings;
     }
 

@@ -2,8 +2,8 @@ package namesayer.persist;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import namesayer.model.CompleteName;
-import namesayer.model.CompleteRecording;
+import namesayer.model.CompositeName;
+import namesayer.model.CompositeRecording;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,16 +11,16 @@ import java.util.Map;
 public class PractiseSession extends Session {
 
     //User can make a number of attempts at the name
-    private Map<CompleteName, ObservableList<CompleteRecording>> userAttempts = new HashMap<>();
+    private Map<CompositeName, ObservableList<CompositeRecording>> userAttempts = new HashMap<>();
 
 
     @Override
-    public void addName(CompleteName completeName) {
-        super.addName(completeName);
-        userAttempts.put(completeName, FXCollections.observableArrayList());
+    public void addName(CompositeName compositeName) {
+        super.addName(compositeName);
+        userAttempts.put(compositeName, FXCollections.observableArrayList());
     }
 
-    public CompleteName prev() {
+    public CompositeName prev() {
         currentName = namesList.get(--currentIndex);
         return currentName;
     }
@@ -30,15 +30,15 @@ public class PractiseSession extends Session {
     }
 
     @Override
-    protected void addNewRecording(CompleteRecording recording) {
+    protected void addNewRecording(CompositeRecording recording) {
         userAttempts.get(currentName).add(recording);
     }
 
-    public ObservableList<CompleteRecording> getRecordingsForCurrentName() {
+    public ObservableList<CompositeRecording> getRecordingsForCurrentName() {
         return FXCollections.unmodifiableObservableList(userAttempts.get(currentName));
     }
 
-    public void removeRecordingForCurrentName(CompleteRecording recording) {
+    public void removeRecordingForCurrentName(CompositeRecording recording) {
         userAttempts.get(currentName).remove(recording);
     }
 

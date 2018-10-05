@@ -7,7 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import namesayer.model.CompleteRecording;
+import namesayer.model.CompositeRecording;
 import namesayer.persist.PractiseSession;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Represents a custom listCell which displays a delete button and dialog to prompt the user
  */
-public class PractiseListCell extends JFXListCell<CompleteRecording> {
+public class PractiseListCell extends JFXListCell<CompositeRecording> {
 
 
     @FXML private Label itemLabel;
@@ -25,7 +25,7 @@ public class PractiseListCell extends JFXListCell<CompleteRecording> {
     @FXML private JFXButton rateButton;
     @FXML private JFXButton playButton;
 
-    private CompleteRecording recording;
+    private CompositeRecording recording;
     private PractiseSession session;
 
     public PractiseListCell(PractiseSession session) {
@@ -59,7 +59,7 @@ public class PractiseListCell extends JFXListCell<CompleteRecording> {
     }
 
     @Override
-    public void updateItem(CompleteRecording item, boolean empty) {
+    public void updateItem(CompositeRecording item, boolean empty) {
         super.updateItem(item, empty);
         setText(null);
         recording = item;
