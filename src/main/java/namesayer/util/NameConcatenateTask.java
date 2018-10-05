@@ -3,20 +3,10 @@ package namesayer.util;
 import javafx.concurrent.Task;
 import namesayer.model.*;
 import namesayer.persist.NameStorageManager;
-import namesayer.persist.Session;
+import namesayer.session.Session;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import static namesayer.util.Config.COMBINED_NAMES;
-import static namesayer.util.Config.DATABSE_FOLDER;
-import static namesayer.util.Config.WAV_EXTENSION;
 
 
 /**

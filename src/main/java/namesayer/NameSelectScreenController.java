@@ -16,10 +16,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.model.Name;
-import namesayer.persist.AssessmentSession;
+import namesayer.session.AssessmentSession;
 import namesayer.persist.NameStorageManager;
-import namesayer.persist.PractiseSession;
-import namesayer.persist.Session;
+import namesayer.session.PractiseSession;
+import namesayer.session.Session;
 import namesayer.util.NameConcatenateTask;
 import namesayer.view.CompleteNameLoadingCell;
 import namesayer.view.EmptySelectionModel;
@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static namesayer.persist.Session.*;
-import static namesayer.persist.Session.SessionType.*;
+import static namesayer.session.Session.*;
+import static namesayer.session.Session.SessionType.*;
 
 
 public class NameSelectScreenController {

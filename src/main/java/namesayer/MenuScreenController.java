@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import namesayer.persist.NameStorageManager;
-import namesayer.persist.Session;
+import namesayer.session.Session;
 //import namesayer.persist.NameStorageManager;
 
 import javax.sound.sampled.AudioFormat;
@@ -18,8 +18,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 
-import static namesayer.persist.Session.SessionType.ASSESSMENT;
-import static namesayer.persist.Session.SessionType.PRACTISE;
+import static namesayer.session.Session.SessionType.ASSESSMENT;
+import static namesayer.session.Session.SessionType.PRACTISE;
 
 public class MenuScreenController {
 

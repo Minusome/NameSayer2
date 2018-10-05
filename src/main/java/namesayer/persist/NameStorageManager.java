@@ -118,14 +118,13 @@ public class NameStorageManager {
         }
     }
 
-    public void persistCompleteRecordingsForName(CompositeName newName, List<CompositeRecording> newRecordings) {
+    public void persistCompleteRecordingsForName(CompositeName newName) {
         for (CompositeName storedName : compositeNames) {
             if (storedName.equals(newName)) {
-                storedName.getUserAttempts().addAll(newRecordings);
+                storedName.getUserAttempts().addAll(newName.getUserAttempts());
                 return;
             }
         }
-        newRecordings.forEach(newName::addUserAttempt);
         compositeNames.add(newName);
     }
 

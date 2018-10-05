@@ -16,7 +16,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
-import namesayer.persist.PractiseSession;
+import namesayer.session.PractiseSession;
 import namesayer.view.EmptySelectionModel;
 import namesayer.view.PractiseListCell;
 
@@ -37,12 +37,12 @@ public class PractiseScreenController {
     @FXML private Label label;
     @FXML private JFXSpinner playingSpinner;
 
-    PractiseSession session;
+    private PractiseSession session;
 
     public void injectSession(PractiseSession session) {
         this.session = session;
         disableArrows(false);
-        label.setText(session.getCurrentName().toString());
+        label.setText(session.getCurrentNameString());
         practiseListView.setCellFactory(param -> new PractiseListCell(session));
         practiseListView.setSelectionModel(new EmptySelectionModel<>());
         Label label = new Label("Listen to the sample and make your own recording!");
@@ -57,20 +57,24 @@ public class PractiseScreenController {
     }
 
     private void loadNewCard(boolean isNext) {
-        CompositeName name = (isNext) ? session.next() : session.prev();
-        label.setText(name.toString());
+        if (isNext) {
+            session.next();
+        } else {
+            session.prev();
+        }
+        label.setText(session.getCurrentNameString());
         disableArrows(false);
         refreshList();
     }
 
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
-        session.getExemplar().playAudio();
+        session.playExemplar();
         disableArrows(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplar().getLength()),
+                        Duration.seconds(session.getExemplarLength()),
                         event -> disableArrows(false),
                         new KeyValue(playingSpinner.progressProperty(), 1)
                 )
@@ -92,7 +96,7 @@ public class PractiseScreenController {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplar().getLength()),
+                        Duration.seconds(session.getExemplarLength()),
                         event -> {
                             disableArrows(false);
                             refreshList();

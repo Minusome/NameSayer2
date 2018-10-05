@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import namesayer.model.CompositeRecording;
-import namesayer.persist.PractiseSession;
+import namesayer.session.PractiseSession;
 
 import java.io.IOException;
 

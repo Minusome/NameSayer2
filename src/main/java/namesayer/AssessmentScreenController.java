@@ -17,7 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import namesayer.persist.AssessmentSession;
+import namesayer.session.AssessmentSession;
 import namesayer.view.TransitionFactory;
 import org.controlsfx.control.Rating;
 
@@ -49,7 +49,7 @@ public class AssessmentScreenController {
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
-        label.setText(session.getCurrentName().toString());
+        label.setText(session.getCurrentNameString());
         disableButtons(true, false);
         cardPane.requestFocus();
     }
@@ -70,18 +70,18 @@ public class AssessmentScreenController {
     //disable the button if its the last card
     private void loadNewCard() {
         session.next();
-        label.setText(session.getCurrentName().toString());
+        label.setText(session.getCurrentNameString());
         nextButton.setDisable(!session.hasNext());
         cardPane.requestFocus();
     }
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
-        session.getExemplar().playAudio();
+        session.playExemplar();
         disableButtons(true, true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplar().getLength()),
+                        Duration.seconds(session.getExemplarLength()),
                         event -> disableButtons(false, false),
                         new KeyValue(playingSpinner.progressProperty(), 1)
                 )
@@ -128,7 +128,7 @@ public class AssessmentScreenController {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplar().getLength()),
+                        Duration.seconds(session.getExemplarLength()),
                         event -> disableButtons(false, false),
                         new KeyValue(recordingSpinner.progressProperty(), 1)
                 )
