@@ -61,11 +61,7 @@ public class CompleteNameLoadingCell extends JFXListCell<String> {
                 } else if (result.getStatus().equals(PARTIALLY_FOUND)) {
                     icon.setGlyphName("WARNING");
                     icon.setFill(Paint.valueOf("#FFC107"));
-                    StringBuilder builder = new StringBuilder("The following names were located in the database:");
-                    for (String name : result.getFoundNames()) {
-                        builder.append(" ").append(name);
-                    }
-                    checkMark.setTooltip(new Tooltip(builder.toString()));
+                    checkMark.setTooltip(new Tooltip("The following names were located in the database: " + result.getDiscoveredName()));
                 } else {
                     icon.setGlyphName("DO_NOT_DISTURB");
                     icon.setFill(Paint.valueOf("#D32F2F"));

@@ -4,20 +4,20 @@ import java.util.List;
 
 public class Result {
 
-    private final List<String> foundNames;
+    private String discoveredName;
 
     private final Status status;
 
     public enum Status{ALL_FOUND, NONE_FOUND, PARTIALLY_FOUND}
 
 
-    public Result(Status status, List<String> foundNames) {
+    public Result(Status status, String foundNames) {
         this.status = status;
-        this.foundNames = foundNames;
+        this.discoveredName = foundNames;
     }
 
-    public List<String> getFoundNames() {
-        return foundNames;
+    public String getDiscoveredName() {
+        return discoveredName;
     }
 
     public Status getStatus() {

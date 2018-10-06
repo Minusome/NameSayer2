@@ -1,7 +1,6 @@
 package namesayer.session;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
@@ -9,12 +8,6 @@ import namesayer.persist.NameStorageManager;
 
 public class AssessmentSession extends Session {
 
-
-    public void playUserRecording() {
-        if (!currentName.getUserAttempts().isEmpty()) {
-            currentName.getUserAttempts().get(0).playAudio();
-        }
-    }
 
     @Override
     public void makeNewRecording(String recordingName, EventHandler<ActionEvent> onFinished) {

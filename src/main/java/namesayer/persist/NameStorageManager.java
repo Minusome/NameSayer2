@@ -57,10 +57,10 @@ public class NameStorageManager {
                 Matcher matcher = REGEX_NAME_PARSER.matcher(path.getFileName().toString());
                 String name = "unrecognized";
                 if (matcher.find()) {
-                    name = matcher.group(0).replace(".wav", "").toLowerCase();
-//                             if (!name.isEmpty()) {
-//                                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
-//                             }
+                    name = matcher.group(0).replace(".wav", "");
+                    if (!name.isEmpty()) {
+                        name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                    }
                 }
                 PartialName newName;
                 if (!initializedNames.containsKey(name)) {
@@ -94,7 +94,7 @@ public class NameStorageManager {
 
     public PartialName findPartialNameFromString(String s) {
         for (PartialName pn : partialNames) {
-            if (pn.toString().equals(s)) {
+            if (pn.toString().toLowerCase().equals(s.toLowerCase())) {
                 return pn;
             }
         }
@@ -104,20 +104,23 @@ public class NameStorageManager {
 
     public Result queryUserRequestedName(String userRequestedName) {
         String[] components = userRequestedName.split("[\\s-]+");
-        List<PartialName> discoveredNames = new ArrayList<>();
+        StringBuilder discoveredBuilder = new StringBuilder();
+        int count = 0;
         for (String s : components) {
             PartialName name = findPartialNameFromString(s);
             if (name != null) {
-                discoveredNames.add(name);
+                discoveredBuilder.append(name.toString()).append(" ");
+                count++;
+            } else {
             }
         }
-        List<String> discovered = discoveredNames.stream().map(Name::toString).collect(Collectors.toList());
-        if (discoveredNames.size() == 0) {
-            return new Result(Status.NONE_FOUND, discovered);
-        } else if (discoveredNames.size() == components.length) {
-            return new Result(Status.ALL_FOUND, discovered);
+        String discoveredName = discoveredBuilder.toString().trim();
+        if (count == 0) {
+            return new Result(Status.NONE_FOUND, discoveredName);
+        } else if (count == components.length) {
+            return new Result(Status.ALL_FOUND, discoveredName);
         } else {
-            return new Result(Status.PARTIALLY_FOUND, discovered);
+            return new Result(Status.PARTIALLY_FOUND, discoveredName);
         }
     }
 
@@ -131,116 +134,6 @@ public class NameStorageManager {
         compositeNames.add(newName);
     }
 
-
-//
-//    /**
-//     * load existing database hierarchy
-//     */
-//    public void loadExistingHierarchy(Path folderPath, Button button) {
-//        partialNames = new LinkedList<>();
-//        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath)) {
-//            for (Path e : stream) {
-//                Name temp = new Name(e.getFileName().toString(), e);
-//                partialNames.addName(temp);
-//                Properties ratingProperties = new Properties();
-//
-//                //load the properties
-//                ratingProperties.load(new FileInputStream(e.resolve(RATINGS).toFile()));
-//                try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(e.resolve(SAVED_RECORDINGS))) {
-//
-//                    for (Path p : stream1) {
-//                        Recording recording = new Recording(p);
-//                        double rating = Double.valueOf(ratingProperties.getProperty(recording.toString()));
-//                        recording.setRating(rating);
-//                        temp.addSavedRecording(recording);//addName saved recordings to corresponding name
-//                    }
-//
-//                } catch (IOException e1) {
-//
-//                }
-//                try (DirectoryStream<Path> stream1 = Files.newDirectoryStream(new File(e.toString() + "/temp").toPath())) {
-//                    for (Path p : stream1) {
-//                        temp.addSavedRecording(new Recording(p, true));//addName user created recordings to corresponding name
-//                    }
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//                Collections.sort(partialNames);
-//                Platform.runLater(() -> button.setDisable(false));
-//            }
-//        } catch (IOException e) {
-//
-//        } finally {
-//
-//        }
-//    }
-//
-//
-//    /**
-//     * Create new database hierarchy
-//     */
-//    public void initialize(Path folderPath, Button button) {
-//        try {
-//            if (!Files.isDirectory(CREATIONS_FOLDER)) {
-//                Files.createDirectory(CREATIONS_FOLDER);
-//            } else {
-//                Files.walk(CREATIONS_FOLDER)
-//                     .map(Path::toFile)
-//                     .forEach(File::delete);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        //Ensure non-blocking
-//        Thread thread = new Thread(() -> {
-//            try (Stream<Path> paths = Files.walk(folderPath)) {
-//                Map<String, Name> initializedNames = new HashMap<>();
-//                paths.filter(Files::isRegularFile)
-//                     .forEach(path -> {
-//                         //Extract name from provided database
-//                         Matcher matcher = REGEX_NAME_PARSER.matcher(path.getFileName().toString());
-//                         String name = "unrecognized";
-//                         if (matcher.find()) {
-//                             name = matcher.group(0).replace(".wav", "").toLowerCase();
-//                             if (!name.isEmpty()) {
-//                                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
-//                             }
-//                         }
-//                         Path nameFolder = CREATIONS_FOLDER.resolve(name);
-//                         Path tempFolder = nameFolder.resolve(TEMP_RECORDINGS);
-//                         Path savedFolder = nameFolder.resolve(SAVED_RECORDINGS);
-//                         Name newName = new Name(name, nameFolder);
-//                         try {
-//                             //Create sub-folders if not already created
-//                             if (!initializedNames.containsKey(name)) {
-//                                 Files.createDirectories(savedFolder);
-//                                 Files.createDirectories(tempFolder);
-//                                 initializedNames.put(name, newName);
-//                                 partialNames.addName(newName);
-//                             } else {
-//                                 newName = initializedNames.get(name);
-//                             }
-//                             Path recordingPath = savedFolder.resolve(path.getFileName());
-//                             Files.copy(path, recordingPath);
-//                             if (Files.notExists(nameFolder.resolve(RATINGS))) {
-//                                 Files.createFile(nameFolder.resolve(RATINGS));
-//                             }
-//                             Recording recording = new Recording(recordingPath);
-//                             newName.addSavedRecording(recording);
-//                         } catch (IOException e) {
-//                             e.printStackTrace();
-//                         }
-//                     });
-//                //sorts the final list
-//                Collections.sort(partialNames);
-//                Platform.runLater(() -> button.setDisable(false));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        thread.start();
-//    }
-
     private NameStorageManager() {
         try {
             if (!Files.isDirectory(DATABSE_FOLDER.resolve(COMBINED_NAMES))) {
@@ -253,33 +146,6 @@ public class NameStorageManager {
             e.printStackTrace();
         }
     }
-
-    public void clear() {
-        partialNames.clear();
-    }
-
-//    public void saveAllTempRecordings() {
-//        partialNames.forEach(Name::saveTempRecordings);
-//    }
-//
-//    public void removeAllTempRecordings() {
-//        partialNames.forEach(Name::removeTempRecordings);
-//    }
-
-//    public ObservableList<Name> getNamesList() {
-//        return FXCollections.observableList(partialNames);
-//    }
-//
-//    public ObservableList<Name> getSelectedNamesList() {
-//        ObservableList<Name> list = partialNames.stream()
-//                                             .filter(Name::getSelected)
-//                                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
-//        if (NameSelectScreenController.RandomToggleOn()) {
-//            Collections.shuffle(list);
-//            return list;
-//        }
-//        return list;
-//    }
 
 
 }

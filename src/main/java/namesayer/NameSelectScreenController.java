@@ -1,7 +1,6 @@
 package namesayer;
 
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
@@ -16,11 +15,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.model.Name;
-import namesayer.session.AssessmentSession;
 import namesayer.persist.NameStorageManager;
+import namesayer.session.AssessmentSession;
 import namesayer.session.PractiseSession;
 import namesayer.session.Session;
 import namesayer.util.NameConcatenateTask;
+import namesayer.util.Result;
+import namesayer.util.Result.Status;
 import namesayer.view.CompleteNameLoadingCell;
 import namesayer.view.EmptySelectionModel;
 import namesayer.view.SnackBarLoader;
@@ -30,14 +31,16 @@ import org.controlsfx.control.textfield.TextFields;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static namesayer.session.Session.*;
-import static namesayer.session.Session.SessionType.*;
+import static namesayer.session.Session.SessionType;
+import static namesayer.session.Session.SessionType.ASSESSMENT;
 
 
 public class NameSelectScreenController {
@@ -49,24 +52,25 @@ public class NameSelectScreenController {
 
 
     private SuggestionProvider<String> suggestions;
-    private HashSet<String> autoCompletions = new HashSet<>();
+    private List<String> autoCompletions = new ArrayList<>();
     private SessionType sessionType;
     private AssessmentSession assessmentSession;
     private PractiseSession practiseSession;
+    private Map<String, String> canonicalNameCache = new HashMap<>();
+    private NameStorageManager nameStorageManager;
 
-    private int userInputNameLength = 0;
+
     private static boolean randomSelected = false;
-    private boolean isLoaded = false;
 
 
     public void initialize() {
-        NameStorageManager nameStorageManager = NameStorageManager.getInstance();
+        nameStorageManager = NameStorageManager.getInstance();
 
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new CompleteNameLoadingCell(this));
         nameListView.setSelectionModel(new EmptySelectionModel<>());
         nameListView.setExpanded(false);
-        nameListView.setPlaceholder(new Label("Please names you wish to practise"));
+        nameListView.setPlaceholder(new Label("Please enter names you wish to practise"));
 
         for (Name name : nameStorageManager.getPartialNames()) {
             autoCompletions.add(name.toString());
@@ -78,12 +82,20 @@ public class NameSelectScreenController {
     }
 
 
-    private void addToListView(String string) {
-        if (!nameListView.getItems().contains(string)) {
-            nameListView.getItems().add(string);
-            Session session = (sessionType.equals(ASSESSMENT)) ? assessmentSession : practiseSession;
-            new Thread(new NameConcatenateTask(session, string)).start();
+    private void addToListView(String userInput, String errorMsg) {
+        Result result = nameStorageManager.queryUserRequestedName(userInput);
+        if (result.getStatus().equals(Status.NONE_FOUND)) {
+            SnackBarLoader.displayMessage(parentPane, errorMsg);
+            return;
         }
+        if (canonicalNameCache.containsKey(result.getDiscoveredName())) {
+            SnackBarLoader.displayMessage(parentPane, "A name with same pronunciation is already entered");
+            return;
+        }
+        nameListView.getItems().add(userInput);
+        Session session = (sessionType.equals(ASSESSMENT)) ? assessmentSession : practiseSession;
+        new Thread(new NameConcatenateTask(session, userInput)).start();
+        canonicalNameCache.put(result.getDiscoveredName(), userInput);
     }
 
     /**
@@ -103,9 +115,9 @@ public class NameSelectScreenController {
      */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (nameListView.getItems().isEmpty()) {
-            SnackBarLoader.displayMessage(parentPane,"Please enter a name first");
+            SnackBarLoader.displayMessage(parentPane, "Please enter a name first");
         } else {
-            Parent root = null;
+            Parent root;
             if (sessionType.equals(ASSESSMENT)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
                 root = loader.load();
@@ -136,32 +148,30 @@ public class NameSelectScreenController {
      */
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
-
-        String currentName = nameSearchBar.getCharacters().toString();
-        List<String> nameComponents = Arrays.asList(currentName.split("[\\s-]+"));
-        boolean readyForSuggestion = (currentName.lastIndexOf(" ") == currentName.length() - 1);
-        currentName = currentName.trim();
-
-        if (!currentName.isEmpty() && nameComponents.size() != userInputNameLength) {
-            if (autoCompletions.contains(nameComponents.get(nameComponents.size() - 1)) &&
-                    (readyForSuggestion)) {
-                suggestions.clearSuggestions();
-                String finalCurrentName = currentName;
-                suggestions.addPossibleSuggestions(
-                        autoCompletions.stream()
-                                       .map(s -> finalCurrentName + " " + s)
-                                       .collect(Collectors.toSet()));
-                userInputNameLength = nameComponents.size();
-            }
-        } else if (currentName.isEmpty()) {
-            suggestions.clearSuggestions();
-            suggestions.addPossibleSuggestions(autoCompletions);
-            userInputNameLength = 0;
-        }
+        String userInput = nameSearchBar.getCharacters().toString();
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            addToListView(currentName);
+            addToListView(userInput, "This name could not be located in the database");
             nameSearchBar.clear();
+            resetSuggestions();
+            return;
         }
+        Result result = nameStorageManager.queryUserRequestedName(userInput);
+        if (result.getStatus().equals(Status.NONE_FOUND)) {
+            resetSuggestions();
+            return;
+        }
+        boolean readyForSuggestion = (userInput.lastIndexOf(" ") == userInput.length() - 1);
+        if (readyForSuggestion) {
+            suggestions.clearSuggestions();
+            suggestions.addPossibleSuggestions(autoCompletions.stream()
+                                                              .map(s -> result.getDiscoveredName() + " " + s)
+                                                              .collect(Collectors.toSet()));
+        }
+    }
+
+    private void resetSuggestions() {
+        suggestions.clearSuggestions();
+        suggestions.addPossibleSuggestions(autoCompletions);
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
@@ -175,7 +185,6 @@ public class NameSelectScreenController {
     }
 
 
-
     public void onFileInsertClicked(MouseEvent mouseEvent) {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Select .txt file containing list of names");
@@ -183,7 +192,7 @@ public class NameSelectScreenController {
         File selectedFile = chooser.showOpenDialog(randomToggle.getScene().getWindow());
         if (selectedFile != null) {
             try (Stream<String> stream = Files.lines(selectedFile.toPath())) {
-                stream.forEach(this::addToListView);
+                stream.forEach(s -> addToListView(s, "Some names could not be located in the database"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -192,5 +201,6 @@ public class NameSelectScreenController {
 
     public void removeSelection(String item) {
         nameListView.getItems().remove(item);
+        canonicalNameCache.values().remove(item);
     }
 }

@@ -43,55 +43,13 @@ public class NameConcatenateTask extends Task<Void> {
         for (String s : components) {
             PartialName name = manager.findPartialNameFromString(s);
             if (name != null) {
-                //TODO just getting first name for now, change quality
+                //TODO just getting first recording for now, change to quality
                 discovered.add(name.getRecordings().get(0));
             }
         }
         if (discovered.size() == 0) {
             return null;
         }
-
-
-//        URL url = getClass().getResource("/script/combine.sh");
-//        Path script = Paths.get(url.toURI());
-//        StringBuilder stringBuilder = new StringBuilder();
-//        for (PartialName name : discovered) {
-//
-//            PartialRecording partialRecording = name.getRecordings().get(0);
-//            stringBuilder.append(partialRecording.getRecordingPath().toAbsolutePath().toString()).append(" ");
-//        }
-//
-//
-//        Path completeRecordingPath = DATABSE_FOLDER.resolve(COMBINED_NAMES)
-//                                                   .resolve(userRequestedName.replace(" ", "_") + WAV_EXTENSION);
-//
-//        stringBuilder.append(completeRecordingPath.toAbsolutePath().toString()).append(" ");
-//
-//        System.out.println(script.toString() + " " + stringBuilder.toString());
-//
-//        try {
-//            ProcessBuilder builder = new ProcessBuilder(script.toString(), stringBuilder.toString());
-//            builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
-//            builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-//            builder.redirectError(ProcessBuilder.Redirect.INHERIT);
-//            Process process = builder.start();
-//
-//            BufferedReader reader =
-//                    new BufferedReader(new InputStreamReader(process.getInputStream()));
-//            StringBuilder builder2 = new StringBuilder();
-//            String line = null;
-//            while ( (line = reader.readLine()) != null) {
-//                builder2.append(line);
-//                builder2.append(System.getProperty("line.separator"));
-//            }
-//            String result = builder2.toString();
-//            System.out.println(result);
-//            process.waitFor();
-//
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         CompositeName compositeName = new CompositeName(userRequestedName);
         compositeName.setExemplar(new Exemplar(discovered));
         session.addName(compositeName);

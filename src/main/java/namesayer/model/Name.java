@@ -30,6 +30,6 @@ public abstract class Name implements Comparable<Name> {
 
     @Override
     public int compareTo(Name o) {
-        return this.toString().compareTo(o.toString());
+        return this.toString().toLowerCase().compareTo(o.toString().toLowerCase());
     }
 }
