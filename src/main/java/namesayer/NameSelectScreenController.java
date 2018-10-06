@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import namesayer.model.CompositeName;
 import namesayer.model.Name;
 import namesayer.persist.NameStorageManager;
 import namesayer.session.AssessmentSession;
@@ -33,7 +34,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,6 +41,7 @@ import java.util.stream.Stream;
 
 import static namesayer.session.Session.SessionType;
 import static namesayer.session.Session.SessionType.ASSESSMENT;
+import static namesayer.session.Session.SessionType.PRACTISE;
 
 
 public class NameSelectScreenController {
@@ -88,7 +89,7 @@ public class NameSelectScreenController {
             SnackBarLoader.displayMessage(parentPane, errorMsg);
             return;
         }
-        if (canonicalNameCache.containsKey(result.getDiscoveredName())) {
+        if (canonicalNameCache.containsValue(result.getDiscoveredName())) {
             SnackBarLoader.displayMessage(parentPane, "A name with same pronunciation is already entered");
             return;
         }
@@ -200,6 +201,11 @@ public class NameSelectScreenController {
     }
 
     public void removeSelection(String item) {
+        if (sessionType.equals(PRACTISE)) {
+            practiseSession.removeName(new CompositeName(item));
+        } else {
+            assessmentSession.removeName(new CompositeName(item));
+        }
         nameListView.getItems().remove(item);
         canonicalNameCache.values().remove(item);
     }

@@ -24,6 +24,13 @@ public abstract class Session {
         currentName = namesList.get(0);
     }
 
+    public void removeName(CompositeName compositeName) {
+        namesList.remove(compositeName);
+        if (namesList.size() == 0) {
+            currentName = null;
+        }
+    }
+
     public String getCurrentNameString() {
         return currentName.toString();
     }
