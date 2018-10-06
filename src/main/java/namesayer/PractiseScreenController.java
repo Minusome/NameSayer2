@@ -95,8 +95,7 @@ public class PractiseScreenController {
         String recordingName = temp.replace(" ", "_");
         session.makeNewRecording(
                 recordingName,
-                event -> {
-                }
+                event -> {}
         );
         recordingSpinner.setVisible(true);
         Timeline timeline = new Timeline(

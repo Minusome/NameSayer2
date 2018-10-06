@@ -89,7 +89,7 @@ public class NameSelectScreenController {
             SnackBarLoader.displayMessage(parentPane, errorMsg);
             return;
         }
-        if (canonicalNameCache.containsValue(result.getDiscoveredName())) {
+        if (canonicalNameCache.containsKey(result.getDiscoveredName())) {
             SnackBarLoader.displayMessage(parentPane, "A name with same pronunciation is already entered");
             return;
         }
