@@ -37,6 +37,10 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 10.0, 0.12, -1.0, 2.0);
 }
 
+.shadow-deep {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 20.0, 0.19, 0.0, 6.0);
+}
+
 .with-border {
     -fx-border-color: #BDBDBD;
     -fx-border-width: 0.5;

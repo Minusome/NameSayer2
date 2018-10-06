@@ -159,6 +159,7 @@ public class AssessmentScreenController {
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         session.saveUserRecording();
         saveButton.setDisable(true);
+        SnackBarLoader.displayMessage(parentPane, "Recording is saved");
     }
 
 
@@ -180,7 +181,7 @@ public class AssessmentScreenController {
     public void onBackButtonClicked(MouseEvent mouseEvent) {
         if (!isRewardScreen) {
             JFXAlert alert = new JFXAlert((Stage) parentPane.getScene().getWindow());
-            alert.initModality(Modality.NONE);
+            alert.initModality(Modality.WINDOW_MODAL);
             alert.setOverlayClose(false);
             JFXDialogLayout layout = new JFXDialogLayout();
             layout.setHeading(new Label("This session has not finished"));

@@ -3,9 +3,11 @@ package namesayer.persist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import namesayer.model.CompositeName;
+import namesayer.model.Name;
 import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.util.Result;
+import namesayer.util.Result.Status;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static namesayer.util.Config.COMBINED_NAMES;
@@ -108,12 +111,13 @@ public class NameStorageManager {
                 discoveredNames.add(name);
             }
         }
+        List<String> discovered = discoveredNames.stream().map(Name::toString).collect(Collectors.toList());
         if (discoveredNames.size() == 0) {
-            return Result.NONE_FOUND;
+            return new Result(Status.NONE_FOUND, discovered);
         } else if (discoveredNames.size() == components.length) {
-            return Result.ALL_FOUND;
+            return new Result(Status.ALL_FOUND, discovered);
         } else {
-            return Result.PARTIALLY_FOUND;
+            return new Result(Status.PARTIALLY_FOUND, discovered);
         }
     }
 

@@ -63,7 +63,7 @@ public class NameSelectScreenController {
         NameStorageManager nameStorageManager = NameStorageManager.getInstance();
 
         //Use custom ListCell with checkboxes
-        nameListView.setCellFactory(value -> new CompleteNameLoadingCell());
+        nameListView.setCellFactory(value -> new CompleteNameLoadingCell(this));
         nameListView.setSelectionModel(new EmptySelectionModel<>());
         nameListView.setExpanded(false);
         nameListView.setPlaceholder(new Label("Please names you wish to practise"));
@@ -175,13 +175,6 @@ public class NameSelectScreenController {
     }
 
 
-    public void onSelectAllButtonClicked(MouseEvent mouseEvent) {
-//        partialNames.forEach(name -> name.setSelected(true));
-    }
-
-    public void onSelectNoneButtonClicked(MouseEvent mouseEvent) {
-//        partialNames.forEach(name -> name.setSelected(false));
-    }
 
     public void onFileInsertClicked(MouseEvent mouseEvent) {
         FileChooser chooser = new FileChooser();
@@ -195,5 +188,9 @@ public class NameSelectScreenController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void removeSelection(String item) {
+        nameListView.getItems().remove(item);
     }
 }

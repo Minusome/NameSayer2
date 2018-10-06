@@ -9,6 +9,10 @@
 
 <HBox fx:id="listItemHBox" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+      <JFXButton fx:id="checkMark" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" HBox.hgrow="NEVER">
+         <graphic>
+            <MaterialIconView fx:id="icon" size="20" />
+         </graphic></JFXButton>
         <Label fx:id="itemLabel" contentDisplay="CENTER" text="Label" textAlignment="CENTER" HBox.hgrow="NEVER">
             <HBox.margin>
                 <Insets />
@@ -17,10 +21,10 @@
                 <Insets left="10.0" />
             </padding></Label>
         <Region HBox.hgrow="ALWAYS" />
-      <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Button" visible="false" HBox.hgrow="NEVER">
+      <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#onDeleteClicked">
          <graphic>
-            <MaterialIconView glyphName="DELETE" strokeType="OUTSIDE" strokeWidth="0.0" />
-         </graphic></JFXButton>
-      <MaterialIconView fx:id="icon" size="15" />
+            <MaterialIconView glyphName="DELETE" size="20" strokeType="OUTSIDE" strokeWidth="0.0" />
+         </graphic>
+      </JFXButton>
     </children>
 </HBox>

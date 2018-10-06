@@ -1,12 +1,17 @@
 package namesayer.view;
 
+import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListCell;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import namesayer.model.CompositeRecording;
 import namesayer.session.PractiseSession;
 
@@ -35,23 +40,6 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
-//            listItemHBox.setOnMouseEntered(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    deleteButton.setVisible(true);
-//                    rateButton.setVisible(true);
-//                    playButton.setVisible(true);
-//                }
-//            });
-//
-//            listItemHBox.setOnMouseExited(new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    deleteButton.setVisible(false);
-//                    rateButton.setVisible(false);
-//                    playButton.setVisible(false);
-//                }
-//            });
             deleteButton.setText("");
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,8 +75,25 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
     }
 
     @FXML
-    public void onRateButtonClicked(MouseEvent mouseEvent) {
-
+    public void onRateButtonClicked(MouseEvent mouseEvent) throws IOException {
+        JFXAlert alert = new JFXAlert((Stage) listItemHBox.getScene().getWindow());
+        alert.initModality(Modality.NONE);
+        alert.setOverlayClose(true);
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label("Rating"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingPopup.fxml"));
+        Parent root = loader.load();
+        RatingPopupController controller = loader.getController();
+        controller.bind(recording.ratingProperty());
+        layout.setBody(root);
+        JFXButton doneButton = new JFXButton("Done");
+        doneButton.setOnAction(event -> {
+            controller.unbind();
+            alert.hideWithAnimation();
+        });
+        layout.setActions(doneButton);
+        alert.setContent(layout);
+        alert.show();
     }
 
 }

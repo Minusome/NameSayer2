@@ -175,7 +175,7 @@
       <HBox alignment="CENTER_LEFT" stylesheets="@css/Material.css" GridPane.columnSpan="3">
          <styleClass>
             <String fx:value="background" />
-            <String fx:value="shadow" />
+            <String fx:value="shadow-deep" />
          </styleClass>
          <children>
             <JFXButton onMouseClicked="#onBackButtonClicked" text=" ">

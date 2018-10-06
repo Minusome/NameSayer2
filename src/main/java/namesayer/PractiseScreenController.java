@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -20,6 +21,7 @@ import namesayer.model.CompositeRecording;
 import namesayer.session.PractiseSession;
 import namesayer.view.EmptySelectionModel;
 import namesayer.view.PractiseListCell;
+import namesayer.view.SnackBarLoader;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ import static namesayer.view.TransitionFactory.cardDoubleSlideTransition;
 
 public class PractiseScreenController {
 
+    @FXML private GridPane parentPane;
     @FXML private Label cardNumber;
     @FXML private JFXListView<CompositeRecording> practiseListView;
     @FXML private JFXSpinner recordingSpinner;
@@ -149,5 +152,10 @@ public class PractiseScreenController {
             e.printStackTrace();
         }
         cardPane.getScene().setRoot(root);
+    }
+
+    public void onSaveButtonClicked(MouseEvent mouseEvent) {
+        session.saveUserRecording();
+        SnackBarLoader.displayMessage(parentPane, "Recordings have been saved");
     }
 }

@@ -3,6 +3,7 @@ package namesayer.session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import namesayer.model.CompositeRecording;
+import namesayer.persist.NameStorageManager;
 
 public class PractiseSession extends Session {
 
@@ -22,5 +23,8 @@ public class PractiseSession extends Session {
         currentName.getUserAttempts().remove(recording);
     }
 
+    public void saveUserRecording() {
+        NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
+    }
 
 }
