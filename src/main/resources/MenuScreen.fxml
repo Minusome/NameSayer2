@@ -14,19 +14,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.MenuScreenController">
+<GridPane alignment="CENTER" prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.MenuScreenController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="123.0" minHeight="10.0" percentHeight="20.0" prefHeight="108.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="166.0" minHeight="10.0" percentHeight="20.0" prefHeight="151.0" valignment="CENTER" vgrow="SOMETIMES" />
       <RowConstraints percentHeight="50.0" valignment="BOTTOM" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" percentHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="191.0" text="Name Database">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <JFXButton fx:id="browseButton" mnemonicParsing="false" onMouseClicked="#onBrowseModeClicked" prefHeight="46.0" prefWidth="301.0" style="-fx-background-radius: 5; -fx-background-color: #d3d3d3;" text="Browse Database">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="shadow" />
+         </styleClass>
+      </VBox>
       <VBox alignment="CENTER" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets bottom="20.0" />

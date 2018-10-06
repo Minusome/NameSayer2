@@ -1,5 +1,6 @@
 package namesayer;
 
+import com.jfoenix.controls.JFXTabPane;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 800, 700));
         primaryStage.show();
         NameStorageManager.getInstance().load();
+
     }
 
 

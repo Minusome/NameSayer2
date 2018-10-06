@@ -31,6 +31,7 @@ public class MenuScreenController {
     private boolean isFirstTimeClickMic = true;
     private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
     @FXML private ImageView microphoneTestingButton;
+    @FXML private JFXButton browseButton;
 
 
     public void initialize() {
@@ -129,6 +130,11 @@ public class MenuScreenController {
 //            practiceButton.setDisable(false);
 //        }
 //    }
-
+public void onBrowseModeClicked(MouseEvent e)throws IOException {
+        Scene scene = browseButton.getScene();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingScreen.fxml"));
+        Parent root = loader.load();
+        scene.setRoot(root);
+}
 
 }
