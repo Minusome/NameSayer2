@@ -1,15 +1,11 @@
 package namesayer.session;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
 import namesayer.persist.NameStorageManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AssessmentSession extends Session {
 
@@ -21,18 +17,23 @@ public class AssessmentSession extends Session {
     }
 
     @Override
-    public void makeNewRecording(String recordingName, EventHandler<ActionEvent> onFinished){
+    public void makeNewRecording(String recordingName, EventHandler<ActionEvent> onFinished) {
         if (currentName.getUserAttempts().isEmpty()) {
             super.makeNewRecording(recordingName, onFinished);
         }
     }
 
-    public void compareUserAttemptWithExemplar() {
+    public void compareUserAttemptWithExemplar(EventHandler<ActionEvent> onFinished) {
         Thread thread = new Thread(() -> {
             try {
                 currentName.getExemplar().playAudio();
                 Thread.sleep(new Double(currentName.getExemplar().getLength() * 1000).longValue());
-                playUserRecording();
+                if (!currentName.getUserAttempts().isEmpty()) {
+                    CompositeRecording userRecording = currentName.getUserAttempts().get(0);
+                    userRecording.playAudio();
+                    Thread.sleep(new Double(userRecording.getLength() * 1000).longValue());
+                    onFinished.handle(new ActionEvent());
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -56,7 +57,14 @@ public class AssessmentSession extends Session {
         }
     }
 
-
+    public double getAverageRating() {
+        double rating = 0;
+        for (CompositeName name : namesList) {
+            rating += name.getUserAttempts().get(0).getRating();
+            System.out.println(rating);
+        }
+        return rating / namesList.size();
+    }
 
 
 }

@@ -1,8 +1,6 @@
 package namesayer.model;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Exemplar {
 
@@ -17,7 +15,7 @@ public class Exemplar {
             for (PartialRecording recording : exemplarComponents) {
                 recording.playAudio();
                 try {
-                    Thread.sleep((long)(recording.getLength() * 1000));
+                    Thread.sleep((long) (recording.getLength() * 1000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

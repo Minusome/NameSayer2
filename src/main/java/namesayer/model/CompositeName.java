@@ -8,9 +8,6 @@ import javafx.event.EventHandler;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static namesayer.util.Config.DATABSE_FOLDER;
 import static namesayer.util.Config.USER_ATTEMPTS;
@@ -65,8 +62,9 @@ public class CompositeName extends Name {
         thread.start();
     }
 
-    public void makeNewRecording(String recordingName){
-        this.makeNewRecording(recordingName, event -> {});
+    public void makeNewRecording(String recordingName) {
+        this.makeNewRecording(recordingName, event -> {
+        });
     }
 
 

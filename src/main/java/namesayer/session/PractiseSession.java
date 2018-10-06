@@ -2,11 +2,7 @@ package namesayer.session;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PractiseSession extends Session {
 

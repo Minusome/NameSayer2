@@ -3,7 +3,6 @@ package namesayer.persist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import namesayer.model.CompositeName;
-import namesayer.model.CompositeRecording;
 import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.util.Result;
@@ -28,7 +27,7 @@ import static namesayer.util.Config.USER_ATTEMPTS;
 
 /**
  * Persists names which are stored 5eva
- * DO NOT USE for names which are only being stored temporarily (i.e. might be deleted later)
+ * DO NOT USE for names which are only being stored temporarily in session(i.e. might be deleted later)
  */
 public class NameStorageManager {
 

@@ -1,31 +1,23 @@
 package namesayer.session;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
-import namesayer.model.CompositeRecording;
-import namesayer.model.Exemplar;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
-
-import static namesayer.util.Config.DATABSE_FOLDER;
-import static namesayer.util.Config.USER_ATTEMPTS;
-import static namesayer.util.Config.WAV_EXTENSION;
 
 public abstract class Session {
 
     protected List<CompositeName> namesList = new LinkedList<>();
+
     protected int currentIndex = 0;
     protected CompositeName currentName;
+
 
     public enum SessionType {
         ASSESSMENT, PRACTISE
     }
-
 
     public void addName(CompositeName compositeName) {
         namesList.add(compositeName);
@@ -54,6 +46,14 @@ public abstract class Session {
 
     public double getExemplarLength() {
         return currentName.getExemplar().getLength();
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public int getNumberOfNames() {
+        return namesList.size();
     }
 
 }

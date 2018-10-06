@@ -23,6 +23,7 @@ import namesayer.session.Session;
 import namesayer.util.NameConcatenateTask;
 import namesayer.view.CompleteNameLoadingCell;
 import namesayer.view.EmptySelectionModel;
+import namesayer.view.SnackBarLoader;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -45,7 +46,6 @@ public class NameSelectScreenController {
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXListView<String> nameListView;
     @FXML private JFXToggleButton randomToggle;
-    private JFXSnackbar bar;
 
 
     private SuggestionProvider<String> suggestions;
@@ -67,9 +67,6 @@ public class NameSelectScreenController {
         nameListView.setSelectionModel(new EmptySelectionModel<>());
         nameListView.setExpanded(false);
         nameListView.setPlaceholder(new Label("Please names you wish to practise"));
-        bar = new JFXSnackbar(parentPane);
-        bar.getStylesheets().addAll("/css/Material.css");
-
 
         for (Name name : nameStorageManager.getPartialNames()) {
             autoCompletions.add(name.toString());
@@ -106,7 +103,7 @@ public class NameSelectScreenController {
      */
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (nameListView.getItems().isEmpty()) {
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please enter a name first"));
+            SnackBarLoader.displayMessage(parentPane,"Please enter a name first");
         } else {
             Parent root = null;
             if (sessionType.equals(ASSESSMENT)) {

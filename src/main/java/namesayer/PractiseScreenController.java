@@ -9,17 +9,19 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
 import namesayer.session.PractiseSession;
 import namesayer.view.EmptySelectionModel;
 import namesayer.view.PractiseListCell;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,6 +31,7 @@ import static namesayer.view.TransitionFactory.cardDoubleSlideTransition;
 
 public class PractiseScreenController {
 
+    @FXML private Label cardNumber;
     @FXML private JFXListView<CompositeRecording> practiseListView;
     @FXML private JFXSpinner recordingSpinner;
     @FXML private JFXButton nextButton;
@@ -134,6 +137,17 @@ public class PractiseScreenController {
         }
         practiseListView.setItems(recordings);
         practiseListView.refresh();
+        cardNumber.setText(session.getCurrentIndex() + 1 + "/" + session.getNumberOfNames());
         cardPane.requestFocus();
+    }
+
+    public void onBackButtonClicked(MouseEvent mouseEvent) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        cardPane.getScene().setRoot(root);
     }
 }

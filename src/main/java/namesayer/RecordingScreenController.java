@@ -15,11 +15,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import namesayer.model.Name;
-//import namesayer.persist.NameStorageManager;
 import namesayer.model.Recording;
 import namesayer.view.RecordingListCell;
 
 import java.io.IOException;
+
+//import namesayer.persist.NameStorageManager;
 
 
 public class RecordingScreenController {
@@ -30,7 +31,7 @@ public class RecordingScreenController {
     @FXML private HBox actionViewContainer;
     private JFXSnackbar bar;
 
-//    private NameStorageManager storageManager = NameStorageManager.getInstance();
+    //    private NameStorageManager storageManager = NameStorageManager.getInstance();
     private ObservableList<Name> names;
 
     private Name selectedName;
@@ -176,7 +177,6 @@ public class RecordingScreenController {
 //        alert.setContent(layout);
 //        alert.show();
 //    }
-
     private void previousScreen() {
         Parent root = null;
         try {
