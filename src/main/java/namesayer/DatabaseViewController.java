@@ -52,31 +52,34 @@ public class DatabaseViewController implements Initializable {
 	private ObservableList<PartialName> databaseRecordings;
 	private boolean isNameDatabase;
 	
-	
+	/**
+	 * Initialize listView
+	*/
 	public void initialise() {
 		userRecordings = NameStorageManager.getInstance().getCompositeNames();
 		databaseRecordings = NameStorageManager.getInstance().getPartialNames();
 		playingSpinner.setProgress(1);
 		setRatingVisible(false,false);
-
-
 	}
 	
+	/** 
+	 * Show partial name database
+	*/
 	public void onNameDatabaseClicked() {
 		
 	    isNameDatabase=true;
 		initialise();
 		if(databaseRecordings.isEmpty()) {
 			System.out.println("empty");
+			bar.enqueue(new JFXSnackbar.SnackbarEvent("No recordings in datatbase"));
 		}else {
 			showNameDatabase();
-
-			
 			
 		}
-		
-		
 	}
+	/**
+	 * Show user recordings
+	*/
 	public void onUserRecordingClicked() {
 		
 	    isNameDatabase=false;
@@ -86,13 +89,13 @@ public class DatabaseViewController implements Initializable {
 			bar.enqueue(new JFXSnackbar.SnackbarEvent("No user recording in datatbase"));
 		}else {
 			//System.out.println("222");
-			showComNameDatabase();
-			
+			showComNameDatabase();	
 		}
-		
 	}
 	
-	
+	/**
+	 * Back to main menu
+	*/
 	public void onBackClicked() throws IOException {
 		Scene scene = backButton.getScene();
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuScreen.fxml"));
@@ -100,7 +103,9 @@ public class DatabaseViewController implements Initializable {
     	scene.setRoot(root);
 	}
 
-
+	/**
+	 * Play the selected recording
+	*/
     public void onPlayButtonClicked(MouseEvent e){
     	Recording recording = (Recording) recordingList.getSelectionModel().getSelectedItem();
     	if(recording==null) {
@@ -117,13 +122,12 @@ public class DatabaseViewController implements Initializable {
             );
             timeline.play();
         	System.out.println(recording.toString());
-
     	}
-    	
-    	
-
     }
 
+    /**
+     * Show the recording list of selected partial name
+    */
     private void showNameDatabase() {
     	nameList.setItems(databaseRecordings);
     	nameList.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -141,7 +145,9 @@ public class DatabaseViewController implements Initializable {
     	
     }
     
-    
+    /**
+     * Show the recording list of selected composite name
+    */
     private void showComNameDatabase() {
     	nameList.setItems(userRecordings);
     	nameList.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -158,6 +164,9 @@ public class DatabaseViewController implements Initializable {
     	});
     }
     
+    /**
+     * Add event listener to each composite recording
+    */
     private void userAttemptsListener() {
     	recordingList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -173,8 +182,9 @@ public class DatabaseViewController implements Initializable {
     	
     }
     
-    
-    
+    /**
+     * Add event listener to each partial recording
+    */
     private void recordingActionListener() {
     	recordingList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -187,6 +197,9 @@ public class DatabaseViewController implements Initializable {
     	});
     }
     
+    /**
+     * Show quality of partial recording
+    */
     private void setRating(boolean isBadQuality) {
     	if(isBadQuality) {
     		ratingIcon.setGlyphName("THUMB_DOWN");
@@ -195,6 +208,9 @@ public class DatabaseViewController implements Initializable {
     	}
     }
     
+    /**
+     * Save the quality to partial recording
+    */
     public void setRecordingQuality(MouseEvent e) {
     	PartialRecording r  = (PartialRecording)recordingList.getSelectionModel().getSelectedItem();
     	if(r.getIsBadQuality()) {
@@ -207,7 +223,9 @@ public class DatabaseViewController implements Initializable {
     	}
     	
     }
-    
+    /**
+     * Save rating to composite recording
+    */
     public void setUserAttemptsRating() {
     	CompositeRecording r = (CompositeRecording)recordingList.getSelectionModel().getSelectedItem();
     	ratingValue = rating.getRating();
@@ -227,6 +245,9 @@ public class DatabaseViewController implements Initializable {
         
 	}
 	
+	/**
+	 * Set visibility of ratings
+	*/
 	private void setRatingVisible(boolean thumb,boolean star) {
 		rating.setVisible(star);
 		ratingButton.setVisible(thumb);
