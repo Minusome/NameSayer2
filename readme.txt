@@ -6,7 +6,7 @@ The user will be able to listen to the recordings stored in the name data base a
 The user are allowed to practise full names that consist of partial names chosen from the name data base.
 
 Target Demographic:
-*************
+********************
 Dean
 
 
