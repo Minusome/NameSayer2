@@ -21,13 +21,14 @@ import java.io.IOException;
 import static namesayer.session.Session.SessionType.ASSESSMENT;
 import static namesayer.session.Session.SessionType.PRACTISE;
 
-public class MenuScreenController {
+public class MenuScreenController{
 
     @FXML public JFXProgressBar MicrophoneVolume;
     @FXML public ImageView MicrophoneButton;
     @FXML private JFXButton loadNewDataBaseButton;
     @FXML private JFXButton practiceButton;
     @FXML private JFXButton loadExistingDataBaseButton;
+    @FXML private JFXButton browseButton;
     private boolean isFirstTimeClickMic = true;
     private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
     @FXML private ImageView microphoneTestingButton;
@@ -129,6 +130,11 @@ public class MenuScreenController {
 //            practiceButton.setDisable(false);
 //        }
 //    }
-
+    public void onBrowseModeClicked(MouseEvent e)throws IOException {
+        Scene scene = browseButton.getScene();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingScreen.fxml"));
+        Parent root = loader.load();
+        scene.setRoot(root);
+}
 
 }
