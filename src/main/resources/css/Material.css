@@ -127,15 +127,28 @@
 #database_label{
     -fx-background-color: #f3f3fa;
 }
-.list-cell{
-    -fx-text-fill: #292e34;
-    -fx-pref-height: 40px;
+
+.list-cell:even {
+    -fx-background-color: white;
 }
-.list-cell:filled:hover {
-    -fx-cell-hover-color: #d3d3d3;
-    -fx-text-fill: #303030;
-    -fx-font-weight: bold;
+.list-cell:odd {
+    -fx-background-color: #f3f3fa;
+}
+.list-cell:selected {
+    -fx-background-color: #c7c7e2;
+    -fx-text-fill:white;
+    -fx-font-weight:bold;
+    -fx-font-size:14px;
+}
+.list-cell:empty {
+    -fx-background-color: white;
 }
 
+.list-cell:filled:hover {
+    -fx-effect: dropshadow(three-pass-box,#5f14c3,10.0,0,0,0);
+    -fx-cursor: hand;
+    -fx-font-weight:bold;
+    
+}
 
 

@@ -16,11 +16,11 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.Rating?>
 
-<GridPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="838.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.DatabaseViewController">
+<GridPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.DatabaseViewController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="10.0" prefWidth="238.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="301.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="284.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="10.0" prefWidth="221.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="302.3333740234375" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="313.6666259765625" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -29,7 +29,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <HBox fx:id="actionViewContainer" alignment="CENTER" prefHeight="96.0" prefWidth="931.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
+      <HBox fx:id="actionViewContainer" alignment="CENTER" prefHeight="96.0" prefWidth="931.0" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
          <children>
             <GridPane alignment="CENTER" prefHeight="29.0" prefWidth="808.0">
                <columnConstraints>
@@ -74,7 +74,7 @@
             </GridPane>
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" stylesheets="@css/Material.css" GridPane.columnSpan="3">
+      <HBox alignment="CENTER_LEFT" prefHeight="20.0" stylesheets="@css/Material.css" GridPane.columnSpan="3" GridPane.vgrow="NEVER">
          <styleClass>
             <String fx:value="background" />
             <String fx:value="shadow" />
@@ -116,7 +116,7 @@
             <Insets />
          </GridPane.margin>
       </VBox>
-      <JFXListView fx:id="nameList" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-      <JFXListView fx:id="recordingList" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+      <JFXListView fx:id="nameList" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+      <JFXListView fx:id="recordingList" stylesheets="@css/Material.css" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2" />
    </children>
 </GridPane>

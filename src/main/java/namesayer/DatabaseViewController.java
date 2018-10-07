@@ -103,7 +103,7 @@ public class DatabaseViewController implements Initializable {
 
     public void onPlayButtonClicked(MouseEvent e){
     	Recording recording = (Recording) recordingList.getSelectionModel().getSelectedItem();
-    	/*recording.playAudio();
+    	recording.playAudio();
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
                 new KeyFrame(
@@ -112,7 +112,7 @@ public class DatabaseViewController implements Initializable {
                         new KeyValue(playingSpinner.progressProperty(), 1)
                 )
         );
-        timeline.play();*/
+        timeline.play();
     	if(recording==null) {
     		bar.enqueue(new JFXSnackbar.SnackbarEvent("Please choose a recording to play"));
         	
