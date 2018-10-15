@@ -20,8 +20,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 800, 700));
         primaryStage.show();
         NameStorageManager manager = NameStorageManager.getInstance();
-        manager.loadDatabase();
-        manager.loadGenerated();
     }
 
 
