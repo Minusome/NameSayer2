@@ -8,11 +8,9 @@ import namesayer.persist.NameStorageManager;
 
 public class AssessmentSession extends Session {
 
-
-    @Override
-    public void makeNewRecording(String recordingName, EventHandler<ActionEvent> onFinished) {
+    public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
         if (currentName.getUserAttempts().isEmpty()) {
-            super.makeNewRecording(recordingName, onFinished);
+            currentName.makeNewRecording(onFinished);
         }
     }
 

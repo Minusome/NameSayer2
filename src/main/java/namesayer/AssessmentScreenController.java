@@ -117,10 +117,7 @@ public class AssessmentScreenController {
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         if (!isFinishedRewarding) {
             disableButtons(true, true);
-            String temp = "Recording on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            String recordingName = temp.replace(" ", "_");
             session.makeNewRecording(
-                    recordingName,
                     event -> {
                         if (ratingProperty != null) {
                             rating.ratingProperty().unbindBidirectional(ratingProperty);

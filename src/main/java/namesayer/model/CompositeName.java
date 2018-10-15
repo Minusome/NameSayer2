@@ -5,9 +5,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static namesayer.util.Config.DATABSE_FOLDER;
 import static namesayer.util.Config.USER_ATTEMPTS;
@@ -42,14 +45,20 @@ public class CompositeName extends Name {
         this.exemplar = exemplar;
     }
 
-    public void makeNewRecording(String recordingName, EventHandler<ActionEvent> onFinished) {
+    public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
+        //TODO Assume that the name provided is in a suitable format, will provide need regex to check later
+        String temp = "se206_" +
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-M-yyyy_HH:mm:ss")) +
+                name;
+        String recordingName = temp.trim().replace(" ", "_");
+
         Thread thread = new Thread(() -> {
             Path newRecordingPath = DATABSE_FOLDER.resolve(USER_ATTEMPTS).resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
             String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t " + exemplar.getLength() + " -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
                     newRecordingPath.toString() + "\"";
-            ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", command);
+            ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", command);
             try {
-                Process process = builder.start();
+                Process process = processBuilder.start();
                 process.waitFor();
                 Platform.runLater(() -> {
                     userAttempts.add(new CompositeRecording(newRecordingPath));
@@ -62,9 +71,8 @@ public class CompositeName extends Name {
         thread.start();
     }
 
-    public void makeNewRecording(String recordingName) {
-        this.makeNewRecording(recordingName, event -> {
-        });
+    public void makeNewRecording() {
+        this.makeNewRecording(event -> {});
     }
 
 
