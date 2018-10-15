@@ -36,9 +36,7 @@ public class AssessmentSession extends Session {
         return !currentName.getUserAttempts().isEmpty();
     }
 
-    public void saveUserRecording() {
-        NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
-    }
+
 
     public CompositeRecording getCurrentRecording() {
         if (!currentName.getUserAttempts().isEmpty()) {

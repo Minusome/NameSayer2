@@ -49,11 +49,12 @@ public class CompositeName extends Name {
         //TODO Assume that the name provided is in a suitable format, will provide need regex to check later
         String temp = "se206_" +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-M-yyyy_HH:mm:ss")) +
+                " " +
                 name;
         String recordingName = temp.trim().replace(" ", "_");
 
         Thread thread = new Thread(() -> {
-            Path newRecordingPath = DATABSE_FOLDER.resolve(USER_ATTEMPTS).resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
+            Path newRecordingPath = USER_ATTEMPTS.resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
             String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t " + exemplar.getLength() + " -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
                     newRecordingPath.toString() + "\"";
             ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", command);

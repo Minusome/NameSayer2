@@ -4,6 +4,7 @@ package namesayer.session;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
+import namesayer.persist.NameStorageManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -76,6 +77,10 @@ public abstract class Session {
 
     public int getNumberOfNames() {
         return namesList.size();
+    }
+
+    public void saveUserRecording() {
+        NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
     }
 
 

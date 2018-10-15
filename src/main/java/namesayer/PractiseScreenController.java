@@ -44,7 +44,6 @@ public class PractiseScreenController {
     @FXML private Label label;
     @FXML private JFXSpinner playingSpinner;
 
-
     private PractiseSession session;
 
 
@@ -138,9 +137,6 @@ public class PractiseScreenController {
 
     public void refreshList() {
         ObservableList<CompositeRecording> recordings = session.getRecordingsForCurrentName();
-        for (CompositeRecording recording : recordings) {
-            System.out.println(recording);
-        }
         practiseListView.setItems(recordings);
         practiseListView.refresh();
         cardNumber.setText(session.getCurrentIndex() + 1 + "/" + session.getNumberOfNames());

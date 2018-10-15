@@ -36,6 +36,10 @@ public abstract class Recording {
         return recordingPath;
     }
 
+    public void setRecordingPath(Path newPath) {
+        recordingPath = newPath;
+    }
+
 
     //Calculates the length
     public double getLength() {

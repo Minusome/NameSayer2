@@ -2,30 +2,26 @@ package namesayer.persist;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import namesayer.model.CompositeName;
-import namesayer.model.Name;
-import namesayer.model.PartialName;
-import namesayer.model.PartialRecording;
+import namesayer.model.*;
 import namesayer.util.Result;
 import namesayer.util.Result.Status;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static namesayer.util.Config.COMBINED_NAMES;
-import static namesayer.util.Config.DATABSE_FOLDER;
-import static namesayer.util.Config.USER_ATTEMPTS;
+import static namesayer.util.Config.*;
 
 
 /**
@@ -34,7 +30,8 @@ import static namesayer.util.Config.USER_ATTEMPTS;
  */
 public class NameStorageManager {
 
-    private static final Pattern REGEX_NAME_PARSER = Pattern.compile("[a-zA-Z]+(?:\\.wav)");
+    private static final Pattern REGEX_PARTIAL_NAME_PARSER = Pattern.compile("[a-zA-Z]+(?:\\.wav)");
+    private static final Pattern REGEX_COMPOSITE_NAME_PARSER = Pattern.compile("[_a-zA-Z]+(?:\\.wav)");
     private static NameStorageManager instance = null;
 
     //TODO should probably be some kind of map
@@ -49,12 +46,12 @@ public class NameStorageManager {
     }
 
 
-    public void load() {
+    public void loadDatabase() {
         try (Stream<Path> paths = Files.walk(DATABSE_FOLDER)) {
             Map<String, PartialName> initializedNames = new HashMap<>();
-            paths.forEach(path -> {
-                //Extract name from provided database
-                Matcher matcher = REGEX_NAME_PARSER.matcher(path.getFileName().toString());
+            paths.filter(Files::isRegularFile).forEach(path -> {
+                System.out.println(path);
+                Matcher matcher = REGEX_PARTIAL_NAME_PARSER.matcher(path.getFileName().toString());
                 String name = "unrecognized";
                 if (matcher.find()) {
                     name = matcher.group(0).replace(".wav", "");
@@ -73,9 +70,71 @@ public class NameStorageManager {
 
                 PartialRecording recording = new PartialRecording(path);
                 newName.addRecording(recording);
-                System.out.println(recording);
             });
-            //sorts the final list
+            Collections.sort(partialNames);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void loadGenerated() {
+        try (Stream<Path> paths = Files.walk(SAVED_RECORDINGS)) {
+            Map<String, CompositeName> initializedNames = new HashMap<>();
+            paths.filter(Files::isRegularFile).forEach(path -> {
+                System.out.println(path);
+                Matcher matcher = REGEX_COMPOSITE_NAME_PARSER.matcher(path.getFileName().toString());
+                String name = "unrecognized";
+                if (matcher.find()) {
+                    name = matcher.group(0)
+                            .replace(".wav", "")
+                            .replace("_", " ")
+                            .trim();
+                }
+                CompositeName newName;
+                if (!initializedNames.containsKey(name)) {
+                    newName = new CompositeName(name);
+                    initializedNames.put(name, newName);
+                    compositeNames.add(newName);
+                } else {
+                    newName = initializedNames.get(name);
+                }
+
+                CompositeRecording recording = new CompositeRecording(path);
+                newName.addUserAttempt(recording);
+            });
+            Collections.sort(partialNames);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public <N extends Name, R extends Recording> void  load(N name, R recording, Function<String,String> stringParser) {
+        try (Stream<Path> paths = Files.walk(SAVED_RECORDINGS)) {
+            Map<String, CompositeName> initializedNames = new HashMap<>();
+            paths.filter(Files::isRegularFile).forEach(path -> {
+                System.out.println(path);
+                Matcher matcher = REGEX_COMPOSITE_NAME_PARSER.matcher(path.getFileName().toString());
+                String name = "unrecognized";
+                if (matcher.find()) {
+                    name = matcher.group(0)
+                            .replace(".wav", "")
+                            .replace("_", " ")
+                            .trim();
+                }
+                CompositeName newName;
+                if (!initializedNames.containsKey(name)) {
+                    newName = new CompositeName(name);
+                    initializedNames.put(name, newName);
+                    compositeNames.add(newName);
+                } else {
+                    newName = initializedNames.get(name);
+                }
+
+                CompositeRecording recording = new CompositeRecording(path);
+                newName.addUserAttempt(recording);
+            });
             Collections.sort(partialNames);
         } catch (IOException e) {
             e.printStackTrace();
@@ -125,6 +184,16 @@ public class NameStorageManager {
     }
 
     public void persistCompleteRecordingsForName(CompositeName newName) {
+        for (CompositeRecording newRecording : newName.getUserAttempts()) {
+            Path oldPath = newRecording.getRecordingPath();
+            Path newPath = SAVED_RECORDINGS.resolve(oldPath.getFileName());
+            try {
+                Files.move(oldPath, newPath , StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            newRecording.setRecordingPath(newPath);
+        }
         for (CompositeName storedName : compositeNames) {
             if (storedName.equals(newName)) {
                 storedName.getUserAttempts().addAll(newName.getUserAttempts());
@@ -134,13 +203,14 @@ public class NameStorageManager {
         compositeNames.add(newName);
     }
 
+
     private NameStorageManager() {
         try {
-            if (!Files.isDirectory(DATABSE_FOLDER.resolve(COMBINED_NAMES))) {
-                Files.createDirectory(DATABSE_FOLDER.resolve(COMBINED_NAMES));
+            if (!Files.isDirectory(USER_ATTEMPTS)) {
+                Files.createDirectories(USER_ATTEMPTS);
             }
-            if (!Files.isDirectory(DATABSE_FOLDER.resolve(USER_ATTEMPTS))) {
-                Files.createDirectory(DATABSE_FOLDER.resolve(USER_ATTEMPTS));
+            if (!Files.isDirectory(SAVED_RECORDINGS)) {
+                Files.createDirectories(SAVED_RECORDINGS);
             }
         } catch (IOException e) {
             e.printStackTrace();

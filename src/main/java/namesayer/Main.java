@@ -19,7 +19,9 @@ public class Main extends Application {
         primaryStage.setTitle("Name Sayer");
         primaryStage.setScene(new Scene(root, 800, 700));
         primaryStage.show();
-        NameStorageManager.getInstance().load();
+        NameStorageManager manager = NameStorageManager.getInstance();
+        manager.loadDatabase();
+        manager.loadGenerated();
     }
 
 

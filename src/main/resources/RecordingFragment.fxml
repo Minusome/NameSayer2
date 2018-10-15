@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<GridPane fx:id="playerCard" alignment="CENTER" prefHeight="80.0" prefWidth="700.0" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.RecordingFragmentController">
+<GridPane fx:id="playerCard" alignment="CENTER" prefHeight="80.0" prefWidth="700.0" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.RecordingFragmentController">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />

@@ -22,9 +22,4 @@ public class PractiseSession extends Session {
     public void removeRecordingForCurrentName(CompositeRecording recording) {
         currentName.getUserAttempts().remove(recording);
     }
-
-    public void saveUserRecording() {
-        NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
-    }
-
 }

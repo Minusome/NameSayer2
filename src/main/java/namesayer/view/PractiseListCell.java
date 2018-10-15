@@ -57,7 +57,7 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
             if (item == null) {
                 itemLabel.setText("<null>");
             } else {
-                itemLabel.setText(item.toString());
+                itemLabel.setText("Recording on " + recording.getTimeStamp());
             }
             setGraphic(listItemHBox);
         }

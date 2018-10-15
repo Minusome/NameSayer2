@@ -8,10 +8,9 @@ import java.nio.file.Paths;
  */
 public class Config {
     public static final Path DATABSE_FOLDER = Paths.get("database");
-    public static final Path COMBINED_NAMES = Paths.get("combined");
-    public static final Path USER_ATTEMPTS = Paths.get("attempts");
-    public static final Path TEMP_RECORDINGS = Paths.get("temp");
-    public static final Path SAVED_RECORDINGS = Paths.get("saved");
+    public static final Path GENERATED_FDOLER = Paths.get("generated");
+    public static final Path USER_ATTEMPTS = GENERATED_FDOLER.resolve("attempts");
+    public static final Path SAVED_RECORDINGS = GENERATED_FDOLER.resolve("saved");
     public static final String WAV_EXTENSION = ".wav";
     public static final Path RATINGS = Paths.get("ratings.txt");
 }
