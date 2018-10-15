@@ -5,8 +5,7 @@ import javafx.collections.ObservableList;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
 import namesayer.model.PartialName;
-import namesayer.util.Result;
-import namesayer.util.Result.Status;
+import namesayer.persist.Result.Status;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,8 +14,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
 
-import static namesayer.util.Config.SAVED_RECORDINGS;
-import static namesayer.util.Config.USER_ATTEMPTS;
+import static namesayer.persist.Config.SAVED_RECORDINGS;
+import static namesayer.persist.Config.SAVED_SESSIONS;
+import static namesayer.persist.Config.USER_ATTEMPTS;
 
 
 /**
@@ -107,6 +107,9 @@ public class NameStorageManager {
             }
             if (!Files.isDirectory(SAVED_RECORDINGS)) {
                 Files.createDirectories(SAVED_RECORDINGS);
+            }
+            if (!Files.isDirectory(SAVED_SESSIONS)) {
+                Files.createDirectories(SAVED_SESSIONS);
             }
             new CompositeNamesLoader().load(compositeNames);
             new PartialNamesLoader().load(partialNames);

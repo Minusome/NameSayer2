@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.util;
 
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.scene.layout.Pane;

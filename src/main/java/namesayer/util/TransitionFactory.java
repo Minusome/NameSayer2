@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.util;
 
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;

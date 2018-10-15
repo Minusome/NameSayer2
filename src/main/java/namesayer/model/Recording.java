@@ -7,20 +7,23 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public abstract class Recording {
 
-    private Path recordingPath;
+    private String recordingPath;
+    private String filename;
 
     public Recording(Path recordingPath) {
-        this.recordingPath = recordingPath;
+        this.recordingPath = recordingPath.toAbsolutePath().toString();
+        this.filename = recordingPath.getFileName().toString();
     }
 
 
     //Play audio using bash command
     public void playAudio() {
         Thread thread = new Thread(() -> {
-            String command = "ffplay -nodisp -autoexit -loglevel quiet \"" + recordingPath.toAbsolutePath().toString() + "\"";
+            String command = "ffplay -nodisp -autoexit -loglevel quiet \"" + recordingPath + "\"";
             ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", command);
             try {
                 Process process = builder.start();
@@ -33,11 +36,11 @@ public abstract class Recording {
     }
 
     public Path getRecordingPath() {
-        return recordingPath;
+        return Paths.get(recordingPath);
     }
 
     public void setRecordingPath(Path newPath) {
-        recordingPath = newPath;
+        recordingPath = newPath.toAbsolutePath().toString();
     }
 
 
@@ -45,7 +48,7 @@ public abstract class Recording {
     public double getLength() {
         double durationInSeconds = 0.0;
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(recordingPath.toFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Paths.get(recordingPath).toFile());
             AudioFormat format = audioInputStream.getFormat();
             long frames = audioInputStream.getFrameLength();
             durationInSeconds = (frames + 0.0) / format.getFrameRate();
@@ -59,9 +62,7 @@ public abstract class Recording {
 
     @Override
     public String toString() {
-        return recordingPath.getFileName()
-                            .toString()
-                            .replace(".wav", "");
+        return filename.replace(".wav", "");
     }
 
     @Override

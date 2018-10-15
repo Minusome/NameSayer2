@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
-import namesayer.persist.NameStorageManager;
 
 public class AssessmentSession extends Session {
 
@@ -35,7 +34,6 @@ public class AssessmentSession extends Session {
     public boolean hasUserMadeRecording() {
         return !currentName.getUserAttempts().isEmpty();
     }
-
 
 
     public CompositeRecording getCurrentRecording() {

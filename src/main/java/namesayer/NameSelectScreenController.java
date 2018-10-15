@@ -22,11 +22,11 @@ import namesayer.session.AssessmentSession;
 import namesayer.session.PractiseSession;
 import namesayer.session.Session;
 import namesayer.util.NameConcatenateTask;
-import namesayer.util.Result;
-import namesayer.util.Result.Status;
+import namesayer.persist.Result;
+import namesayer.persist.Result.Status;
 import namesayer.view.CompleteNameLoadingCell;
-import namesayer.view.EmptySelectionModel;
-import namesayer.view.SnackBarLoader;
+import namesayer.util.EmptySelectionModel;
+import namesayer.util.SnackBarLoader;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 

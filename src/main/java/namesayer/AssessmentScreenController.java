@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.controls.JFXTextField;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -18,17 +19,16 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import namesayer.persist.SessionStorageManager;
 import namesayer.session.AssessmentSession;
+import namesayer.util.SnackBarLoader;
+import namesayer.util.TransitionFactory;
 import namesayer.view.RewardCardController;
-import namesayer.view.SnackBarLoader;
-import namesayer.view.TransitionFactory;
 import org.controlsfx.control.Rating;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-import static namesayer.view.TransitionFactory.Direction.LEFT;
+import static namesayer.util.TransitionFactory.Direction.LEFT;
 
 public class AssessmentScreenController {
 
@@ -181,18 +181,30 @@ public class AssessmentScreenController {
             alert.initModality(Modality.WINDOW_MODAL);
             alert.setOverlayClose(false);
             JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label("This session has not finished"));
-            layout.setBody(new Label("Are you sure you would like to exit?"));
-            JFXButton closeButton = new JFXButton("No");
-            JFXButton okButton = new JFXButton("Yes");
-            closeButton.setOnAction(event -> {
+            layout.setHeading(new Label("Would you like to save this session?"));
+            JFXTextField field = new JFXTextField();
+            JFXButton cancelButton = new JFXButton("Cancel");
+            JFXButton saveButton = new JFXButton("Save");
+            JFXButton dontSaveButton = new JFXButton("Don't Save");
+            saveButton.setDisable(true);
+            field.setPromptText("Enter a name to save this session");
+            field.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.isEmpty()) {
+                    saveButton.setDisable(true);
+                } else {
+                    saveButton.setDisable(false);
+                }
+            });
+            layout.setBody(field);
+            cancelButton.setOnAction(event -> {
                 alert.hideWithAnimation();
             });
-            okButton.setOnAction(event -> {
+            saveButton.setOnAction(event -> {
+                SessionStorageManager.getInstance().save(session);
                 previousScreen();
                 alert.hideWithAnimation();
             });
-            layout.setActions(closeButton, okButton);
+            layout.setActions(saveButton,dontSaveButton, cancelButton);
             alert.setContent(layout);
             alert.show();
         } else {

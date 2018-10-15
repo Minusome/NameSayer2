@@ -20,15 +20,15 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import namesayer.model.CompositeRecording;
 import namesayer.session.PractiseSession;
-import namesayer.view.EmptySelectionModel;
+import namesayer.util.EmptySelectionModel;
 import namesayer.view.PractiseListCell;
-import namesayer.view.SnackBarLoader;
+import namesayer.util.SnackBarLoader;
 
 import java.io.IOException;
 
-import static namesayer.view.TransitionFactory.Direction.LEFT;
-import static namesayer.view.TransitionFactory.Direction.RIGHT;
-import static namesayer.view.TransitionFactory.cardDoubleSlideTransition;
+import static namesayer.util.TransitionFactory.Direction.LEFT;
+import static namesayer.util.TransitionFactory.Direction.RIGHT;
+import static namesayer.util.TransitionFactory.cardDoubleSlideTransition;
 
 
 public class PractiseScreenController {

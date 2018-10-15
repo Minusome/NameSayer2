@@ -6,7 +6,14 @@ import namesayer.model.PartialRecording;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 
+import static namesayer.persist.Config.DATABASE_FOLDER;
+
 public class PartialNamesLoader extends NamesLoader<PartialName, PartialRecording> {
+
+    @Override
+    public Path getDirectory() {
+        return DATABASE_FOLDER;
+    }
 
     @Override
     public Pattern getRegex() {

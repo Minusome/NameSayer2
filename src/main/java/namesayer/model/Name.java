@@ -1,5 +1,7 @@
 package namesayer.model;
 
+import java.io.Serializable;
+
 public abstract class Name implements Comparable<Name> {
 
     protected String name;

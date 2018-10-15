@@ -15,12 +15,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static namesayer.util.Config.SAVED_RECORDINGS;
-
 public abstract class NamesLoader<N extends Name, R extends Recording> {
 
     public void load(List<N> listToLoad) {
-        try (Stream<Path> paths = Files.walk(SAVED_RECORDINGS)) {
+        try (Stream<Path> paths = Files.walk(getDirectory())) {
             Map<String, N> initializedNames = new HashMap<>();
             paths.filter(Files::isRegularFile).forEach(path -> {
                 System.out.println(path);
@@ -49,6 +47,7 @@ public abstract class NamesLoader<N extends Name, R extends Recording> {
     /**
      * Template Methods
      **/
+    public abstract Path getDirectory();
 
     public abstract Pattern getRegex();
 
@@ -59,4 +58,5 @@ public abstract class NamesLoader<N extends Name, R extends Recording> {
     public abstract R getRecording(Path path);
 
     public abstract void populate(N name, R recording);
+
 }

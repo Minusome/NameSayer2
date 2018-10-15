@@ -1,23 +1,19 @@
 package namesayer.session;
 
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.persist.NameStorageManager;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public abstract class Session {
+public abstract class Session implements Serializable {
 
 
     protected List<CompositeName> namesList = new LinkedList<>();
-
-
     protected int currentIndex = 0;
-
     protected CompositeName currentName;
 
 
@@ -44,36 +40,29 @@ public abstract class Session {
         return currentName.toString();
     }
 
-
     public void next() {
         currentName = namesList.get(++currentIndex);
     }
-
 
     public void makeNewRecording() {
         currentName.makeNewRecording();
     }
 
-
     public boolean hasNext() {
         return !(currentIndex == namesList.size() - 1);
     }
-
 
     public void playExemplar() {
         currentName.getExemplar().playAudio();
     }
 
-
     public double getExemplarLength() {
         return currentName.getExemplar().getLength();
     }
 
-
     public int getCurrentIndex() {
         return currentIndex;
     }
-
 
     public int getNumberOfNames() {
         return namesList.size();

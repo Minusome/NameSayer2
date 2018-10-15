@@ -1,4 +1,4 @@
-package namesayer.util;
+package namesayer.persist;
 
 import java.util.List;
 

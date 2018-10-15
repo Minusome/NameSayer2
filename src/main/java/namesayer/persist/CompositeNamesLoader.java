@@ -6,7 +6,14 @@ import namesayer.model.CompositeRecording;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 
+import static namesayer.persist.Config.SAVED_RECORDINGS;
+
 public class CompositeNamesLoader extends NamesLoader<CompositeName, CompositeRecording> {
+
+    @Override
+    public Path getDirectory() {
+        return SAVED_RECORDINGS;
+    }
 
     @Override
     public Pattern getRegex() {

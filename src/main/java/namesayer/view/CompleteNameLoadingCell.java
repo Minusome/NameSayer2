@@ -11,11 +11,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import namesayer.NameSelectScreenController;
 import namesayer.persist.NameStorageManager;
-import namesayer.util.Result;
+import namesayer.persist.Result;
 
 import java.io.IOException;
 
-import static namesayer.util.Result.Status.*;
+import static namesayer.persist.Result.Status.*;
 
 public class CompleteNameLoadingCell extends JFXListCell<String> {
 

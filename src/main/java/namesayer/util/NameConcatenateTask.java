@@ -1,7 +1,10 @@
 package namesayer.util;
 
 import javafx.concurrent.Task;
-import namesayer.model.*;
+import namesayer.model.CompositeName;
+import namesayer.model.Exemplar;
+import namesayer.model.PartialName;
+import namesayer.model.PartialRecording;
 import namesayer.persist.NameStorageManager;
 import namesayer.session.Session;
 
@@ -23,18 +26,6 @@ public class NameConcatenateTask extends Task<Void> {
     }
 
 
-    /**
-     * Invoked when the Task is executed, the call method must be overridden and
-     * implemented by subclasses. The call method actually performs the
-     * background thread logic. Only the updateProgress, updateMessage, updateValue and
-     * updateTitle methods of Task may be called from code within this method.
-     * Any other interaction with the Task from the background thread will result
-     * in runtime exceptions.
-     *
-     * @return The result of the background work, if any.
-     * @throws Exception an unhandled exception which occurred during the
-     *                   background operation
-     */
     @Override
     protected Void call() throws Exception {
         NameStorageManager manager = NameStorageManager.getInstance();

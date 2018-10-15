@@ -5,16 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static namesayer.util.Config.DATABSE_FOLDER;
-import static namesayer.util.Config.USER_ATTEMPTS;
-import static namesayer.util.Config.WAV_EXTENSION;
+import static namesayer.persist.Config.USER_ATTEMPTS;
+import static namesayer.persist.Config.WAV_EXTENSION;
 
 public class CompositeName extends Name {
 
