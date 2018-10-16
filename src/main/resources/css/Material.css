@@ -13,11 +13,11 @@
 }
 
 .background {
-    -fx-background-color: #673AB7;
+    -fx-background-color: #5e35b1;
 }
 
 .animated-option-button {
-    -fx-background-color: #009688;
+    -fx-background-color: #00bfa5;
     -fx-background-radius: 50px;
     -fx-pref-height: 50px;
     -fx-pref-width: 50px;
@@ -116,33 +116,48 @@
     -fx-fill: transparent;
 }
 
-
-#database_label:pressed{
+#database_label:pressed {
     -fx-background-color: #c7c7e2;
 }
-#database_label:hover{
-    -fx-effect: dropshadow(three-pass-box,#5f14c3,10.0,0,0,0);
+
+#database_label:hover {
+    -fx-effect: dropshadow(three-pass-box, #5f14c3, 10.0, 0, 0, 0);
     -fx-cursor: hand;
 }
-#database_label{
+
+#database_label {
     -fx-background-color: #f3f3fa;
 }
 
 .list-cell:even {
     -fx-background-color: white;
 }
+
 .list-cell:odd {
     -fx-background-color: #f3f3fa;
 }
+
 .list-cell:selected {
     -fx-background-color: #c7c7e2;
-    -fx-text-fill:white;
-    -fx-font-weight:bold;
-    -fx-font-size:14px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
 }
+
 .list-cell:empty {
     -fx-background-color: white;
 }
 
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #280680;
+}
+
+.background-dark {
+    -fx-background-color: #280680;
+}
+
+.jfx-tab-pane .headers-region .tab-selected-line {
+    -fx-background-color: #00bfa5;
+}
 
 

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import namesayer.persist.NameStorageManager;
+import namesayer.persist.SessionStorageManager;
 
 
 public class Main extends Application {
@@ -19,7 +20,8 @@ public class Main extends Application {
         primaryStage.setTitle("Name Sayer");
         primaryStage.setScene(new Scene(root, 800, 700));
         primaryStage.show();
-        NameStorageManager manager = NameStorageManager.getInstance();
+        NameStorageManager.getInstance();
+        SessionStorageManager.getInstance();
     }
 
 

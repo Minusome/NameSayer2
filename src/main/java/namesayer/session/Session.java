@@ -1,12 +1,15 @@
 package namesayer.session;
 
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.persist.NameStorageManager;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 
 public abstract class Session implements Serializable {
@@ -15,6 +18,8 @@ public abstract class Session implements Serializable {
     protected List<CompositeName> namesList = new LinkedList<>();
     protected int currentIndex = 0;
     protected CompositeName currentName;
+    protected String sessionName;
+    protected String id;
 
 
     public enum SessionType {
@@ -35,6 +40,22 @@ public abstract class Session implements Serializable {
         }
     }
 
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    public void setSessionName(String input) {
+        sessionName = input;
+    }
+
+    public void resetToFirst() {
+        currentIndex = 0;
+        currentName = namesList.get(0);
+    }
+
+    public Session() {
+        id = UUID.randomUUID().toString();
+    }
 
     public String getCurrentNameString() {
         return currentName.toString();
@@ -47,6 +68,11 @@ public abstract class Session implements Serializable {
     public void makeNewRecording() {
         currentName.makeNewRecording();
     }
+
+    public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
+        currentName.makeNewRecording(onFinished);
+    }
+
 
     public boolean hasNext() {
         return !(currentIndex == namesList.size() - 1);
@@ -72,5 +98,22 @@ public abstract class Session implements Serializable {
         NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
     }
 
+    public String getId() {
+        return id;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Session session = (Session) o;
+
+        return id.equals(session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

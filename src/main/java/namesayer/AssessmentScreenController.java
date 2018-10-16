@@ -187,7 +187,14 @@ public class AssessmentScreenController {
             JFXButton saveButton = new JFXButton("Save");
             JFXButton dontSaveButton = new JFXButton("Don't Save");
             saveButton.setDisable(true);
-            field.setPromptText("Enter a name to save this session");
+            String text = session.getSessionName();
+            if (text == null || text.isEmpty()) {
+                text = "Enter a name to save this session";
+            } else {
+                field.setEditable(false);
+                saveButton.setDisable(false);
+            }
+            field.setPromptText(text);
             field.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue.isEmpty()) {
                     saveButton.setDisable(true);
@@ -200,11 +207,17 @@ public class AssessmentScreenController {
                 alert.hideWithAnimation();
             });
             saveButton.setOnAction(event -> {
-                SessionStorageManager.getInstance().save(session);
+                session.setSessionName(field.getText());
+                SessionStorageManager.getInstance().saveAssessmentSession(session);
                 previousScreen();
                 alert.hideWithAnimation();
             });
-            layout.setActions(saveButton,dontSaveButton, cancelButton);
+            dontSaveButton.setOnAction(event -> {
+                SessionStorageManager.getInstance().remove(session);
+                previousScreen();
+                alert.hideWithAnimation();
+            });
+            layout.setActions(saveButton, dontSaveButton, cancelButton);
             alert.setContent(layout);
             alert.show();
         } else {

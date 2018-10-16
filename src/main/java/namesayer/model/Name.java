@@ -2,7 +2,7 @@ package namesayer.model;
 
 import java.io.Serializable;
 
-public abstract class Name implements Comparable<Name> {
+public abstract class Name implements Comparable<Name>, Serializable {
 
     protected String name;
 

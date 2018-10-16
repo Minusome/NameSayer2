@@ -6,10 +6,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public abstract class Recording {
+public abstract class Recording implements Serializable {
 
     private String recordingPath;
     private String filename;

@@ -14,8 +14,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
 
+import static namesayer.persist.Config.SAVED_ASSESSMENT_SESSIONS;
+import static namesayer.persist.Config.SAVED_PRACTISE_SESSIONS;
 import static namesayer.persist.Config.SAVED_RECORDINGS;
-import static namesayer.persist.Config.SAVED_SESSIONS;
 import static namesayer.persist.Config.USER_ATTEMPTS;
 
 
@@ -108,8 +109,11 @@ public class NameStorageManager {
             if (!Files.isDirectory(SAVED_RECORDINGS)) {
                 Files.createDirectories(SAVED_RECORDINGS);
             }
-            if (!Files.isDirectory(SAVED_SESSIONS)) {
-                Files.createDirectories(SAVED_SESSIONS);
+            if (!Files.isDirectory(SAVED_PRACTISE_SESSIONS)) {
+                Files.createDirectories(SAVED_PRACTISE_SESSIONS);
+            }
+            if (!Files.isDirectory(SAVED_ASSESSMENT_SESSIONS)) {
+                Files.createDirectories(SAVED_ASSESSMENT_SESSIONS);
             }
             new CompositeNamesLoader().load(compositeNames);
             new PartialNamesLoader().load(partialNames);

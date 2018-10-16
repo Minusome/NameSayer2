@@ -3,9 +3,12 @@ package namesayer.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PartialName extends Name {
 
-    private ObservableList<PartialRecording> partialRecordings = FXCollections.observableArrayList();
+    private List<PartialRecording> partialRecordings = new ArrayList<>();
 
     public PartialName(String name) {
         super(name);
@@ -16,7 +19,8 @@ public class PartialName extends Name {
     }
 
     public ObservableList<PartialRecording> getRecordings() {
-        return partialRecordings;
+        
+        return FXCollections.observableArrayList(partialRecordings);
     }
 
 

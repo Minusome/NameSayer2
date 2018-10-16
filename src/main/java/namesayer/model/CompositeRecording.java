@@ -6,9 +6,9 @@ import javafx.beans.property.SimpleDoubleProperty;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
-public class CompositeRecording extends Recording{
+public class CompositeRecording extends Recording {
 
-    private DoubleProperty rating = new SimpleDoubleProperty(3.0);
+    private double rating = 3.0;
 
     private LocalDateTime timeStamp;
 
@@ -18,7 +18,7 @@ public class CompositeRecording extends Recording{
     }
 
     public double getRating() {
-        return rating.get();
+        return rating;
     }
 
     public LocalDateTime getTimeStamp() {
@@ -26,13 +26,13 @@ public class CompositeRecording extends Recording{
     }
 
     public DoubleProperty ratingProperty() {
-        return rating;
+        SimpleDoubleProperty doubleProperty = new SimpleDoubleProperty(rating);
+        doubleProperty.addListener((observable, oldValue, newValue) -> rating = newValue.doubleValue());
+        return doubleProperty;
     }
 
     public void setRating(double rating) {
-        this.rating.set(rating);
+        this.rating = rating;
     }
-
-
 
 }

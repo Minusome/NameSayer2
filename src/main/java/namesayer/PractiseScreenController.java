@@ -95,16 +95,15 @@ public class PractiseScreenController {
 
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         disableArrows(true);
-        session.makeNewRecording();
+        session.makeNewRecording(event -> {
+            disableArrows(false);
+            refreshList();
+        });
         recordingSpinner.setVisible(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                 new KeyFrame(
                         Duration.seconds(session.getExemplarLength()),
-                        event -> {
-                            disableArrows(false);
-                            refreshList();
-                        },
                         new KeyValue(recordingSpinner.progressProperty(), 1)
                 )
         );

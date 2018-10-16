@@ -1,8 +1,9 @@
 package namesayer.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Exemplar {
+public class Exemplar implements Serializable {
 
     private List<PartialRecording> exemplarComponents;
 

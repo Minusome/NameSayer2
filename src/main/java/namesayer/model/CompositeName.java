@@ -7,20 +7,23 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static namesayer.persist.Config.USER_ATTEMPTS;
 import static namesayer.persist.Config.WAV_EXTENSION;
 
-public class CompositeName extends Name {
+public class CompositeName extends Name implements Serializable {
 
     /**
      * These recordings are permanently associated with this name
      * NameStorageManager accesses this list, any other class will only be able to see an empty list
      */
-    private ObservableList<CompositeRecording> userAttempts = FXCollections.observableArrayList();
+    private List<CompositeRecording> userAttempts = new ArrayList<>();
     private Exemplar exemplar;
 
     public CompositeName(String name) {
@@ -32,7 +35,7 @@ public class CompositeName extends Name {
     }
 
     public ObservableList<CompositeRecording> getUserAttempts() {
-        return userAttempts;
+        return FXCollections.observableArrayList(userAttempts);
     }
 
     public Exemplar getExemplar() {

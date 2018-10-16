@@ -21,7 +21,6 @@ public abstract class NamesLoader<N extends Name, R extends Recording> {
         try (Stream<Path> paths = Files.walk(getDirectory())) {
             Map<String, N> initializedNames = new HashMap<>();
             paths.filter(Files::isRegularFile).forEach(path -> {
-                System.out.println(path);
                 Matcher matcher = getRegex().matcher(path.getFileName().toString());
                 String name = "unrecognized";
                 if (matcher.find()) {

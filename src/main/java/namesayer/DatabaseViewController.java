@@ -187,7 +187,7 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent event) {
                 setRatingVisible(true, false);
                 PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
-                setRating(r.getIsBadQuality());
+                setRating(r.isBadQuality());
             }
         });
     }
@@ -208,13 +208,13 @@ public class DatabaseViewController implements Initializable {
      */
     public void setRecordingQuality(MouseEvent e) {
         PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
-        if (r.getIsBadQuality()) {
+        if (r.isBadQuality()) {
             ratingIcon.setGlyphName("THUMB_UP");
-            r.setIsBadQuality(false);
+            r.setBadQuality(false);
 
         } else {
             ratingIcon.setGlyphName("THUMB_DOWN");
-            r.setIsBadQuality(true);
+            r.setBadQuality(true);
         }
 
     }

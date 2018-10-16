@@ -7,9 +7,10 @@ import namesayer.model.CompositeRecording;
 
 public class AssessmentSession extends Session {
 
+    @Override
     public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
         if (currentName.getUserAttempts().isEmpty()) {
-            currentName.makeNewRecording(onFinished);
+            super.makeNewRecording(onFinished);
         }
     }
 

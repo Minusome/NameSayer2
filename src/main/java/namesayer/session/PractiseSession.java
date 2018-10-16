@@ -1,9 +1,7 @@
 package namesayer.session;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import namesayer.model.CompositeRecording;
-import namesayer.persist.NameStorageManager;
 
 public class PractiseSession extends Session {
 
@@ -16,7 +14,7 @@ public class PractiseSession extends Session {
     }
 
     public ObservableList<CompositeRecording> getRecordingsForCurrentName() {
-        return FXCollections.unmodifiableObservableList(currentName.getUserAttempts());
+        return currentName.getUserAttempts();
     }
 
     public void removeRecordingForCurrentName(CompositeRecording recording) {

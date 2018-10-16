@@ -1,28 +1,21 @@
 package namesayer.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
 import java.nio.file.Path;
 
 public class PartialRecording extends Recording {
 
-    private BooleanProperty isBadQuality = new SimpleBooleanProperty(false);
+    private boolean isBadQuality = false;
 
-    public PartialRecording(Path recordingPath) {
-        super(recordingPath);
-    }
-
-    public boolean getIsBadQuality() {
-        return isBadQuality.get();
-    }
-
-    public BooleanProperty isBadQualityProperty() {
+    public boolean isBadQuality() {
         return isBadQuality;
     }
 
-    public void setIsBadQuality(boolean isBadQuality) {
-        this.isBadQuality.set(isBadQuality);
+    public void setBadQuality(boolean badQuality) {
+        isBadQuality = badQuality;
+    }
+
+    public PartialRecording(Path recordingPath) {
+        super(recordingPath);
     }
 
 }
