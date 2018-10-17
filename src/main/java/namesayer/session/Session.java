@@ -101,6 +101,11 @@ public class Session implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return sessionName;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

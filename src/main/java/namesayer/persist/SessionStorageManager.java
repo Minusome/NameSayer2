@@ -11,7 +11,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static namesayer.persist.Config.SAVED_ASSESSMENT_SESSIONS;
@@ -66,21 +68,21 @@ public class SessionStorageManager {
         }
     }
 
-    public void savePractiseSession(PractiseSession session) {
+    public void saveSession(PractiseSession session) {
         Path saveFile = SAVED_PRACTISE_SESSIONS.resolve(session.getId() + "ser");
         savedPractiseSessions.put(session, saveFile);
-        save(saveFile, session);
+        saveFile(saveFile, session);
     }
 
 
-    public void saveAssessmentSession(AssessmentSession session) {
+    public void saveSession(AssessmentSession session) {
         Path saveFile = SAVED_ASSESSMENT_SESSIONS.resolve(session.getId() + "ser");
         savedAssessmentSessions.put(session, saveFile);
-        save(saveFile, session);
+        saveFile(saveFile, session);
     }
 
 
-    private void save(Path location, Session session) {
+    private void saveFile(Path location, Session session) {
         try {
             FileOutputStream file = new FileOutputStream(location.toFile());
             ObjectOutputStream out = new ObjectOutputStream(file);
@@ -93,7 +95,7 @@ public class SessionStorageManager {
         }
     }
 
-    public void remove(AssessmentSession session) {
+    public void removeSession(AssessmentSession session) {
         savedAssessmentSessions.remove(session);
         try {
             Files.deleteIfExists(savedAssessmentSessions.get(session));
@@ -102,12 +104,20 @@ public class SessionStorageManager {
         }
     }
 
-    public void remove(PractiseSession session) {
+    public void removeSession(PractiseSession session) {
         savedPractiseSessions.remove(session);
         try {
             Files.deleteIfExists(savedPractiseSessions.get(session));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<PractiseSession> getSavedPractiseSessions() {
+        return new ArrayList<>(savedPractiseSessions.keySet());
+    }
+
+    public List<AssessmentSession> getSavedAssessmentSessions() {
+        return new ArrayList<>(savedAssessmentSessions.keySet());
     }
 }

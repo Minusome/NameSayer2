@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.stage.FileChooser;
 import namesayer.model.CompositeName;
 import namesayer.model.Name;
 import namesayer.persist.NameStorageManager;
+import namesayer.persist.SessionStorageManager;
 import namesayer.session.AssessmentSession;
 import namesayer.session.PractiseSession;
 import namesayer.session.Session;
@@ -62,6 +65,7 @@ public class NameSelectScreenController {
     private AssessmentSession assessmentSession;
     private PractiseSession practiseSession;
     private NameStorageManager nameStorageManager;
+    private SessionStorageManager sessionStorageManager;
 
     public static boolean RandomToggleOn() {
         return randomSelected;
@@ -69,6 +73,7 @@ public class NameSelectScreenController {
 
     public void initialize() {
         nameStorageManager = NameStorageManager.getInstance();
+        sessionStorageManager = SessionStorageManager.getInstance();
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new CompleteNameLoadingCell(this));
         nameListView.setSelectionModel(new EmptySelectionModel<>());
@@ -77,8 +82,6 @@ public class NameSelectScreenController {
         for (Name name : nameStorageManager.getPartialNames()) {
             autoCompletions.add(name.toString());
         }
-        savedSessionsListView.setItems();
-
         suggestions = SuggestionProvider.create(autoCompletions);
         AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(nameSearchBar, suggestions);
         binding.setPrefWidth(500);
@@ -106,11 +109,16 @@ public class NameSelectScreenController {
 
     public void setSessionType(SessionType sessionType) {
         this.sessionType = sessionType;
+        savedSessionsListView.setPlaceholder(new Label("No sessions have been saved"));
+        ObservableList<Session> sessions;
         if (sessionType.equals(ASSESSMENT)) {
             assessmentSession = new AssessmentSession();
+            sessions = FXCollections.observableArrayList(sessionStorageManager.getSavedAssessmentSessions());
         } else {
             practiseSession = new PractiseSession();
+            sessions = FXCollections.observableArrayList(sessionStorageManager.getSavedPractiseSessions());
         }
+        savedSessionsListView.setItems(sessions);
     }
 
     /**

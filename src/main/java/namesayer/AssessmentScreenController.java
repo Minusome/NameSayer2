@@ -208,12 +208,12 @@ public class AssessmentScreenController {
             });
             saveButton.setOnAction(event -> {
                 session.setSessionName(field.getText());
-                SessionStorageManager.getInstance().saveAssessmentSession(session);
+                SessionStorageManager.getInstance().saveSession(session);
                 previousScreen();
                 alert.hideWithAnimation();
             });
             dontSaveButton.setOnAction(event -> {
-                SessionStorageManager.getInstance().remove(session);
+                SessionStorageManager.getInstance().removeSession(session);
                 previousScreen();
                 alert.hideWithAnimation();
             });
