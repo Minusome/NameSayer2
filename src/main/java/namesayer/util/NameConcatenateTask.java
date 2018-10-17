@@ -7,6 +7,7 @@ import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.persist.NameStorageManager;
 import namesayer.session.Session;
+import namesayer.session.SessionFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,11 @@ import java.util.List;
 public class NameConcatenateTask extends Task<Void> {
 
     private String userRequestedName;
-    private Session session;
+    private SessionFactory sessionFactory;
 
-    public NameConcatenateTask(Session session, String userRequestedNames) {
+    public NameConcatenateTask(SessionFactory session, String userRequestedNames) {
         this.userRequestedName = userRequestedNames;
-        this.session = session;
+        this.sessionFactory = session;
     }
 
 
@@ -43,7 +44,7 @@ public class NameConcatenateTask extends Task<Void> {
         }
         CompositeName compositeName = new CompositeName(userRequestedName);
         compositeName.setExemplar(new Exemplar(discovered));
-        session.addName(compositeName);
+        sessionFactory.addName(compositeName);
         return null;
     }
 

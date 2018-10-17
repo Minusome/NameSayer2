@@ -24,18 +24,13 @@ public class Session implements Serializable {
         ASSESSMENT, PRACTISE
     }
 
-
-    public void addName(CompositeName compositeName) {
-        namesList.add(compositeName);
-        currentName = namesList.get(0);
-    }
-
-
-    public void removeName(CompositeName compositeName) {
-        namesList.remove(compositeName);
-        if (namesList.size() == 0) {
-            currentName = null;
+    public Session(List<CompositeName> namesList) {
+        if (namesList.isEmpty()) {
+            throw new NameNotFoundException("Session cannot load with an empty list");
         }
+        this.namesList = namesList;
+        currentName = this.namesList.get(0);
+        id = UUID.randomUUID().toString();
     }
 
     public String getSessionName() {
@@ -49,10 +44,6 @@ public class Session implements Serializable {
     public void resetToFirst() {
         currentIndex = 0;
         currentName = namesList.get(0);
-    }
-
-    public Session() {
-        id = UUID.randomUUID().toString();
     }
 
     public String getCurrentNameString() {
@@ -70,7 +61,6 @@ public class Session implements Serializable {
     public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
         currentName.makeNewRecording(onFinished);
     }
-
 
     public boolean hasNext() {
         return !(currentIndex == namesList.size() - 1);

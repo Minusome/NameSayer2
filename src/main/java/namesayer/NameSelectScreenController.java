@@ -21,16 +21,17 @@ import javafx.stage.FileChooser;
 import namesayer.model.CompositeName;
 import namesayer.model.Name;
 import namesayer.persist.NameStorageManager;
+import namesayer.persist.Result;
+import namesayer.persist.Result.Status;
 import namesayer.persist.SessionStorageManager;
 import namesayer.session.AssessmentSession;
 import namesayer.session.PractiseSession;
 import namesayer.session.Session;
-import namesayer.util.NameConcatenateTask;
-import namesayer.persist.Result;
-import namesayer.persist.Result.Status;
-import namesayer.view.CompleteNameLoadingCell;
+import namesayer.session.SessionFactory;
 import namesayer.util.EmptySelectionModel;
+import namesayer.util.NameConcatenateTask;
 import namesayer.util.SnackBarLoader;
+import namesayer.view.CompleteNameLoadingCell;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -57,23 +58,16 @@ public class NameSelectScreenController {
     @FXML private JFXListView<String> nameListView;
     @FXML private JFXToggleButton randomToggle;
 
-    private static boolean randomSelected = false;
     private SuggestionProvider<String> suggestions;
     private List<String> autoCompletions = new ArrayList<>();
     private Map<String, String> canonicalNameCache = new HashMap<>();
     private SessionType sessionType;
-    private AssessmentSession assessmentSession;
-    private PractiseSession practiseSession;
-    private NameStorageManager nameStorageManager;
-    private SessionStorageManager sessionStorageManager;
+    private SessionFactory sessionFactory = new SessionFactory();
+    private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
+    private SessionStorageManager sessionStorageManager = SessionStorageManager.getInstance();
 
-    public static boolean RandomToggleOn() {
-        return randomSelected;
-    }
 
     public void initialize() {
-        nameStorageManager = NameStorageManager.getInstance();
-        sessionStorageManager = SessionStorageManager.getInstance();
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new CompleteNameLoadingCell(this));
         nameListView.setSelectionModel(new EmptySelectionModel<>());
@@ -98,8 +92,7 @@ public class NameSelectScreenController {
             return;
         }
         nameListView.getItems().add(userInput);
-        Session session = (sessionType.equals(ASSESSMENT)) ? assessmentSession : practiseSession;
-        new Thread(new NameConcatenateTask(session, userInput)).start();
+        new Thread(new NameConcatenateTask(sessionFactory, userInput)).start();
         canonicalNameCache.put(result.getDiscoveredName(), userInput);
     }
 
@@ -110,15 +103,14 @@ public class NameSelectScreenController {
     public void setSessionType(SessionType sessionType) {
         this.sessionType = sessionType;
         savedSessionsListView.setPlaceholder(new Label("No sessions have been saved"));
-        ObservableList<Session> sessions;
+        ObservableList<Session> items;
         if (sessionType.equals(ASSESSMENT)) {
-            assessmentSession = new AssessmentSession();
-            sessions = FXCollections.observableArrayList(sessionStorageManager.getSavedAssessmentSessions());
+             items = FXCollections.observableArrayList(sessionStorageManager.getSavedAssessmentSessions());
+
         } else {
-            practiseSession = new PractiseSession();
-            sessions = FXCollections.observableArrayList(sessionStorageManager.getSavedPractiseSessions());
+            items = FXCollections.observableArrayList(sessionStorageManager.getSavedPractiseSessions());
         }
-        savedSessionsListView.setItems(sessions);
+        savedSessionsListView.setItems(items);
     }
 
     /**
@@ -130,24 +122,23 @@ public class NameSelectScreenController {
             SnackBarLoader.displayMessage(parentPane, "Please enter a name first");
         } else {
             Parent root;
+            if (randomToggle.isSelected()) {
+                sessionFactory.randomize();
+            }
             if (sessionType.equals(ASSESSMENT)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
                 root = loader.load();
                 AssessmentScreenController controller = loader.getController();
-                controller.injectSession(assessmentSession);
+                controller.injectSession(sessionFactory.makeAssessmentSession());
             } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/PractiseScreen.fxml"));
                 root = loader.load();
                 PractiseScreenController controller = loader.getController();
-                controller.injectSession(practiseSession);
+                controller.injectSession(sessionFactory.makePractiseSession());
             }
             Scene scene = nameSearchBar.getScene();
             scene.setRoot(root);
         }
-    }
-
-    public void setRandom() {
-        randomSelected = !randomToggle.isDisableAnimation();
     }
 
     /**
@@ -209,18 +200,30 @@ public class NameSelectScreenController {
         }
     }
 
-
     public void removeSelection(String item) {
         if (sessionType.equals(PRACTISE)) {
-            practiseSession.removeName(new CompositeName(item));
+            sessionFactory.removeName(new CompositeName(item));
         } else {
-            assessmentSession.removeName(new CompositeName(item));
+            sessionFactory.removeName(new CompositeName(item));
         }
         nameListView.getItems().remove(item);
         canonicalNameCache.values().remove(item);
     }
 
-    public void onResumeButtonClicked(ActionEvent actionEvent) {
-
+    public void onResumeButtonClicked(ActionEvent actionEvent) throws IOException {
+        Parent root;
+        if (sessionType.equals(ASSESSMENT)) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
+            root = loader.load();
+            AssessmentScreenController controller = loader.getController();
+            controller.injectSession((AssessmentSession) savedSessionsListView.getSelectionModel().getSelectedItem());
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PractiseScreen.fxml"));
+            root = loader.load();
+            PractiseScreenController controller = loader.getController();
+            controller.injectSession((PractiseSession) savedSessionsListView.getSelectionModel().getSelectedItem());
+        }
+        Scene scene = nameSearchBar.getScene();
+        scene.setRoot(root);
     }
 }

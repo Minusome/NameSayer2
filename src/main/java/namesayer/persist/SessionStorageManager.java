@@ -96,18 +96,18 @@ public class SessionStorageManager {
     }
 
     public void removeSession(AssessmentSession session) {
-        savedAssessmentSessions.remove(session);
         try {
             Files.deleteIfExists(savedAssessmentSessions.get(session));
+            savedAssessmentSessions.remove(session);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void removeSession(PractiseSession session) {
-        savedPractiseSessions.remove(session);
         try {
             Files.deleteIfExists(savedPractiseSessions.get(session));
+            savedPractiseSessions.remove(session);
         } catch (IOException e) {
             e.printStackTrace();
         }

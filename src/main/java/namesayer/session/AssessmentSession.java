@@ -5,7 +5,13 @@ import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
 
+import java.util.List;
+
 public class AssessmentSession extends Session {
+
+    public AssessmentSession(List<CompositeName> namesList) {
+        super(namesList);
+    }
 
     @Override
     public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
