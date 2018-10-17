@@ -12,15 +12,13 @@ import java.util.List;
 import java.util.UUID;
 
 
-public abstract class Session implements Serializable {
-
+public class Session implements Serializable {
 
     protected List<CompositeName> namesList = new LinkedList<>();
     protected int currentIndex = 0;
     protected CompositeName currentName;
     protected String sessionName;
     protected String id;
-
 
     public enum SessionType {
         ASSESSMENT, PRACTISE

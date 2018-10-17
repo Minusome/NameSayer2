@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,24 +48,23 @@ import static namesayer.session.Session.SessionType.PRACTISE;
 
 public class NameSelectScreenController {
 
-
-    private static boolean randomSelected = false;
+    @FXML private JFXListView<Session> savedSessionsListView;
     @FXML private GridPane parentPane;
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXListView<String> nameListView;
     @FXML private JFXToggleButton randomToggle;
+
+    private static boolean randomSelected = false;
     private SuggestionProvider<String> suggestions;
     private List<String> autoCompletions = new ArrayList<>();
+    private Map<String, String> canonicalNameCache = new HashMap<>();
     private SessionType sessionType;
     private AssessmentSession assessmentSession;
     private PractiseSession practiseSession;
-    private Map<String, String> canonicalNameCache = new HashMap<>();
     private NameStorageManager nameStorageManager;
 
     public static boolean RandomToggleOn() {
-
         return randomSelected;
-
     }
 
     public void initialize() {
@@ -77,6 +77,8 @@ public class NameSelectScreenController {
         for (Name name : nameStorageManager.getPartialNames()) {
             autoCompletions.add(name.toString());
         }
+        savedSessionsListView.setItems();
+
         suggestions = SuggestionProvider.create(autoCompletions);
         AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(nameSearchBar, suggestions);
         binding.setPrefWidth(500);
@@ -210,4 +212,7 @@ public class NameSelectScreenController {
         canonicalNameCache.values().remove(item);
     }
 
+    public void onResumeButtonClicked(ActionEvent actionEvent) {
+
+    }
 }
