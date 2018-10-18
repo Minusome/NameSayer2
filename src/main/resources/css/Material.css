@@ -12,10 +12,6 @@
     -fx-text-fill: #ff4081;
 }
 
-.background {
-    -fx-background-color: #6200ee;
-}
-
 .animated-option-button {
     -fx-background-color: #03dac6;
     -fx-background-radius: 50px;
@@ -149,11 +145,15 @@
 }
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: #3700b3;
+    -fx-background-color: #311B92;
 }
 
 .background-dark {
-    -fx-background-color: #3700b3;
+    -fx-background-color: #311B92;
+}
+
+.background {
+    -fx-background-color: #6200ee;
 }
 
 .jfx-tab-pane .headers-region .tab-selected-line {

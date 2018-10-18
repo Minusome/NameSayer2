@@ -19,7 +19,6 @@ import java.util.Map;
 import static namesayer.persist.Config.SAVED_ASSESSMENT_SESSIONS;
 import static namesayer.persist.Config.SAVED_PRACTISE_SESSIONS;
 
-
 public class SessionStorageManager {
 
     private static SessionStorageManager instance;
@@ -96,23 +95,32 @@ public class SessionStorageManager {
         }
     }
 
-    public void removeSession(AssessmentSession session) {
+    private void deleteFile(Path path) {
         try {
-            Files.deleteIfExists(savedAssessmentSessions.get(session));
-            savedAssessmentSessions.remove(session);
+            if (path != null) {
+                Files.deleteIfExists(path);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+    public void removeSession(AssessmentSession session) {
+        if (savedAssessmentSessions.containsKey(session)) {
+            deleteFile(savedAssessmentSessions.get(session));
+            savedAssessmentSessions.remove(session);
+        }
+
+    }
+
     public void removeSession(PractiseSession session) {
-        try {
-            Files.deleteIfExists(savedPractiseSessions.get(session));
+        if (savedPractiseSessions.containsKey(session)) {
+            deleteFile(savedPractiseSessions.get(session));
             savedPractiseSessions.remove(session);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
+
 
     public List<PractiseSession> getSavedPractiseSessions() {
         return new ArrayList<>(savedPractiseSessions.keySet());

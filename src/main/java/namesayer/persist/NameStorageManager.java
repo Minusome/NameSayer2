@@ -103,17 +103,16 @@ public class NameStorageManager {
 
     private NameStorageManager() {
         try {
-            if (!Files.isDirectory(USER_ATTEMPTS)) {
-                Files.createDirectories(USER_ATTEMPTS);
-            }
-            if (!Files.isDirectory(SAVED_RECORDINGS)) {
-                Files.createDirectories(SAVED_RECORDINGS);
-            }
-            if (!Files.isDirectory(SAVED_PRACTISE_SESSIONS)) {
-                Files.createDirectories(SAVED_PRACTISE_SESSIONS);
-            }
-            if (!Files.isDirectory(SAVED_ASSESSMENT_SESSIONS)) {
-                Files.createDirectories(SAVED_ASSESSMENT_SESSIONS);
+            Path[] pathsArray = new Path[]{
+                    USER_ATTEMPTS,
+                    SAVED_RECORDINGS,
+                    SAVED_PRACTISE_SESSIONS,
+                    SAVED_ASSESSMENT_SESSIONS
+            };
+            for (Path path : pathsArray) {
+                if (!Files.isDirectory(path)) {
+                    Files.createDirectories(path);
+                }
             }
             new CompositeNamesLoader().load(compositeNames);
             new PartialNamesLoader().load(partialNames);

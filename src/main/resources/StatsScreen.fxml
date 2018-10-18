@@ -77,7 +77,7 @@
          <children>
             <VBox alignment="TOP_CENTER">
                <children>
-                  <Label text="Most Common Badly-Pronounced Names">
+                  <Label text="Most Difficult To Pronounce Names">
                      <font>
                         <Font name="Roboto Medium" size="16.0" />
                      </font>

@@ -6,7 +6,6 @@ import namesayer.model.Exemplar;
 import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.persist.NameStorageManager;
-import namesayer.session.Session;
 import namesayer.session.SessionFactory;
 
 import java.util.ArrayList;
