@@ -13,11 +13,11 @@
 }
 
 .background {
-    -fx-background-color: #5e35b1;
+    -fx-background-color: #6200ee;
 }
 
 .animated-option-button {
-    -fx-background-color: #00bfa5;
+    -fx-background-color: #03dac6;
     -fx-background-radius: 50px;
     -fx-pref-height: 50px;
     -fx-pref-width: 50px;
@@ -149,15 +149,20 @@
 }
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: #280680;
+    -fx-background-color: #3700b3;
 }
 
 .background-dark {
-    -fx-background-color: #280680;
+    -fx-background-color: #3700b3;
 }
 
 .jfx-tab-pane .headers-region .tab-selected-line {
-    -fx-background-color: #00bfa5;
+    -fx-background-color: #018786;
 }
 
+.card-no-inset {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 4;
+    -fx-background-insets: 0;
+}
 

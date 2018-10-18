@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import namesayer.persist.NameStorageManager;
 import namesayer.session.Session;
-//import namesayer.persist.NameStorageManager;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -21,7 +20,9 @@ import java.io.IOException;
 import static namesayer.session.Session.SessionType.ASSESSMENT;
 import static namesayer.session.Session.SessionType.PRACTISE;
 
-public class MenuScreenController{
+//import namesayer.persist.NameStorageManager;
+
+public class MenuScreenController {
 
     @FXML public JFXProgressBar MicrophoneVolume;
     @FXML public ImageView MicrophoneButton;
@@ -117,7 +118,7 @@ public class MenuScreenController{
 //        }
 //    }
 
-//    public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
+    //    public void onSelectAudioDatabaseFolder(MouseEvent mouseEvent) {
 //        DirectoryChooser chooser = new DirectoryChooser();
 //        chooser.setTitle("Select the audio database for your names");
 //        File selectedDirectory = chooser.showDialog(practiceButton.getScene().getWindow());
@@ -130,11 +131,17 @@ public class MenuScreenController{
 //            practiceButton.setDisable(false);
 //        }
 //    }
-    public void onBrowseModeClicked(MouseEvent e)throws IOException {
+    public void onBrowseModeClicked(MouseEvent e) throws IOException {
         Scene scene = browseButton.getScene();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RecordingScreen.fxml"));
         Parent root = loader.load();
         scene.setRoot(root);
-}
+    }
 
+    public void onStatisticsClicked(MouseEvent mouseEvent) throws IOException {
+        Scene scene = browseButton.getScene();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/StatsScreen.fxml"));
+        Parent root = loader.load();
+        scene.setRoot(root);
+    }
 }
