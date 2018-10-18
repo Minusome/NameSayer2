@@ -19,6 +19,7 @@ public class Session implements Serializable {
     protected CompositeName currentName;
     protected String sessionName;
     protected String id;
+    protected SessionType type;
 
     public enum SessionType {
         ASSESSMENT, PRACTISE
@@ -88,6 +89,10 @@ public class Session implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public SessionType getType() {
+        return type;
     }
 
     @Override

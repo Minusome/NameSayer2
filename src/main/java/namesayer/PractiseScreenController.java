@@ -10,21 +10,19 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import namesayer.model.CompositeRecording;
 import namesayer.session.PractiseSession;
 import namesayer.util.EmptySelectionModel;
-import namesayer.view.PractiseListCell;
 import namesayer.util.SnackBarLoader;
-
-import java.io.IOException;
+import namesayer.view.PractiseListCell;
+import namesayer.view.SaveAlert;
 
 import static namesayer.util.TransitionFactory.Direction.LEFT;
 import static namesayer.util.TransitionFactory.Direction.RIGHT;
@@ -144,13 +142,8 @@ public class PractiseScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        cardPane.getScene().setRoot(root);
+        SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
+        saveAlert.show();
     }
 
 

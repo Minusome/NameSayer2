@@ -68,6 +68,7 @@ public class SessionStorageManager {
         }
     }
 
+
     public void saveSession(PractiseSession session) {
         Path saveFile = SAVED_PRACTISE_SESSIONS.resolve(session.getId() + "ser");
         savedPractiseSessions.put(session, saveFile);

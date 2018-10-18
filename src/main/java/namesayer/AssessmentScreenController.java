@@ -1,10 +1,7 @@
 package namesayer;
 
-import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXSpinner;
-import com.jfoenix.controls.JFXTextField;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -16,14 +13,13 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import namesayer.persist.SessionStorageManager;
 import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
 import namesayer.util.TransitionFactory;
 import namesayer.view.RewardCardController;
+import namesayer.view.SaveAlert;
 import org.controlsfx.control.Rating;
 
 import java.io.IOException;
@@ -58,7 +54,11 @@ public class AssessmentScreenController {
     public void injectSession(AssessmentSession session) {
         this.session = session;
         label.setText(session.getCurrentNameString());
-        disableButtons(true, true);
+        if (session.hasUserMadeRecording()) {
+            disableButtons(false, false);
+        } else {
+            disableButtons(true, true);
+        }
         refreshCardNumber();
     }
 
@@ -175,63 +175,10 @@ public class AssessmentScreenController {
         cardNumber.setText(session.getCurrentIndex() + 1 + "/" + session.getNumberOfNames());
     }
 
+
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        if (!isRewardScreen) {
-            JFXAlert alert = new JFXAlert((Stage) parentPane.getScene().getWindow());
-            alert.initModality(Modality.WINDOW_MODAL);
-            alert.setOverlayClose(false);
-            JFXDialogLayout layout = new JFXDialogLayout();
-            layout.setHeading(new Label("Would you like to save this session?"));
-            JFXTextField field = new JFXTextField();
-            JFXButton cancelButton = new JFXButton("Cancel");
-            JFXButton saveButton = new JFXButton("Save");
-            JFXButton dontSaveButton = new JFXButton("Don't Save");
-            saveButton.setDisable(true);
-            String text = session.getSessionName();
-            if (text == null || text.isEmpty()) {
-                text = "Enter a name to save this session";
-            } else {
-                field.setEditable(false);
-                saveButton.setDisable(false);
-            }
-            field.setPromptText(text);
-            field.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.isEmpty()) {
-                    saveButton.setDisable(true);
-                } else {
-                    saveButton.setDisable(false);
-                }
-            });
-            layout.setBody(field);
-            cancelButton.setOnAction(event -> {
-                alert.hideWithAnimation();
-            });
-            saveButton.setOnAction(event -> {
-                session.setSessionName(field.getText());
-                SessionStorageManager.getInstance().saveSession(session);
-                previousScreen();
-                alert.hideWithAnimation();
-            });
-            dontSaveButton.setOnAction(event -> {
-                SessionStorageManager.getInstance().removeSession(session);
-                previousScreen();
-                alert.hideWithAnimation();
-            });
-            layout.setActions(saveButton, dontSaveButton, cancelButton);
-            alert.setContent(layout);
-            alert.show();
-        } else {
-            previousScreen();
-        }
+        SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
+        saveAlert.show();
     }
 
-    private void previousScreen() {
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        parentPane.getScene().setRoot(root);
-    }
 }

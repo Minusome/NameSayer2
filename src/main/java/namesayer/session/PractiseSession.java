@@ -10,6 +10,7 @@ public class PractiseSession extends Session {
 
     public PractiseSession(List<CompositeName> namesList) {
         super(namesList);
+        this.type = SessionType.PRACTISE;
     }
 
     public void prev() {

@@ -57,5 +57,4 @@ public abstract class NamesLoader<N extends Name, R extends Recording> {
     public abstract R getRecording(Path path);
 
     public abstract void populate(N name, R recording);
-
 }

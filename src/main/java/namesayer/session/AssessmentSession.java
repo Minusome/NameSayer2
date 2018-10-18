@@ -11,6 +11,7 @@ public class AssessmentSession extends Session {
 
     public AssessmentSession(List<CompositeName> namesList) {
         super(namesList);
+        this.type = SessionType.ASSESSMENT;
     }
 
     @Override
