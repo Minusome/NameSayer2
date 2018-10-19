@@ -18,4 +18,7 @@ public class RatingPopupController {
         rating.ratingProperty().unbindBidirectional(property);
     }
 
+    public int getRating() {
+        return (int) Math.round(property.get());
+    }
 }

@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import namesayer.model.CompositeRecording;
+import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.SnackBarLoader;
@@ -48,7 +49,7 @@ public class PractiseScreenController {
     public void injectSession(PractiseSession session) {
         this.session = session;
         disableArrows(false);
-        label.setText(session.getCurrentNameString());
+        label.setText(session.getCurrentName().toString());
         practiseListView.setCellFactory(param -> new PractiseListCell(session));
         practiseListView.setSelectionModel(new EmptySelectionModel<>());
         Label label = new Label("Listen to the sample and make your own recording!");
@@ -70,19 +71,19 @@ public class PractiseScreenController {
         } else {
             session.prev();
         }
-        label.setText(session.getCurrentNameString());
+        label.setText(session.getCurrentName().toString());
         disableArrows(false);
         refreshList();
     }
 
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
-        session.playExemplar();
+        session.getCurrentName().getExemplar().playAudio();
         disableArrows(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplarLength()),
+                        Duration.seconds(session.getCurrentName().getExemplar().getLength()),
                         event -> disableArrows(false),
                         new KeyValue(playingSpinner.progressProperty(), 1)
                 )
@@ -93,7 +94,7 @@ public class PractiseScreenController {
 
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         disableArrows(true);
-        session.makeNewRecording(event -> {
+        session.getCurrentName().makeNewRecording(event -> {
             disableArrows(false);
             refreshList();
         });
@@ -101,7 +102,7 @@ public class PractiseScreenController {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplarLength()),
+                        Duration.seconds(session.getCurrentName().getExemplar().getLength()),
                         new KeyValue(recordingSpinner.progressProperty(), 1)
                 )
         );
@@ -142,13 +143,14 @@ public class PractiseScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
+        StatsManager.getInstance().save();
         SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
         saveAlert.show();
     }
 
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        session.saveUserRecording();
+        session.saveUserRecordings();
         SnackBarLoader.displayMessage(parentPane, "Recordings have been saved");
     }
 

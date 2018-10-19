@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import namesayer.persist.StatsManager;
 import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
 import namesayer.util.TransitionFactory;
@@ -46,6 +47,7 @@ public class AssessmentScreenController {
     //Must set session when initializing this scene
     private AssessmentSession session;
     private DoubleProperty ratingProperty;
+    private StatsManager statsManager = StatsManager.getInstance();
 
     private boolean isFinishedRewarding = false;
     private boolean isRewardScreen = false;
@@ -53,7 +55,7 @@ public class AssessmentScreenController {
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
-        label.setText(session.getCurrentNameString());
+        label.setText(session.getCurrentName().toString());
         if (session.hasUserMadeRecording()) {
             disableButtons(false, false);
         } else {
@@ -79,6 +81,7 @@ public class AssessmentScreenController {
     //disable the button if its the last card
     private void loadNewCard() {
         if (session.getCurrentIndex() + 1 == session.getNumberOfNames()) {
+            statsManager.updateAvgAssessRating(session.getAverageRating());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RewardCard.fxml"));
             Parent root = null;
             try {
@@ -91,9 +94,14 @@ public class AssessmentScreenController {
             cardPane.getChildren().setAll(root);
             isRewardScreen = true;
         } else {
-            rating.ratingProperty().unbindBidirectional(ratingProperty);
+            if (ratingProperty != null) {
+                int ratingValue = (int) Math.round(ratingProperty.get());
+                statsManager.updateRatingFreq(ratingValue);
+                statsManager.updateDifficultName(session.getCurrentName(), ratingValue);
+            }
+//            rating.ratingProperty().unbindBidirectional(ratingProperty);
             session.next();
-            label.setText(session.getCurrentNameString());
+            label.setText(session.getCurrentName().toString());
             refreshCardNumber();
             isFinishedRewarding = false;
         }
@@ -101,12 +109,12 @@ public class AssessmentScreenController {
     }
 
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
-        session.playExemplar();
+        session.getCurrentName().getExemplar().playAudio();
         disableButtons(true, true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getExemplarLength()),
+                        Duration.seconds(session.getCurrentName().getExemplar().getLength()),
                         event -> disableButtons(false, true),
                         new KeyValue(playingSpinner.progressProperty(), 1)
                 )
@@ -117,7 +125,7 @@ public class AssessmentScreenController {
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         if (!isFinishedRewarding) {
             disableButtons(true, true);
-            session.makeNewRecording(
+            session.getCurrentName().makeNewRecording(
                     event -> {
                         if (ratingProperty != null) {
                             rating.ratingProperty().unbindBidirectional(ratingProperty);
@@ -130,7 +138,7 @@ public class AssessmentScreenController {
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                     new KeyFrame(
-                            Duration.seconds(session.getExemplarLength()),
+                            Duration.seconds(session.getCurrentName().getExemplar().getLength()),
                             event -> disableButtons(false, true),
                             new KeyValue(recordingSpinner.progressProperty(), 1)
                     )
@@ -154,7 +162,7 @@ public class AssessmentScreenController {
 
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        session.saveUserRecording();
+        session.saveUserRecordings();
         saveButton.setDisable(true);
         SnackBarLoader.displayMessage(parentPane, "Recording is saved");
     }
@@ -177,6 +185,7 @@ public class AssessmentScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
+        StatsManager.getInstance().save();
         SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
         saveAlert.show();
     }

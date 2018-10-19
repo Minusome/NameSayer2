@@ -14,10 +14,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
 
-import static namesayer.persist.Config.SAVED_ASSESSMENT_SESSIONS;
-import static namesayer.persist.Config.SAVED_PRACTISE_SESSIONS;
-import static namesayer.persist.Config.SAVED_RECORDINGS;
-import static namesayer.persist.Config.USER_ATTEMPTS;
+import static namesayer.persist.Config.*;
 
 
 /**
@@ -107,7 +104,8 @@ public class NameStorageManager {
                     USER_ATTEMPTS,
                     SAVED_RECORDINGS,
                     SAVED_PRACTISE_SESSIONS,
-                    SAVED_ASSESSMENT_SESSIONS
+                    SAVED_ASSESSMENT_SESSIONS,
+                    STATS_FOLDER
             };
             for (Path path : pathsArray) {
                 if (!Files.isDirectory(path)) {

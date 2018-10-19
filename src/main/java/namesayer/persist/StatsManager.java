@@ -1,14 +1,10 @@
 package namesayer.persist;
 
 import javafx.util.Pair;
+import namesayer.model.CompositeName;
 import namesayer.model.PartialName;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,11 +15,11 @@ import java.util.stream.Collectors;
 
 import static namesayer.persist.Config.STATS_FILE;
 
-public class StatsManager {
+public class StatsManager implements Serializable {
 
     private Map<Integer, Integer> globalRatingFreq = new HashMap<>();
-    private List<Double> avgRatingOverTime = new ArrayList<>();
-    private Map<PartialName, Pair<Double, Integer>> difficultNamesRunningAvg = new HashMap<>();
+    private List<Double> avgAssessRatingOverTime = new ArrayList<>();
+    private Map<CompositeName, Pair<Double, Integer>> difficultNamesRunningAvg = new HashMap<>();
 
 
     private static StatsManager instance;
@@ -48,7 +44,7 @@ public class StatsManager {
         }
     }
 
-    public StatsManager getInstance() {
+    public static StatsManager getInstance() {
         if (instance == null) {
             instance = new StatsManager();
         }
@@ -79,11 +75,11 @@ public class StatsManager {
         }
     }
 
-    public void updateAvgRating(Double avgRating) {
-        avgRatingOverTime.add(avgRating);
+    public void updateAvgAssessRating(Double avgRating) {
+        avgAssessRatingOverTime.add(avgRating);
     }
 
-    public void updateDifficultName(PartialName name, int rating) {
+    public void updateDifficultName(CompositeName name, int rating) {
         assert (0 <= rating && rating <= 5);
         Pair<Double, Integer> avgRatingForName = difficultNamesRunningAvg.get(name);
         if (avgRatingForName == null) {
@@ -97,7 +93,7 @@ public class StatsManager {
     }
 
 
-    public List<PartialName> getDifficultNamesList() {
+    public List<CompositeName> getDifficultNamesList() {
         return difficultNamesRunningAvg.entrySet()
                                        .stream()
                                        .sorted(Collections.reverseOrder(
@@ -113,7 +109,7 @@ public class StatsManager {
         return Collections.unmodifiableMap(globalRatingFreq);
     }
 
-    public List<Double> getAvgRatingOverTime() {
-        return Collections.unmodifiableList(avgRatingOverTime);
+    public List<Double> getAvgAssessRatingOverTime() {
+        return Collections.unmodifiableList(avgAssessRatingOverTime);
     }
 }

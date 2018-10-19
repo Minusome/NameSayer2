@@ -27,7 +27,7 @@ public abstract class Name implements Comparable<Name>, Serializable {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return name.toLowerCase().hashCode();
     }
 
     @Override

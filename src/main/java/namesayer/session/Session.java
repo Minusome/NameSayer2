@@ -4,6 +4,7 @@ package namesayer.session;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
+import namesayer.model.PartialName;
 import namesayer.persist.NameStorageManager;
 
 import java.io.Serializable;
@@ -42,48 +43,35 @@ public class Session implements Serializable {
         sessionName = input;
     }
 
-    public void resetToFirst() {
-        currentIndex = 0;
-        currentName = namesList.get(0);
-    }
-
-    public String getCurrentNameString() {
-        return currentName.toString();
-    }
-
-    public void next() {
-        currentName = namesList.get(++currentIndex);
-    }
-
-    public void makeNewRecording() {
-        currentName.makeNewRecording();
-    }
-
-    public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
-        currentName.makeNewRecording(onFinished);
-    }
-
-    public boolean hasNext() {
-        return !(currentIndex == namesList.size() - 1);
-    }
-
-    public void playExemplar() {
-        currentName.getExemplar().playAudio();
-    }
-
-    public double getExemplarLength() {
-        return currentName.getExemplar().getLength();
-    }
-
-    public int getCurrentIndex() {
-        return currentIndex;
+    public CompositeName getCurrentName() {
+        return currentName;
     }
 
     public int getNumberOfNames() {
         return namesList.size();
     }
 
-    public void saveUserRecording() {
+    public void resetToFirst() {
+        currentIndex = 0;
+        currentName = namesList.get(0);
+    }
+
+    public void next() {
+        currentName = namesList.get(++currentIndex);
+    }
+
+
+    public boolean hasNext() {
+        return !(currentIndex == namesList.size() - 1);
+    }
+
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+
+    public void saveUserRecordings() {
         NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
     }
 

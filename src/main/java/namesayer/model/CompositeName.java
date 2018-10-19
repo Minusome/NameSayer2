@@ -23,6 +23,7 @@ public class CompositeName extends Name implements Serializable {
      * These recordings are permanently associated with this name
      * NameStorageManager accesses this list, any other class will only be able to see an empty list
      */
+
     private List<CompositeRecording> userAttempts = new ArrayList<>();
     private Exemplar exemplar;
 

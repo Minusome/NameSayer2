@@ -13,9 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import namesayer.model.CompositeRecording;
+import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,6 +35,8 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
 
     private CompositeRecording recording;
     private PractiseSession session;
+    private StatsManager manager = StatsManager.getInstance();
+    private static List<CompositeRecording> processedRecordings = new ArrayList<>();
 
     public PractiseListCell(PractiseSession session) {
         super();
@@ -77,7 +82,7 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
     @FXML
     public void onRateButtonClicked(MouseEvent mouseEvent) throws IOException {
         JFXAlert alert = new JFXAlert((Stage) listItemHBox.getScene().getWindow());
-        alert.initModality(Modality.NONE);
+        alert.initModality(Modality.WINDOW_MODAL);
         alert.setOverlayClose(true);
         JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Label("Rating"));
@@ -88,6 +93,11 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
         layout.setBody(root);
         JFXButton doneButton = new JFXButton("Done");
         doneButton.setOnAction(event -> {
+            if (!processedRecordings.contains(recording)){
+                manager.updateRatingFreq(controller.getRating());
+                manager.updateDifficultName(session.getCurrentName(), controller.getRating());
+                processedRecordings.add(recording);
+            }
             controller.unbind();
             alert.hideWithAnimation();
         });

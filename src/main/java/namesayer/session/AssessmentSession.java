@@ -14,12 +14,6 @@ public class AssessmentSession extends Session {
         this.type = SessionType.ASSESSMENT;
     }
 
-    @Override
-    public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
-        if (currentName.getUserAttempts().isEmpty()) {
-            super.makeNewRecording(onFinished);
-        }
-    }
 
     public void compareUserAttemptWithExemplar(EventHandler<ActionEvent> onFinished) {
         Thread thread = new Thread(() -> {
