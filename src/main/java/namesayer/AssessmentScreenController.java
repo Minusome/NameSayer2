@@ -36,7 +36,7 @@ public class AssessmentScreenController {
     @FXML private JFXButton replayButton;
     @FXML private JFXButton saveButton;
     @FXML private GridPane ratingCard;
-    @FXML private Rating rating;
+    @FXML private Rating ratingStars;
     @FXML private JFXSpinner recordingSpinner;
     @FXML private JFXButton nextButton;
     @FXML private StackPane cardPane;
@@ -49,15 +49,13 @@ public class AssessmentScreenController {
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
 
-    private boolean isFinishedRewarding = false;
-    private boolean isRewardScreen = false;
-
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
         label.setText(session.getCurrentName().toString());
         if (session.hasUserMadeRecording()) {
-            disableButtons(false, false);
+            reBindProperties();
+            disableButtons(false, true);
         } else {
             disableButtons(true, true);
         }
@@ -80,6 +78,11 @@ public class AssessmentScreenController {
     //enable loading cards backwards and forwards
     //disable the button if its the last card
     private void loadNewCard() {
+
+        int ratingValue = (int) Math.round(ratingStars.getRating());
+        statsManager.updateRatingFreq(ratingValue);
+        statsManager.updateDifficultName(session.getCurrentName(), ratingValue);
+
         if (session.getCurrentIndex() + 1 == session.getNumberOfNames()) {
             statsManager.updateAvgAssessRating(session.getAverageRating());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RewardCard.fxml"));
@@ -92,18 +95,10 @@ public class AssessmentScreenController {
             RewardCardController controller = loader.getController();
             controller.setRating(session.getAverageRating());
             cardPane.getChildren().setAll(root);
-            isRewardScreen = true;
         } else {
-            if (ratingProperty != null) {
-                int ratingValue = (int) Math.round(ratingProperty.get());
-                statsManager.updateRatingFreq(ratingValue);
-                statsManager.updateDifficultName(session.getCurrentName(), ratingValue);
-            }
-//            rating.ratingProperty().unbindBidirectional(ratingProperty);
             session.next();
             label.setText(session.getCurrentName().toString());
             refreshCardNumber();
-            isFinishedRewarding = false;
         }
         disableButtons(true, true);
     }
@@ -123,17 +118,9 @@ public class AssessmentScreenController {
     }
 
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
-        if (!isFinishedRewarding) {
+        if (!session.hasUserMadeRecording()) {
             disableButtons(true, true);
-            session.getCurrentName().makeNewRecording(
-                    event -> {
-                        if (ratingProperty != null) {
-                            rating.ratingProperty().unbindBidirectional(ratingProperty);
-                        }
-                        ratingProperty = session.getCurrentRecording().ratingProperty();
-                        rating.ratingProperty().bindBidirectional(ratingProperty);
-                    }
-            );
+            session.getCurrentName().makeNewRecording(event -> reBindProperties());
             recordingSpinner.setVisible(true);
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
@@ -144,7 +131,6 @@ public class AssessmentScreenController {
                     )
             );
             timeline.play();
-            isFinishedRewarding = true;
         } else {
             SnackBarLoader.displayMessage(parentPane, "Only a single recording is made in assessment mode");
         }
@@ -152,7 +138,7 @@ public class AssessmentScreenController {
 
 
     public void onReplayButtonClicked(MouseEvent mouseEvent) {
-        if (isFinishedRewarding) {
+        if (session.hasUserMadeRecording()) {
             session.compareUserAttemptWithExemplar(event -> {
                 TransitionFactory.slideUpTransition(ratingCard).play();
                 disableButtons(false, false);
@@ -172,7 +158,7 @@ public class AssessmentScreenController {
         if (disableArrows || (!session.hasNext() && session.getCurrentIndex() < session.getNumberOfNames() - 1)) {
             nextButton.setDisable(true);
         } else {
-            nextButton.setDisable(!isFinishedRewarding);
+            nextButton.setDisable(!session.hasUserMadeRecording());
         }
         replayButton.setDisable(disableButtons);
         saveButton.setDisable(disableButtons);
@@ -183,6 +169,14 @@ public class AssessmentScreenController {
         cardNumber.setText(session.getCurrentIndex() + 1 + "/" + session.getNumberOfNames());
     }
 
+
+    public void reBindProperties() {
+        if (ratingProperty != null) {
+            ratingStars.ratingProperty().unbindBidirectional(ratingProperty);
+        }
+        ratingProperty = session.getCurrentRecording().ratingProperty();
+        ratingStars.ratingProperty().bindBidirectional(ratingProperty);
+    }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
         StatsManager.getInstance().save();

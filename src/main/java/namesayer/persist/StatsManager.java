@@ -2,9 +2,14 @@ package namesayer.persist;
 
 import javafx.util.Pair;
 import namesayer.model.CompositeName;
-import namesayer.model.PartialName;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,7 +71,7 @@ public class StatsManager implements Serializable {
     }
 
     public void updateRatingFreq(int rating) {
-        assert (0 <= rating && rating <= 5);
+//        assert (0 <= rating && rating <= 5);
         Integer frequency = globalRatingFreq.get(rating);
         if (frequency == null) {
             globalRatingFreq.put(rating, 1);
@@ -80,7 +85,9 @@ public class StatsManager implements Serializable {
     }
 
     public void updateDifficultName(CompositeName name, int rating) {
-        assert (0 <= rating && rating <= 5);
+        if (rating > 2) {
+            return;
+        }
         Pair<Double, Integer> avgRatingForName = difficultNamesRunningAvg.get(name);
         if (avgRatingForName == null) {
             difficultNamesRunningAvg.put(name, new Pair<>((double) rating, 1));
@@ -93,14 +100,13 @@ public class StatsManager implements Serializable {
     }
 
 
-    public List<CompositeName> getDifficultNamesList() {
+    public List<Pair<CompositeName,Double>> getDifficultNamesList() {
         return difficultNamesRunningAvg.entrySet()
                                        .stream()
-                                       .sorted(Collections.reverseOrder(
-                                               Map.Entry.comparingByValue(
+                                       .sorted(Map.Entry.comparingByValue(
                                                        Comparator.comparing(
-                                                               Pair::getKey))))
-                                       .map(Map.Entry::getKey)
+                                                               Pair::getKey)))
+                                       .map(e -> new Pair<>(e.getKey(), e.getValue().getKey()))
                                        .collect(Collectors.toList());
     }
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
-<HBox fx:id="listItemHBox" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="listItemHBox" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="itemLabel" contentDisplay="CENTER" text="Label" textAlignment="CENTER" HBox.hgrow="NEVER">
             <HBox.margin>
@@ -17,9 +17,9 @@
                 <Insets left="10.0" />
             </padding></Label>
         <Region HBox.hgrow="ALWAYS" />
-      <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onDeleteButtonClicked" text="Button" visible="false" HBox.hgrow="NEVER">
+      <JFXButton fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onMouseClicked="#onPlayButtonClicked" text="Button" HBox.hgrow="NEVER">
          <graphic>
-            <MaterialIconView glyphName="DELETE" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
+            <MaterialIconView glyphName="PLAY_CIRCLE_FILLED" size="20" strokeType="OUTSIDE" strokeWidth="0.0" />
          </graphic></JFXButton>
     </children>
 </HBox>
