@@ -1,12 +1,13 @@
 package namesayer;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import namesayer.persist.NameStorageManager;
 import namesayer.persist.SessionStorageManager;
+import namesayer.persist.StatsManager;
+
+import static namesayer.util.Screen.MAIN_MENU;
 
 
 public class Main extends Application {
@@ -16,12 +17,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
-        primaryStage.setTitle("Name Sayer");
-        primaryStage.setScene(new Scene(root, 800, 700));
-        primaryStage.show();
         NameStorageManager.getInstance();
         SessionStorageManager.getInstance();
+        StatsManager.getInstance();
+        Scene scene = new Scene(MAIN_MENU.getRoot(), 800, 700);
+        primaryStage.setTitle("Name Sayer");
+        primaryStage.setScene(scene);
+        primaryStage.setMinHeight(700);
+        primaryStage.setMinWidth(800);
+        primaryStage.show();
     }
 
 

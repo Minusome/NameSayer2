@@ -9,12 +9,13 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.Rating?>
 
-<GridPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.AssessmentScreenController">
+<GridPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.AssessmentScreenController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -173,17 +174,26 @@
          </styleClass>
       </GridPane>
       <HBox alignment="CENTER_LEFT" stylesheets="@css/Material.css" GridPane.columnSpan="3">
-         <styleClass>
-            <String fx:value="background" />
-            <String fx:value="shadow-deep" />
-         </styleClass>
          <children>
             <JFXButton onMouseClicked="#onBackButtonClicked" text=" ">
                <graphic>
                   <MaterialIconView fill="WHITE" glyphName="ARROW_BACK" size="30" />
                </graphic>
             </JFXButton>
+            <Region HBox.hgrow="ALWAYS" />
+            <JFXButton fx:id="micTestButton" onMouseClicked="#onMicTestButtonClicked" style="-fx-background-color: #5400cc;" text="Mic Check" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Regular" size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </JFXButton>
          </children>
+         <styleClass>
+            <String fx:value="background-dark" />
+            <String fx:value="shadow-deep" />
+         </styleClass>
       </HBox>
    </children>
 </GridPane>

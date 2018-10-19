@@ -37,7 +37,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" stylesheets="@css/Material.css" GridPane.columnSpan="5">
          <styleClass>
-            <String fx:value="background" />
+            <String fx:value="background-dark" />
             <String fx:value="shadow-deep" />
          </styleClass>
          <children>

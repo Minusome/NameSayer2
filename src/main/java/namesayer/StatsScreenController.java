@@ -1,6 +1,7 @@
 package namesayer;
 
 import com.jfoenix.controls.JFXListView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,18 +28,21 @@ public class StatsScreenController {
 
     private StatsManager statsManager = StatsManager.getInstance();
 
+
     public void initialize() {
 
-
-        pieChart.setData(new PieChartDataAdapter().retrieveData(statsManager.getGlobalRatingFreq()));
         pieChart.setLegendVisible(false);
         pieChart.setLabelLineLength(10);
-
-        lineChart.getData().add(new LineChartDataAdapter().retrieveData(statsManager.getAvgAssessRatingOverTime()));
         lineChart.setLegendVisible(false);
         badNamesList.setSelectionModel(new EmptySelectionModel<>());
         badNamesList.setCellFactory(param -> new StatsNameListCell());
-        badNamesList.setItems(FXCollections.observableArrayList(statsManager.getDifficultNamesList()));
+
+        Thread thread = new Thread(() -> {
+            pieChart.setData(new PieChartDataAdapter().retrieveData(statsManager.getGlobalRatingFreq()));
+            lineChart.getData().add(new LineChartDataAdapter().retrieveData(statsManager.getAvgAssessRatingOverTime()));
+            badNamesList.setItems(FXCollections.observableArrayList(statsManager.getDifficultNamesList()));
+        });
+        thread.start();
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {

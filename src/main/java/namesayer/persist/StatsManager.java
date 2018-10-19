@@ -34,6 +34,7 @@ public class StatsManager implements Serializable {
             FileInputStream file = new FileInputStream(STATS_FILE.toFile());
             ObjectInputStream in = new ObjectInputStream(file);
             instance = (StatsManager) in.readObject();
+            System.out.println("Successfully read stats file");
             file.close();
             in.close();
         } catch (FileNotFoundException e) {

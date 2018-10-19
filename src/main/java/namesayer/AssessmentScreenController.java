@@ -19,6 +19,7 @@ import namesayer.persist.StatsManager;
 import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
 import namesayer.util.TransitionFactory;
+import namesayer.view.MicTestAlert;
 import namesayer.view.RewardCardController;
 import namesayer.view.SaveAlert;
 import org.controlsfx.control.Rating;
@@ -29,6 +30,7 @@ import static namesayer.util.TransitionFactory.Direction.LEFT;
 
 public class AssessmentScreenController {
 
+    @FXML private JFXButton micTestButton;
     @FXML private GridPane parentPane;
     @FXML private JFXButton playButton;
     @FXML private JFXButton recordingButton;
@@ -184,4 +186,9 @@ public class AssessmentScreenController {
         saveAlert.show();
     }
 
+    public void onMicTestButtonClicked() {
+        MicTestAlert micTestAlert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
+        micTestAlert.show();
+        micTestButton.setDisableVisualFocus(true);
+    }
 }

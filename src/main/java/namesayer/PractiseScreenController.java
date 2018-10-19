@@ -22,6 +22,7 @@ import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.SnackBarLoader;
+import namesayer.view.MicTestAlert;
 import namesayer.view.PractiseListCell;
 import namesayer.view.SaveAlert;
 
@@ -33,6 +34,7 @@ import static namesayer.util.TransitionFactory.cardDoubleSlideTransition;
 public class PractiseScreenController {
 
 
+    @FXML private JFXButton micTestButton;
     @FXML private GridPane parentPane;
     @FXML private Label cardNumber;
     @FXML private JFXListView<CompositeRecording> practiseListView;
@@ -154,4 +156,9 @@ public class PractiseScreenController {
         SnackBarLoader.displayMessage(parentPane, "Recordings have been saved");
     }
 
+    public void onMicTestButtonClicked(MouseEvent mouseEvent) {
+        MicTestAlert micTestAlert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
+        micTestAlert.show();
+        micTestButton.setDisableVisualFocus(true);
+    }
 }
