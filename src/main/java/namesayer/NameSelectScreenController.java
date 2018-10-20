@@ -1,6 +1,7 @@
 package namesayer;
 
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
@@ -57,6 +58,7 @@ public class NameSelectScreenController {
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXListView<String> nameListView;
     @FXML private JFXToggleButton randomToggle;
+    @FXML private JFXButton helpButton;
 
     private SuggestionProvider<String> suggestions;
     private List<String> autoCompletions = new ArrayList<>();
@@ -225,5 +227,16 @@ public class NameSelectScreenController {
         }
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
+    }
+    
+    @FXML
+    public void onHelpButtonClicked(MouseEvent e) throws IOException {
+    	Scene scene = helpButton.getScene();
+    	Parent root;
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/HelpScreen2.fxml"));
+        root = loader.load();
+        scene.setRoot(root);
+    	
+    	
     }
 }

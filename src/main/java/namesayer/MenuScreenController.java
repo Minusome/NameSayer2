@@ -15,6 +15,7 @@ import static namesayer.session.Session.SessionType.PRACTISE;
 import static namesayer.util.Screen.BROWSE_DATABASE_SCREEN;
 import static namesayer.util.Screen.NAME_SELECT_SCREEN;
 import static namesayer.util.Screen.STATS_SCREEN;
+import static namesayer.util.Screen.HELP_SCREEN;
 
 
 public class MenuScreenController {
@@ -79,5 +80,9 @@ public class MenuScreenController {
 
     public void onStatisticsClicked(MouseEvent mouseEvent) throws IOException {
         STATS_SCREEN.loadWithNode(practiceButton);
+    }
+    
+    public void onHelpButtonClicked(MouseEvent e) throws IOException {
+    	HELP_SCREEN.loadWithNode(practiceButton);
     }
 }

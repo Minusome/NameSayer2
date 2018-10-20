@@ -3,8 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -31,7 +31,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <GridPane alignment="CENTER" prefHeight="89.0" prefWidth="800.0" GridPane.columnSpan="5" GridPane.rowIndex="3">
+      <GridPane alignment="CENTER" prefHeight="89.0" prefWidth="800.0" style="-fx-border-color: #5f14c3;" GridPane.columnSpan="5" GridPane.rowIndex="3">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -60,7 +60,7 @@
                <children>
                   <JFXButton fx:id="ratingButton" buttonType="RAISED" onMouseClicked="#setRecordingQuality" text=" ">
                      <graphic>
-                        <MaterialIconView fx:id="ratingIcon" glyphName="" size="40" />
+                        <MaterialIconView fx:id="ratingIcon" fill="#5050ac" glyphName="" size="40" />
                      </graphic>
                   </JFXButton>
                </children>
@@ -68,24 +68,12 @@
             <Rating fx:id="rating" prefHeight="0.0" prefWidth="176.0" rating="3.0" stylesheets="@css/Material.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <HBox alignment="CENTER_LEFT" stylesheets="@css/Material.css" GridPane.columnSpan="5">
-         <styleClass>
-            <String fx:value="background-dark" />
-            <String fx:value="shadow-deep" />
-         </styleClass>
-         <children>
-            <JFXButton fx:id="backButton" onMouseClicked="#onBackClicked" text=" ">
-               <graphic>
-                  <MaterialIconView fill="WHITE" glyphName="ARROW_BACK" size="30" />
-               </graphic>
-            </JFXButton>
-         </children>
-      </HBox>
+      <HBox alignment="CENTER_LEFT" styleClass="background" stylesheets="@css/Material.css" GridPane.columnSpan="5" />
       <VBox prefHeight="410.0" prefWidth="274.0" style="-fx-border-color: #d3d3d3;" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <children>
             <Label id="database_label" fx:id="nameDatabaseButton" onMouseClicked="#onNameDatabaseClicked" prefHeight="70.0" prefWidth="407.0" stylesheets="@css/Material.css" text="Names" textFill="#303030">
                <graphic>
-                  <MaterialIconView glyphName="QUEUE_MUSIC" size="30" />
+                  <MaterialIconView fill="#5050ac" glyphName="QUEUE_MUSIC" size="30" />
                </graphic>
                <font>
                   <Font size="15.0" />
@@ -96,7 +84,7 @@
             </Label>
             <Label id="database_label" fx:id="userRecordingButton" onMouseClicked="#onUserRecordingClicked" prefHeight="70.0" prefWidth="407.0" stylesheets="@css/Material.css" text="Saved Recordings" textFill="#303030">
                <graphic>
-                  <MaterialIconView glyphName="QUEUE_MUSIC" size="30" />
+                  <MaterialIconView fill="#5050ac" glyphName="QUEUE_MUSIC" size="30" />
                </graphic>
                <font>
                   <Font size="15.0" />
@@ -112,5 +100,32 @@
       </VBox>
       <JFXListView fx:id="nameList" prefHeight="580.0" prefWidth="445.0" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
       <JFXListView fx:id="recordingList" prefHeight="580.0" prefWidth="456.0" stylesheets="@css/Material.css" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+      <GridPane GridPane.columnSpan="5">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXButton fx:id="backButton" onMouseClicked="#onBackClicked" text=" ">
+               <graphic>
+                  <MaterialIconView fill="WHITE" glyphName="ARROW_BACK" size="30" />
+               </graphic>
+            </JFXButton>
+            <HBox alignment="CENTER" GridPane.columnIndex="2">
+               <children>
+                  <JFXButton text=" ">
+                     <graphic>
+                        <MaterialIconView fill="#fbf3f3" glyphName="SEARCH" size="30" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXTextField id="databaseTextField" fx:id="nameSearchBar" focusColor="#e5d8e8" onKeyReleased="#searchNameKeyTyped" prefHeight="34.0" prefWidth="190.0" promptText="Enter a name" style="-fx-prompt-text-fill: #bdbdbd; -fx-text-fill: #ffffff;" stylesheets="@css/Material.css" unFocusColor="#efe9e9" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
    </children>
 </GridPane>

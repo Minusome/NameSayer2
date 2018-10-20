@@ -4,10 +4,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.controls.JFXTextField;
+
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,11 +18,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
+import namesayer.model.Name;
 import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.model.Recording;
@@ -29,6 +35,7 @@ import org.controlsfx.control.Rating;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class DatabaseViewController implements Initializable {
 
@@ -37,21 +44,24 @@ public class DatabaseViewController implements Initializable {
     @FXML private JFXListView recordingList;
     @FXML private GridPane parentPane;
     @FXML private JFXSpinner playingSpinner;
-    private double ratingValue;
+    @FXML private JFXTextField nameSearchBar;
     @FXML private Rating rating;
     @FXML private JFXButton ratingButton;
     @FXML private MaterialIconView ratingIcon;
+    private double ratingValue;
     private JFXSnackbar bar;
     private ObservableList<CompositeName> userRecordings;
     private ObservableList<PartialName> databaseRecordings;
     private boolean isNameDatabase;
+    private ObservableList<Name> listOfNames;
+    private int counter = 0;
 
     /**
      * Initialize listView
      */
     public void initialise() {
-        userRecordings = NameStorageManager.getInstance().getCompositeNames();
-        databaseRecordings = NameStorageManager.getInstance().getPartialNames();
+       // userRecordings = NameStorageManager.getInstance().getCompositeNames();
+       // databaseRecordings = NameStorageManager.getInstance().getPartialNames();
         playingSpinner.setProgress(1);
         setRatingVisible(false, false);
     }
@@ -61,6 +71,7 @@ public class DatabaseViewController implements Initializable {
      */
     public void onNameDatabaseClicked() {
 
+    	counter=0;
         isNameDatabase = true;
         initialise();
         if (databaseRecordings.isEmpty()) {
@@ -76,7 +87,7 @@ public class DatabaseViewController implements Initializable {
      * Show user recordings
      */
     public void onUserRecordingClicked() {
-
+    	counter=1;
         isNameDatabase = false;
         initialise();
         if (userRecordings.isEmpty()) {
@@ -88,6 +99,43 @@ public class DatabaseViewController implements Initializable {
         }
     }
 
+    
+    @FXML
+    public void searchNameKeyTyped(KeyEvent e) {
+    	String userInput = nameSearchBar.getText();
+		if(e.getCode().equals(KeyCode.ENTER)) {
+			nameSearchBar.clear();
+	        if (userInput.isEmpty()) {
+	            //showNameDatabase();
+	        } else {
+	        	if(counter==0) {
+	        		listOfNames = databaseRecordings.stream()
+
+                            .filter(name -> name.toString().toLowerCase().contains(userInput))
+
+                            .collect(Collectors.toCollection(FXCollections::observableArrayList));
+	        	}else {
+	        		listOfNames = userRecordings.stream()
+
+                            .filter(name -> name.toString().toLowerCase().contains(userInput))
+
+                            .collect(Collectors.toCollection(FXCollections::observableArrayList));
+	        	}
+	        	
+
+	        }
+
+	        //TODO change to bindings if u have time
+
+	        nameList.setItems(listOfNames);
+    	}
+    	
+    }
+    
+    
+    
+    
+    
     /**
      * Back to main menu
      */
@@ -235,6 +283,8 @@ public class DatabaseViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // TODO Auto-generated method stub
+        userRecordings = NameStorageManager.getInstance().getCompositeNames();
+        databaseRecordings = NameStorageManager.getInstance().getPartialNames();
         bar = new JFXSnackbar(parentPane);
         bar.getStylesheets().addAll("/css/Material.css");
         rating.setRating(3.0);

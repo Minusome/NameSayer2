@@ -14,7 +14,8 @@ public enum Screen {
     ASSESSMENT_SCREEN("/AssessmentScreen.fxml"),
     PRACTISE_SCREEN("/PractiseScreen.fxml"),
     NAME_SELECT_SCREEN("/NameSelectScreen.fxml"),
-    STATS_SCREEN("/StatsScreen.fxml");
+    STATS_SCREEN("/StatsScreen.fxml"),
+	HELP_SCREEN("/HelpScreen.fxml");
 
 
     private Parent root;

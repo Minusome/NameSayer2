@@ -167,4 +167,8 @@
     -fx-background-radius: 4;
     -fx-background-insets: 0;
 }
-
+databaseTextField {
+	-fx-prompt-text-fill: #bdbdbd;
+	-fx-text-fill: #ffffff;
+	
+}
