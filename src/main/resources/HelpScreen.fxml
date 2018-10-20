@@ -11,9 +11,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="760.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.HelpScreenController">
+<GridPane prefHeight="760.0" prefWidth="851.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.HelpScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -39,7 +40,7 @@
       </HBox>
       <ScrollPane prefHeight="722.0" prefWidth="1156.0" GridPane.rowIndex="1">
          <content>
-            <GridPane prefHeight="2058.0" prefWidth="996.0">
+            <GridPane prefHeight="2133.0" prefWidth="823.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -50,39 +51,45 @@
                 <RowConstraints maxHeight="595.666748046875" minHeight="10.0" prefHeight="574.33349609375" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="CENTER" prefHeight="651.0" prefWidth="1156.0">
+                  <VBox alignment="CENTER" prefHeight="506.0" prefWidth="755.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="91.0" prefWidth="307.0" text="Main Menu" textFill="#393588">
+                        <Label alignment="CENTER" prefHeight="54.0" prefWidth="307.0" text="Main Menu" textFill="#393588">
                            <font>
-                              <Font size="39.0" />
+                              <Font size="30.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="502.0" fitWidth="823.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="413.0" fitWidth="643.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@icon/mainMenu.jpg" />
                            </image>
                         </ImageView>
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="450.0" prefWidth="1035.0" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets top="10.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" GridPane.rowIndex="1">
                      <children>
+                        <Label alignment="CENTER" prefHeight="143.0" prefWidth="410.0" text="Database View" textFill="#393588">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
                         <ImageView fitHeight="449.0" fitWidth="597.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@icon/database.jpg" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="143.0" prefWidth="410.0" text="Database View" textFill="#393588">
-                           <font>
-                              <Font size="39.0" />
-                           </font>
-                        </Label>
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets top="10.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" GridPane.rowIndex="2">
                      <children>
                         <Label alignment="CENTER" prefHeight="130.0" prefWidth="404.0" text="Statistic View" textFill="#393588">
                            <font>
-                              <Font size="39.0" />
+                              <Font size="30.0" />
                            </font>
                         </Label>
                         <ImageView fitHeight="504.0" fitWidth="625.0" pickOnBounds="true" preserveRatio="true">
@@ -91,21 +98,21 @@
                            </image>
                         </ImageView>
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="449.0" prefWidth="1156.0" GridPane.rowIndex="3">
+                  </VBox>
+                  <VBox alignment="CENTER" GridPane.rowIndex="3">
                      <children>
+                        <Label alignment="CENTER" prefHeight="116.0" prefWidth="364.0" text="Select Names" textFill="#393588">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
                         <ImageView fitHeight="828.0" fitWidth="792.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@icon/nameSelect.jpg" />
                            </image>
                         </ImageView>
-                        <Label alignment="CENTER" prefHeight="116.0" prefWidth="364.0" text="Select Names" textFill="#393588">
-                           <font>
-                              <Font size="39.0" />
-                           </font>
-                        </Label>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
             </GridPane>
          </content>
