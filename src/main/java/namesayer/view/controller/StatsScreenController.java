@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXListView;
 import javafx.application.Platform;
@@ -16,9 +16,11 @@ import namesayer.persist.StatsManager;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.LineChartDataAdapter;
 import namesayer.util.PieChartDataAdapter;
-import namesayer.view.StatsNameListCell;
+import namesayer.view.cell.StatsNameListCell;
 
 import java.io.IOException;
+
+import static namesayer.util.Screen.MAIN_MENU;
 
 public class StatsScreenController {
 
@@ -38,20 +40,16 @@ public class StatsScreenController {
         badNamesList.setCellFactory(param -> new StatsNameListCell());
 
         Thread thread = new Thread(() -> {
-            pieChart.setData(new PieChartDataAdapter().retrieveData(statsManager.getGlobalRatingFreq()));
-            lineChart.getData().add(new LineChartDataAdapter().retrieveData(statsManager.getAvgAssessRatingOverTime()));
-            badNamesList.setItems(FXCollections.observableArrayList(statsManager.getDifficultNamesList()));
+            Platform.runLater(() -> {
+                pieChart.setData(new PieChartDataAdapter().retrieveData(statsManager.getGlobalRatingFreq()));
+                lineChart.getData().add(new LineChartDataAdapter().retrieveData(statsManager.getAvgAssessRatingOverTime()));
+                badNamesList.setItems(FXCollections.observableArrayList(statsManager.getDifficultNamesList()));
+            });
         });
         thread.start();
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
-            Scene scene = lineChart.getScene();
-            scene.setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MAIN_MENU.loadWithNode(lineChart);
     }
 }

@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 
 import com.jfoenix.controls.JFXButton;
@@ -32,7 +32,7 @@ import namesayer.session.SessionFactory;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.NameConcatenateTask;
 import namesayer.util.SnackBarLoader;
-import namesayer.view.CompleteNameLoadingCell;
+import namesayer.view.cell.CompleteNameLoadingCell;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -49,6 +49,7 @@ import java.util.stream.Stream;
 import static namesayer.session.Session.SessionType;
 import static namesayer.session.Session.SessionType.ASSESSMENT;
 import static namesayer.session.Session.SessionType.PRACTISE;
+import static namesayer.util.Screen.*;
 
 
 public class NameSelectScreenController {
@@ -128,12 +129,12 @@ public class NameSelectScreenController {
                 sessionFactory.randomize();
             }
             if (sessionType.equals(ASSESSMENT)) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
+                FXMLLoader loader = ASSESSMENT_SCREEN.getLoader();
                 root = loader.load();
                 AssessmentScreenController controller = loader.getController();
                 controller.injectSession(sessionFactory.makeAssessmentSession());
             } else {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PractiseScreen.fxml"));
+                FXMLLoader loader = PRACTISE_SCREEN.getLoader();
                 root = loader.load();
                 PractiseScreenController controller = loader.getController();
                 controller.injectSession(sessionFactory.makePractiseSession());
@@ -178,13 +179,7 @@ public class NameSelectScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
-            Scene scene = nameSearchBar.getScene();
-            scene.setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MAIN_MENU.loadWithNode(nameSearchBar);
     }
 
 
@@ -215,12 +210,12 @@ public class NameSelectScreenController {
     public void onResumeButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root;
         if (sessionType.equals(ASSESSMENT)) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssessmentScreen.fxml"));
+            FXMLLoader loader = ASSESSMENT_SCREEN.getLoader();
             root = loader.load();
             AssessmentScreenController controller = loader.getController();
             controller.injectSession((AssessmentSession) savedSessionsListView.getSelectionModel().getSelectedItem());
         } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PractiseScreen.fxml"));
+            FXMLLoader loader = PRACTISE_SCREEN.getLoader();
             root = loader.load();
             PractiseScreenController controller = loader.getController();
             controller.injectSession((PractiseSession) savedSessionsListView.getSelectionModel().getSelectedItem());
@@ -231,12 +226,6 @@ public class NameSelectScreenController {
     
     @FXML
     public void onHelpButtonClicked(MouseEvent e) throws IOException {
-    	Scene scene = helpButton.getScene();
-    	Parent root;
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/HelpScreen2.fxml"));
-        root = loader.load();
-        scene.setRoot(root);
-    	
-    	
+        NAME_SELECT_HELP_SCREEN.loadWithNode(helpButton);
     }
 }

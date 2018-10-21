@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import org.controlsfx.control.Rating?>
 
-<GridPane fx:id="playerCard" alignment="CENTER" prefHeight="80.0" prefWidth="700.0" styleClass="card" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.PlayerFragmentController">
+<GridPane fx:id="playerCard" alignment="CENTER" prefHeight="80.0" prefWidth="700.0" styleClass="card" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.PlayerFragmentController">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />

@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.view.cell;
 
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import namesayer.model.CompositeRecording;
 import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
+import namesayer.view.controller.RatingPopupController;
 
 import java.io.IOException;
 import java.util.ArrayList;

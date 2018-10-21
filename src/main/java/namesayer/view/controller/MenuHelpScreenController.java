@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 import java.io.IOException;
 
@@ -9,13 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-public class HelpScreenController2 {
+import static namesayer.util.Screen.MAIN_MENU;
+
+public class MenuHelpScreenController {
 	@FXML JFXButton backButton;
 	
 	public void onBackButtonClicked() throws IOException {
-        Scene scene = backButton.getScene();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/NameSelectScreen.fxml"));
-        Parent root = loader.load();
-        scene.setRoot(root);
+        MAIN_MENU.loadWithNode(backButton);
 	}
 }

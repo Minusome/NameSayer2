@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.view.cell;
 
 import com.jfoenix.controls.JFXListCell;
 import javafx.fxml.FXML;

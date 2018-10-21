@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import static namesayer.util.Screen.MAIN_MENU;
 
 public class DatabaseViewController implements Initializable {
 
@@ -140,10 +142,7 @@ public class DatabaseViewController implements Initializable {
      * Back to main menu
      */
     public void onBackClicked() throws IOException {
-        Scene scene = backButton.getScene();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuScreen.fxml"));
-        Parent root = loader.load();
-        scene.setRoot(root);
+        MAIN_MENU.loadWithNode(backButton);
     }
 
     /**

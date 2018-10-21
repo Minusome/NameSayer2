@@ -1,9 +1,8 @@
-package namesayer;
+package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import namesayer.persist.NameStorageManager;
 import namesayer.session.Session;
@@ -15,7 +14,7 @@ import static namesayer.session.Session.SessionType.PRACTISE;
 import static namesayer.util.Screen.BROWSE_DATABASE_SCREEN;
 import static namesayer.util.Screen.NAME_SELECT_SCREEN;
 import static namesayer.util.Screen.STATS_SCREEN;
-import static namesayer.util.Screen.HELP_SCREEN;
+import static namesayer.util.Screen.MENU_HELP_SCREEN;
 
 
 public class MenuScreenController {
@@ -41,8 +40,9 @@ public class MenuScreenController {
     }
 
     public void loadSelection(Session.SessionType type) throws IOException {
-        NAME_SELECT_SCREEN.loadWithNode(practiceButton);
-        NameSelectScreenController controller = NAME_SELECT_SCREEN.getController();
+        FXMLLoader loader =  NAME_SELECT_SCREEN.getLoader();
+        practiceButton.getScene().setRoot(loader.load());
+        NameSelectScreenController controller = loader.getController();
         controller.setSessionType(type);
     }
 
@@ -83,6 +83,6 @@ public class MenuScreenController {
     }
     
     public void onHelpButtonClicked(MouseEvent e) throws IOException {
-    	HELP_SCREEN.loadWithNode(practiceButton);
+    	MENU_HELP_SCREEN.loadWithNode(practiceButton);
     }
 }

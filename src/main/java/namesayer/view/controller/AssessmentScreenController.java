@@ -1,10 +1,12 @@
-package namesayer;
+package namesayer.view.controller;
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,9 +21,9 @@ import namesayer.persist.StatsManager;
 import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
 import namesayer.util.TransitionFactory;
-import namesayer.view.MicTestAlert;
-import namesayer.view.RewardCardController;
-import namesayer.view.SaveAlert;
+import namesayer.view.alert.MicTestAlert;
+import namesayer.view.controller.RewardCardController;
+import namesayer.view.alert.SaveAlert;
 import org.controlsfx.control.Rating;
 
 import java.io.IOException;
@@ -51,7 +53,6 @@ public class AssessmentScreenController {
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
 
-
     public void injectSession(AssessmentSession session) {
         this.session = session;
         label.setText(session.getCurrentName().toString());
@@ -62,6 +63,7 @@ public class AssessmentScreenController {
             disableButtons(true, true);
         }
         refreshCardNumber();
+
     }
 
     public void initialize() {
@@ -184,6 +186,7 @@ public class AssessmentScreenController {
         StatsManager.getInstance().save();
         SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
         saveAlert.show();
+
     }
 
     public void onMicTestButtonClicked() {

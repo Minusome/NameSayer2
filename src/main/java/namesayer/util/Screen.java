@@ -2,9 +2,9 @@ package namesayer.util;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 
 import java.io.IOException;
+import java.net.URL;
 
 
 public enum Screen {
@@ -15,32 +15,27 @@ public enum Screen {
     PRACTISE_SCREEN("/PractiseScreen.fxml"),
     NAME_SELECT_SCREEN("/NameSelectScreen.fxml"),
     STATS_SCREEN("/StatsScreen.fxml"),
-	HELP_SCREEN("/HelpScreen.fxml");
+	MENU_HELP_SCREEN("/MenuHelpScreen.fxml"),
+    NAME_SELECT_HELP_SCREEN("/NameSelectHelpScreen.fxml"),
+    MIC_TEST_ALERT("/MicTestAlert.fxml");
 
 
-    private Parent root;
-    private FXMLLoader loader;
+    private URL url;
 
     Screen(String url) {
-        loader = new FXMLLoader(getClass().getResource(url));
+        this.url = getClass().getResource(url);
+    }
+
+    public FXMLLoader getLoader() {
+        return new FXMLLoader(url);
+    }
+
+    public void loadWithNode(Node node) {
         try {
-            root = loader.load();
+            node.getScene().setRoot(getLoader().load());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Parent getRoot() {
-        return root;
-    }
-
-    public <T> T getController() {
-        return loader.getController();
-    }
-
-
-    public void loadWithNode(Node node) {
-        node.getScene().setRoot(root);
     }
 }
 

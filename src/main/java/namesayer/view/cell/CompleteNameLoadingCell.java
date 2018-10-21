@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.view.cell;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListCell;
@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
-import namesayer.NameSelectScreenController;
+import namesayer.view.controller.NameSelectScreenController;
 import namesayer.persist.NameStorageManager;
 import namesayer.persist.Result;
 

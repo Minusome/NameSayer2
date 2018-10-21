@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;

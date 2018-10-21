@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.view.controller;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;

@@ -1,10 +1,11 @@
-package namesayer.view;
+package namesayer.view.alert;
 
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
@@ -16,6 +17,8 @@ import namesayer.session.Session;
 
 import java.io.IOException;
 
+import static namesayer.util.Screen.MAIN_MENU;
+
 public class SaveAlert extends JFXAlert {
 
     private AssessmentSession assessmentSession;
@@ -25,16 +28,16 @@ public class SaveAlert extends JFXAlert {
     public SaveAlert(Stage stage, AssessmentSession session) {
         super(stage);
         assessmentSession = session;
-        loadContent(stage, session, this::saveAssessment, this::removeAssessment);
+        loadContent(session, this::saveAssessment, this::removeAssessment);
     }
 
     public SaveAlert(Stage stage, PractiseSession session) {
         super(stage);
         practiseSession = session;
-        loadContent(stage, session, this::savePractise, this::removePractise);
+        loadContent(session, this::savePractise, this::removePractise);
     }
 
-    private void loadContent(Stage stage, Session session, Runnable saveStrategy, Runnable removeStrategy) {
+    private void loadContent(Session session, Runnable saveStrategy, Runnable removeStrategy) {
         this.initModality(Modality.WINDOW_MODAL);
         this.setOverlayClose(false);
         JFXDialogLayout layout = new JFXDialogLayout();
@@ -66,26 +69,20 @@ public class SaveAlert extends JFXAlert {
         saveButton.setOnAction(event -> {
             session.setSessionName(field.getText());
             saveStrategy.run();
-            previousScreen(stage);
+            previousScreen(layout);
             this.hideWithAnimation();
         });
         dontSaveButton.setOnAction(event -> {
             removeStrategy.run();
-            previousScreen(stage);
+            previousScreen(layout);
             this.hideWithAnimation();
         });
         layout.setActions(saveButton, dontSaveButton, cancelButton);
         this.setContent(layout);
     }
 
-    private void previousScreen(Stage stage) {
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/MenuScreen.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.getScene().setRoot(root);
+    private void previousScreen(Node node) {
+        MAIN_MENU.loadWithNode(node);
     }
 
 

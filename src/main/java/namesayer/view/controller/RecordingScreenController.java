@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import namesayer.model.Name;
 import namesayer.model.Recording;
-import namesayer.view.RecordingListCell;
+import namesayer.view.cell.RecordingListCell;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.view.cell;
 
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import namesayer.RecordingScreenController;
+import namesayer.view.controller.RecordingScreenController;
 import namesayer.model.Recording;
 
 import java.io.IOException;

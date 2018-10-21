@@ -1,6 +1,7 @@
 package namesayer;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import namesayer.persist.NameStorageManager;
@@ -20,7 +21,7 @@ public class Main extends Application {
         NameStorageManager.getInstance();
         SessionStorageManager.getInstance();
         StatsManager.getInstance();
-        Scene scene = new Scene(MAIN_MENU.getRoot(), 800, 700);
+        Scene scene = new Scene(MAIN_MENU.getLoader().load(), 800, 700);
         primaryStage.setTitle("Name Sayer");
         primaryStage.setScene(scene);
         primaryStage.setMinHeight(700);

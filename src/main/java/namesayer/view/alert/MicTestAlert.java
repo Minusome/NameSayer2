@@ -1,4 +1,4 @@
-package namesayer.view;
+package namesayer.view.alert;
 
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -7,8 +7,8 @@ import com.jfoenix.controls.JFXProgressBar;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,39 +17,42 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 
+import static namesayer.util.Screen.MIC_TEST_ALERT;
+
 public class MicTestAlert extends JFXAlert {
 
-    @FXML private StackPane rootPane;
     @FXML private JFXProgressBar microphoneVolume;
+
+    private Parent root;
+    private boolean isSampling = true;
 
     public MicTestAlert(Stage stage) {
         super(stage);
-        loadContent(stage);
+        loadContent();
     }
 
-    private void loadContent(Stage stage) {
+    private void loadContent() {
         this.initModality(Modality.WINDOW_MODAL);
-        this.setOverlayClose(false);
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Label("Microphone Volume"));
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/MicTestAlert.fxml"));
-        fxmlLoader.setController(this);
+        FXMLLoader loader = MIC_TEST_ALERT.getLoader();
+        loader.setController(this);
         try {
-            fxmlLoader.load();
+            root =  loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Thread thread = new Thread(this::testMicrophone);
-        thread.start();
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Label("Microphone Volume"));
+        layout.setBody(root);
         JFXButton doneButton = new JFXButton("Done");
-        layout.setBody(rootPane);
+
         doneButton.setOnAction(event -> {
-            thread.interrupt();
+            isSampling = false;
             this.hideWithAnimation();
         });
         layout.setActions(doneButton);
         this.setContent(layout);
+        Thread thread = new Thread(this::testMicrophone);
+        thread.start();
     }
 
 
@@ -62,7 +65,7 @@ public class MicTestAlert extends JFXAlert {
 
             double highestVolume = 0;
             byte tempBuffer[] = new byte[1000];
-            while (true){
+            while (isSampling){
                 if (microphone.read(tempBuffer, 0, tempBuffer.length) > 0) {
                     double sumVolume = 0;
                     for (byte aTempBuffer : tempBuffer) {

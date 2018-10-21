@@ -1,4 +1,4 @@
-package namesayer;
+package namesayer.view.controller;
 
 
 import com.jfoenix.controls.JFXButton;
@@ -22,9 +22,9 @@ import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.SnackBarLoader;
-import namesayer.view.MicTestAlert;
-import namesayer.view.PractiseListCell;
-import namesayer.view.SaveAlert;
+import namesayer.view.alert.MicTestAlert;
+import namesayer.view.cell.PractiseListCell;
+import namesayer.view.alert.SaveAlert;
 
 import static namesayer.util.TransitionFactory.Direction.LEFT;
 import static namesayer.util.TransitionFactory.Direction.RIGHT;
