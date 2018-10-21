@@ -10,7 +10,7 @@ import java.net.URL;
 public enum Screen {
 
     MAIN_MENU("/MenuScreen.fxml"),
-    BROWSE_DATABASE_SCREEN("/RecordingScreen.fxml"),
+    BROWSE_DATABASE_SCREEN("/BrowseDatabaseScreen.fxml"),
     ASSESSMENT_SCREEN("/AssessmentScreen.fxml"),
     PRACTISE_SCREEN("/PractiseScreen.fxml"),
     NAME_SELECT_SCREEN("/NameSelectScreen.fxml"),

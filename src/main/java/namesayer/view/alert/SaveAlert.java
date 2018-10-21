@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
@@ -28,16 +27,16 @@ public class SaveAlert extends JFXAlert {
     public SaveAlert(Stage stage, AssessmentSession session) {
         super(stage);
         assessmentSession = session;
-        loadContent(session, this::saveAssessment, this::removeAssessment);
+        loadContent(stage, session, this::saveAssessment, this::removeAssessment);
     }
 
     public SaveAlert(Stage stage, PractiseSession session) {
         super(stage);
         practiseSession = session;
-        loadContent(session, this::savePractise, this::removePractise);
+        loadContent(stage, session, this::savePractise, this::removePractise);
     }
 
-    private void loadContent(Session session, Runnable saveStrategy, Runnable removeStrategy) {
+    private void loadContent(Stage stage ,Session session, Runnable saveStrategy, Runnable removeStrategy) {
         this.initModality(Modality.WINDOW_MODAL);
         this.setOverlayClose(false);
         JFXDialogLayout layout = new JFXDialogLayout();
@@ -69,20 +68,25 @@ public class SaveAlert extends JFXAlert {
         saveButton.setOnAction(event -> {
             session.setSessionName(field.getText());
             saveStrategy.run();
-            previousScreen(layout);
+            previousScreen(stage);
             this.hideWithAnimation();
         });
         dontSaveButton.setOnAction(event -> {
             removeStrategy.run();
-            previousScreen(layout);
+            previousScreen(stage);
             this.hideWithAnimation();
         });
         layout.setActions(saveButton, dontSaveButton, cancelButton);
         this.setContent(layout);
     }
 
-    private void previousScreen(Node node) {
-        MAIN_MENU.loadWithNode(node);
+    private void previousScreen(Stage stage) {
+        FXMLLoader loader = MAIN_MENU.getLoader();
+        try {
+            stage.getScene().setRoot(loader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

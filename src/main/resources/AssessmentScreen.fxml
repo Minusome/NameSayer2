@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.Rating?>
 
-<GridPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.AssessmentScreenController">
+<GridPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.AssessmentScreenController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -181,7 +181,7 @@
                </graphic>
             </JFXButton>
             <Region HBox.hgrow="ALWAYS" />
-            <JFXButton fx:id="micTestButton" onMouseClicked="#onMicTestButtonClicked" style="-fx-background-color: #5400cc;" text="Mic Check" textFill="WHITE">
+            <JFXButton fx:id="micTestButton" onMouseClicked="#onMicTestButtonClicked" styleClass="background" stylesheets="@css/Material.css" text="Mic Check" textFill="WHITE">
                <font>
                   <Font name="Roboto Regular" size="14.0" />
                </font>
