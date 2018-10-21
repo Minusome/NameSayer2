@@ -34,10 +34,9 @@ import org.controlsfx.control.Rating;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
-import static namesayer.util.Screen.MAIN_MENU;
 
 public class DatabaseViewController implements Initializable {
 
@@ -50,6 +49,7 @@ public class DatabaseViewController implements Initializable {
     @FXML private Rating rating;
     @FXML private JFXButton ratingButton;
     @FXML private MaterialIconView ratingIcon;
+    @FXML private JFXButton sortButton;
     private double ratingValue;
     private JFXSnackbar bar;
     private ObservableList<CompositeName> userRecordings;
@@ -65,7 +65,7 @@ public class DatabaseViewController implements Initializable {
        // userRecordings = NameStorageManager.getInstance().getCompositeNames();
        // databaseRecordings = NameStorageManager.getInstance().getPartialNames();
         playingSpinner.setProgress(1);
-        setRatingVisible(false, false);
+        setRatingVisible(false, false,false);
     }
 
     /**
@@ -145,7 +145,10 @@ public class DatabaseViewController implements Initializable {
      * Back to main menu
      */
     public void onBackClicked() throws IOException {
-        MAIN_MENU.loadWithNode(backButton);
+        Scene scene = backButton.getScene();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuScreen.fxml"));
+        Parent root = loader.load();
+        scene.setRoot(root);
     }
 
     /**
@@ -179,7 +182,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent e) {
-                setRatingVisible(false, false);
+                setRatingVisible(false, false,false);
                 PartialName name = (PartialName) nameList.getSelectionModel().getSelectedItem();
                 recordingList.setItems(name.getRecordings());
                 recordingActionListener();
@@ -199,7 +202,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent arg0) {
-                setRatingVisible(false, false);
+                setRatingVisible(false, false,true);
                 CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
                 recordingList.setItems(name.getUserAttempts());
                 userAttemptsListener();
@@ -217,7 +220,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                setRatingVisible(false, true);
+                setRatingVisible(false, true,true);
                 CompositeRecording r = (CompositeRecording) recordingList.getSelectionModel().getSelectedItem();
                 rating.setRating(r.getRating());
                 //setUserAttemptsRating();
@@ -235,7 +238,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                setRatingVisible(true, false);
+                setRatingVisible(true, false,false);
                 PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
                 setRating(r.isBadQuality());
             }
@@ -291,16 +294,29 @@ public class DatabaseViewController implements Initializable {
         bar = new JFXSnackbar(parentPane);
         bar.getStylesheets().addAll("/css/Material.css");
         rating.setRating(3.0);
-        setRatingVisible(false, false);
+        setRatingVisible(false, false,false);
 
     }
 
     /**
      * Set visibility of ratings
      */
-    private void setRatingVisible(boolean thumb, boolean star) {
+    private void setRatingVisible(boolean thumb, boolean star, boolean sort) {
         rating.setVisible(star);
         ratingButton.setVisible(thumb);
+        sortButton.setVisible(sort);
     }
+    
+    @FXML
+    private void sortByRating(MouseEvent e) {
+    	if(nameList.getSelectionModel().getSelectedItem()==null) {
+    		bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name to sort"));
+    	}else {
+    		CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
+            recordingList.setItems(name.getUserAttempts());
+    		recordingList.getItems().sort(Comparator.comparingDouble(CompositeRecording::getRating).reversed());
+    	}
+    }
+    
 
 }

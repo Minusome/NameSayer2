@@ -1,13 +1,20 @@
 package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import namesayer.persist.NameStorageManager;
 import namesayer.session.Session;
+import namesayer.persist.NewDatabaseLoader;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Stream;
 
 import static namesayer.session.Session.SessionType.ASSESSMENT;
 import static namesayer.session.Session.SessionType.PRACTISE;
@@ -23,6 +30,8 @@ public class MenuScreenController {
     @FXML private JFXButton practiceButton;
     @FXML private JFXButton loadExistingDataBaseButton;
     @FXML private JFXButton browseButton;
+    
+    private JFXSnackbar bar;
 
     private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
 
@@ -74,6 +83,27 @@ public class MenuScreenController {
 //            practiceButton.setDisable(false);
 //        }
 //    }
+    public void loadNewDatabase(MouseEvent e) {
+    	FileChooser chooser = new FileChooser();
+        chooser.setTitle("Select folder containing recordings");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
+        File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
+        if (selectedFile != null) {
+          new NewDatabaseLoader().editFile(selectedFile);
+          
+          //bar.enqueue(new JFXSnackbar.SnackbarEvent("No recordings in datatbase"));
+        }
+    }
+    
+/*    public void showLoadResult(boolean succeeded,String name) {
+    	if(succeeded) {
+    		bar.enqueue(new JFXSnackbar.SnackbarEvent("Successful load "+name));
+    	}else {
+    		bar.enqueue(new JFXSnackbar.SnackbarEvent("Can't load "+ name));
+    	}
+    	
+    }*/
+    
     public void onBrowseModeClicked(MouseEvent e) throws IOException {
         BROWSE_DATABASE_SCREEN.loadWithNode(practiceButton);
     }

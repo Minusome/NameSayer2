@@ -72,6 +72,7 @@ public class NameSelectScreenController {
 
     public void initialize() {
         //Use custom ListCell with checkboxes
+    	helpButton.setVisible(false);
         nameListView.setCellFactory(value -> new CompleteNameLoadingCell(this));
         nameListView.setSelectionModel(new EmptySelectionModel<>());
         nameListView.setExpanded(false);
