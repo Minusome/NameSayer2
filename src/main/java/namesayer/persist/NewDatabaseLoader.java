@@ -66,11 +66,14 @@ public class NewDatabaseLoader {
 	                e.printStackTrace();
 	            }
 				_file.renameTo(new File(databse + "//" + _file.getName()));
+	            File file=new File(databse + "//" + _file.getName());
 				String name = _file.getName().replace(".wav", "");
 				if(! name.isEmpty()) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1);
 					PartialName partialName = new PartialName(name);
-					partialName.addRecording(new PartialRecording(_file.toPath()));
+					partialName.addRecording(new PartialRecording(file.toPath()));
+					System.out.println(_file.toPath().toString());
+					System.out.println(_file.getAbsolutePath());
 					NameStorageManager.getInstance().addNewPartialName(partialName);
 
 				}
