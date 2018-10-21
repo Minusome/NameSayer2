@@ -19,11 +19,13 @@ public class NewDatabaseLoader {
 	private File _file;
 	private String path;
 	private final File databse = DATABASE_FOLDER.toFile();
+	boolean succeed =true;
 	
-	public void editFile(File file) {
+	public boolean editFile(File file) {
 		_file=file;
 		path=file.getAbsolutePath();
 		load(path);
+		return succeed;
 	}
 
 	public void load(String path) {
@@ -90,6 +92,7 @@ public class NewDatabaseLoader {
 			protected void failed() {
 				super.failed();
 				updateMessage("Can't load file: "+_file.getName());
+				succeed=false;
 			}
 			
 		};

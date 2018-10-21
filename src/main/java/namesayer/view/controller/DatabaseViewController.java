@@ -30,6 +30,7 @@ import org.controlsfx.control.Rating;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,7 @@ public class DatabaseViewController implements Initializable {
     @FXML private JFXSpinner playingSpinner;
     @FXML private JFXTextField nameSearchBar;
     @FXML private Rating rating;
+    @FXML private JFXButton sortButton;
     private double ratingValue;
     private JFXSnackbar bar;
     private ObservableList<CompositeName> userRecordings;
@@ -60,7 +62,7 @@ public class DatabaseViewController implements Initializable {
        // userRecordings = NameStorageManager.getInstance().getCompositeNames();
        // databaseRecordings = NameStorageManager.getInstance().getPartialNames();
         playingSpinner.setProgress(1);
-        setRatingVisible(false, false);
+        setRatingVisible(false, false,false);
     }
 
     /**
@@ -162,7 +164,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent e) {
-                setRatingVisible(false, false);
+                setRatingVisible(false, false,false);
                 PartialName name = (PartialName) nameList.getSelectionModel().getSelectedItem();
                 if (name != null) {
                     recordingList.setItems(FXCollections.observableArrayList(name.getRecordings()));
@@ -184,7 +186,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent arg0) {
-                setRatingVisible(false, false);
+                setRatingVisible(false, false,true);
                 CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
                 if (name != null) {
                     recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
@@ -204,7 +206,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                setRatingVisible(false, true);
+                setRatingVisible(false, true,true);
                 CompositeRecording r = (CompositeRecording) recordingList.getSelectionModel().getSelectedItem();
                 if (r != null) {
                     rating.setRating(r.getRating());
@@ -224,7 +226,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                setRatingVisible(true, false);
+                setRatingVisible(true, false,false);
                 PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
                 if (r != null) {
                     badQualityToggle.setSelected(r.isBadQuality());
@@ -267,16 +269,28 @@ public class DatabaseViewController implements Initializable {
         bar = new JFXSnackbar(parentPane);
         bar.getStylesheets().addAll("/css/Material.css");
         rating.setRating(3.0);
-        setRatingVisible(false, false);
+        setRatingVisible(false, false,false);
 
     }
 
     /**
      * Set visibility of ratings
      */
-    private void setRatingVisible(boolean thumb, boolean star) {
+    private void setRatingVisible(boolean thumb, boolean star,boolean sort) {
         rating.setVisible(star);
         badQualityToggle.setVisible(thumb);
+        sortButton.setVisible(sort);
+    }
+
+    @FXML
+    private void sortByRating(MouseEvent e) {
+        if(nameList.getSelectionModel().getSelectedItem()==null) {
+            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name to sort"));
+        }else {
+            CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
+            recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
+            recordingList.getItems().sort(Comparator.comparingDouble(CompositeRecording::getRating).reversed());
+        }
     }
 
 }

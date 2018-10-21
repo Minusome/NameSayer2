@@ -1,9 +1,11 @@
 package namesayer.view.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import namesayer.persist.NameStorageManager;
 import namesayer.persist.NewDatabaseLoader;
@@ -26,11 +28,15 @@ public class MenuScreenController {
     @FXML private JFXButton practiceButton;
     @FXML private JFXButton loadExistingDataBaseButton;
     @FXML private JFXButton browseButton;
+    @FXML private GridPane parentPane;
+    private JFXSnackbar bar;
 
     private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
 
     public void initialize() {
         practiceButton.setDisable(false);
+        bar = new JFXSnackbar(parentPane);
+        bar.getStylesheets().addAll("/css/Material.css");
     }
 
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
@@ -84,9 +90,21 @@ public class MenuScreenController {
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
         File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
         if (selectedFile != null) {
-            new NewDatabaseLoader().editFile(selectedFile);
+            boolean succeed = (new NewDatabaseLoader().editFile(selectedFile));
 
-            //bar.enqueue(new JFXSnackbar.SnackbarEvent("No recordings in datatbase"));
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+
+            if(succeed){
+                bar.enqueue(new JFXSnackbar.SnackbarEvent("Successfully load name: "+ selectedFile.getName().replace(".wav","")));
+
+            }else{
+                bar.enqueue(new JFXSnackbar.SnackbarEvent("Can't load name: " + selectedFile.getName().replace(".wav","")));
+            }
+
         }
     }
 

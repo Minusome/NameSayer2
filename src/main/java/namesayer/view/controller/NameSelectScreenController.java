@@ -83,6 +83,7 @@ public class NameSelectScreenController {
         suggestions = SuggestionProvider.create(autoCompletions);
         AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(nameSearchBar, suggestions);
         binding.setPrefWidth(500);
+        helpButton.setVisible(false);
     }
 
     private void addToListView(String userInput, String errorMsg) {
