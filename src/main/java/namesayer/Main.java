@@ -8,13 +8,13 @@ import namesayer.persist.NameStorageManager;
 import namesayer.persist.SessionStorageManager;
 import namesayer.persist.StatsManager;
 
+
 import static namesayer.util.Screen.MAIN_MENU;
 
 
 public class Main extends Application {
     //TODO Implement Rewards screen
     //TODO Make the card number display actually work
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {

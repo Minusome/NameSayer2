@@ -1,5 +1,7 @@
 package namesayer.persist;
 
+import javafx.stage.Stage;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

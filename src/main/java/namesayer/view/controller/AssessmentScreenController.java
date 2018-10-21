@@ -34,7 +34,6 @@ public class AssessmentScreenController {
 
     @FXML private JFXButton micTestButton;
     @FXML private GridPane parentPane;
-    @FXML private JFXButton playButton;
     @FXML private JFXButton recordingButton;
     @FXML private Label cardNumber;
     @FXML private JFXButton replayButton;
@@ -45,13 +44,15 @@ public class AssessmentScreenController {
     @FXML private JFXButton nextButton;
     @FXML private StackPane cardPane;
     @FXML private Label label;
-    @FXML private JFXSpinner playingSpinner;
+
 
 
     //Must set session when initializing this scene
     private AssessmentSession session;
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
+    private SaveAlert saveAlertCache;
+    private MicTestAlert micTestAlertCache;
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
@@ -67,9 +68,7 @@ public class AssessmentScreenController {
     }
 
     public void initialize() {
-        playingSpinner.setProgress(1);
         recordingSpinner.setProgress(1);
-        playButton.setFocusTraversable(false);
         recordingButton.setFocusTraversable(false);
     }
 
@@ -82,12 +81,11 @@ public class AssessmentScreenController {
     //enable loading cards backwards and forwards
     //disable the button if its the last card
     private void loadNewCard() {
-
         int ratingValue = (int) Math.round(ratingStars.getRating());
         statsManager.updateRatingFreq(ratingValue);
         statsManager.updateDifficultName(session.getCurrentName(), ratingValue);
-
         if (session.getCurrentIndex() + 1 == session.getNumberOfNames()) {
+            session.resetToFirst();
             statsManager.updateAvgAssessRating(session.getAverageRating());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RewardCard.fxml"));
             Parent root = null;
@@ -107,19 +105,6 @@ public class AssessmentScreenController {
         disableButtons(true, true);
     }
 
-    public void onPlayButtonClicked(MouseEvent mouseEvent) {
-        session.getCurrentName().getExemplar().playAudio();
-        disableButtons(true, true);
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0), new KeyValue(playingSpinner.progressProperty(), 0)),
-                new KeyFrame(
-                        Duration.seconds(session.getCurrentName().getExemplar().getLength()),
-                        event -> disableButtons(false, true),
-                        new KeyValue(playingSpinner.progressProperty(), 1)
-                )
-        );
-        timeline.play();
-    }
 
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         if (!session.hasUserMadeRecording()) {
@@ -183,15 +168,18 @@ public class AssessmentScreenController {
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
+        if (saveAlertCache == null){
+            saveAlertCache = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
+        }
+        saveAlertCache.show();
         StatsManager.getInstance().save();
-        SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
-        saveAlert.show();
-
     }
 
     public void onMicTestButtonClicked() {
-        MicTestAlert micTestAlert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
-        micTestAlert.show();
+        if (micTestAlertCache == null) {
+            micTestAlertCache = new MicTestAlert((Stage) parentPane.getScene().getWindow());
+        }
+        micTestAlertCache.show();
         micTestButton.setDisableVisualFocus(true);
     }
 }

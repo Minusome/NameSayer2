@@ -158,16 +158,19 @@ public class NameSelectScreenController {
             return;
         }
         Result result = nameStorageManager.queryUserRequestedName(userInput);
+        System.out.println(result.getStatus());
         if (result.getStatus().equals(Status.NONE_FOUND)) {
             resetSuggestions();
             return;
-        }
-        boolean readyForSuggestion = (userInput.lastIndexOf(" ") == userInput.length() - 1);
-        if (readyForSuggestion) {
-            suggestions.clearSuggestions();
-            suggestions.addPossibleSuggestions(autoCompletions.stream()
-                                                              .map(s -> result.getDiscoveredName() + " " + s)
-                                                              .collect(Collectors.toSet()));
+        } else if (result.getStatus().equals(Status.ALL_FOUND)) {
+            String lastChar = userInput.substring(userInput.length() - 1);
+            boolean readyForSuggestion = (lastChar.equals(" ") || lastChar. equals("-"));
+            if (readyForSuggestion) {
+                suggestions.clearSuggestions();
+                suggestions.addPossibleSuggestions(autoCompletions.stream()
+                        .map(s -> result.getDiscoveredName() + lastChar + s)
+                        .collect(Collectors.toSet()));
+            }
         }
     }
 

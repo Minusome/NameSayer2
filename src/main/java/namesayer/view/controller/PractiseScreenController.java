@@ -55,6 +55,8 @@ public class PractiseScreenController {
     @FXML private JFXSpinner playingSpinner;
 
     private PractiseSession session;
+    private SaveAlert saveAlertCache;
+    private MicTestAlert micTestAlertCache;
 
 
 
@@ -158,9 +160,12 @@ public class PractiseScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
+        if (saveAlertCache == null){
+            saveAlertCache = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
+        }
+        saveAlertCache.show();
         StatsManager.getInstance().save();
-        SaveAlert saveAlert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
-        saveAlert.show();
+
     }
 
 
@@ -170,8 +175,10 @@ public class PractiseScreenController {
     }
 
     public void onMicTestButtonClicked(MouseEvent mouseEvent) {
-        MicTestAlert micTestAlert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
-        micTestAlert.show();
+        if (micTestAlertCache == null) {
+            micTestAlertCache = new MicTestAlert((Stage) parentPane.getScene().getWindow());
+        }
+        micTestAlertCache.show();
         micTestButton.setDisableVisualFocus(true);
     }
 

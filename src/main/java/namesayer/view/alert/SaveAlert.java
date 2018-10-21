@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -38,8 +38,8 @@ public class SaveAlert extends JFXAlert {
 
     private void loadContent(Stage stage ,Session session, Runnable saveStrategy, Runnable removeStrategy) {
         this.initModality(Modality.WINDOW_MODAL);
-        this.setOverlayClose(false);
         JFXDialogLayout layout = new JFXDialogLayout();
+        this.setContent(layout);
         layout.setHeading(new Label("Would you like to save this session?"));
         JFXTextField field = new JFXTextField();
         JFXButton cancelButton = new JFXButton("Cancel");
@@ -77,7 +77,9 @@ public class SaveAlert extends JFXAlert {
             this.hideWithAnimation();
         });
         layout.setActions(saveButton, dontSaveButton, cancelButton);
-        this.setContent(layout);
+        layout.setCache(true);
+        layout.setCacheShape(true);
+        layout.setCacheHint(CacheHint.SPEED);
     }
 
     private void previousScreen(Stage stage) {

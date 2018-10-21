@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXProgressBar;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.CacheHint;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
@@ -33,6 +34,8 @@ public class MicTestAlert extends JFXAlert {
 
     private void loadContent() {
         this.initModality(Modality.WINDOW_MODAL);
+        JFXDialogLayout layout = new JFXDialogLayout();
+        this.setContent(layout);
         FXMLLoader loader = MIC_TEST_ALERT.getLoader();
         loader.setController(this);
         try {
@@ -40,7 +43,6 @@ public class MicTestAlert extends JFXAlert {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JFXDialogLayout layout = new JFXDialogLayout();
         layout.setHeading(new Label("Microphone Volume"));
         layout.setBody(root);
         JFXButton doneButton = new JFXButton("Done");
@@ -50,7 +52,9 @@ public class MicTestAlert extends JFXAlert {
             this.hideWithAnimation();
         });
         layout.setActions(doneButton);
-        this.setContent(layout);
+        layout.setCache(true);
+        layout.setCacheShape(true);
+        layout.setCacheHint(CacheHint.SPEED);
         Thread thread = new Thread(this::testMicrophone);
         thread.start();
     }

@@ -59,16 +59,19 @@ public class StatsManager implements Serializable {
 
 
     public void save() {
-        try {
-            FileOutputStream file = new FileOutputStream(STATS_FILE.toFile());
-            ObjectOutputStream out = new ObjectOutputStream(file);
-            out.writeObject(this);
-            out.flush();
-            out.close();
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Thread thread = new Thread(() -> {
+            try {
+                FileOutputStream file = new FileOutputStream(STATS_FILE.toFile());
+                ObjectOutputStream out = new ObjectOutputStream(file);
+                out.writeObject(this);
+                out.flush();
+                out.close();
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+       thread.start();
     }
 
     public void updateRatingFreq(int rating) {

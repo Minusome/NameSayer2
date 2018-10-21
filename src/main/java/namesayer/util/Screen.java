@@ -19,7 +19,6 @@ public enum Screen {
     NAME_SELECT_HELP_SCREEN("/NameSelectHelpScreen.fxml"),
     MIC_TEST_ALERT("/MicTestAlert.fxml");
 
-
     private URL url;
 
     Screen(String url) {
@@ -38,5 +37,3 @@ public enum Screen {
         }
     }
 }
-
-
