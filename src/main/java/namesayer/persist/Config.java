@@ -14,7 +14,7 @@ public class Config {
     public static final Path SAVED_PRACTISE_SESSIONS = GENERATED_FOLDER.resolve("session").resolve("practise");
     public static final Path SAVED_ASSESSMENT_SESSIONS = GENERATED_FOLDER.resolve("session").resolve("assessment");
     public static final String WAV_EXTENSION = ".wav";
-    public static final Path RATINGS = Paths.get("ratings.txt");
+    public static final Path BAD_QUALITY_FILE = GENERATED_FOLDER.resolve("bad_quality_names.txt");
     public static final Path STATS_FOLDER = GENERATED_FOLDER.resolve("stats");
     public static final Path STATS_FILE = STATS_FOLDER.resolve("data.ser");
 }

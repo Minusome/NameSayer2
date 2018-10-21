@@ -1,10 +1,6 @@
 package namesayer.view.controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSpinner;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.animation.KeyFrame;
@@ -41,6 +37,7 @@ import static namesayer.util.Screen.MAIN_MENU;
 
 public class DatabaseViewController implements Initializable {
 
+    @FXML private JFXToggleButton badQualityToggle;
     @FXML private JFXButton backButton;
     @FXML private JFXListView nameList;
     @FXML private JFXListView recordingList;
@@ -48,8 +45,6 @@ public class DatabaseViewController implements Initializable {
     @FXML private JFXSpinner playingSpinner;
     @FXML private JFXTextField nameSearchBar;
     @FXML private Rating rating;
-    @FXML private JFXButton ratingButton;
-    @FXML private MaterialIconView ratingIcon;
     private double ratingValue;
     private JFXSnackbar bar;
     private ObservableList<CompositeName> userRecordings;
@@ -237,36 +232,21 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent event) {
                 setRatingVisible(true, false);
                 PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
-                setRating(r.isBadQuality());
+                badQualityToggle.setSelected(r.isBadQuality());
             }
         });
     }
 
-    /**
-     * Show quality of partial recording
-     */
-    private void setRating(boolean isBadQuality) {
-        if (isBadQuality) {
-            ratingIcon.setGlyphName("THUMB_DOWN");
-        } else {
-            ratingIcon.setGlyphName("THUMB_UP");
-        }
-    }
 
     /**
      * Save the quality to partial recording
      */
-    public void setRecordingQuality(MouseEvent e) {
+    public void setRecordingQuality() {
         PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
-        if (r.isBadQuality()) {
-            ratingIcon.setGlyphName("THUMB_UP");
-            r.setBadQuality(false);
-
-        } else {
-            ratingIcon.setGlyphName("THUMB_DOWN");
-            r.setBadQuality(true);
-        }
-
+        boolean newQuality = !r.isBadQuality();
+        badQualityToggle.setSelected(newQuality);
+        r.setBadQuality(newQuality);
+        NameStorageManager.getInstance().refreshBadQualityFile();
     }
 
     /**
@@ -300,7 +280,7 @@ public class DatabaseViewController implements Initializable {
      */
     private void setRatingVisible(boolean thumb, boolean star) {
         rating.setVisible(star);
-        ratingButton.setVisible(thumb);
+        badQualityToggle.setVisible(thumb);
     }
 
 }

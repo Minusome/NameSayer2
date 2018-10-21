@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -58,11 +59,7 @@
             </StackPane>
             <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
                <children>
-                  <JFXButton fx:id="ratingButton" buttonType="RAISED" onMouseClicked="#setRecordingQuality" text=" ">
-                     <graphic>
-                        <MaterialIconView fx:id="ratingIcon" fill="#5050ac" glyphName="" size="40" />
-                     </graphic>
-                  </JFXButton>
+                  <JFXToggleButton fx:id="badQualityToggle" mnemonicParsing="false" onAction="#setRecordingQuality" text="Bad Quality" />
                </children>
             </HBox>
             <Rating fx:id="rating" onMouseClicked="#setUserAttemptsRating" prefHeight="0.0" prefWidth="176.0" rating="3.0" stylesheets="@css/Material.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />

@@ -5,8 +5,12 @@ import javafx.collections.ObservableList;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
 import namesayer.model.PartialName;
+import namesayer.model.PartialRecording;
 import namesayer.persist.Result.Status;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -120,4 +124,29 @@ public class NameStorageManager {
     }
 
 
+    public void refreshBadQualityFile() {
+        Thread thread = new Thread(() -> {
+            try{
+                File file = new File(BAD_QUALITY_FILE.toUri());
+                file.createNewFile();
+
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+
+                bw.write("The following names have been marked as bad quality: \n\n");
+
+                for (PartialName name : partialNames) {
+                    for (PartialRecording recording : name.getRecordings()) {
+                        if (recording.isBadQuality()) {
+                            bw.write(recording.getRecordingPath().getFileName().toString());
+                        }
+                    }
+                }
+                bw.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+    }
 }
