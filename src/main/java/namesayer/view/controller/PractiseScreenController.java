@@ -1,6 +1,7 @@
 package namesayer.view.controller;
 
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSpinner;
@@ -10,6 +11,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,6 +31,7 @@ import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.SnackBarLoader;
+import namesayer.view.alert.AlertAnimation;
 import namesayer.view.alert.MicTestAlert;
 import namesayer.view.cell.PractiseListCell;
 import namesayer.view.alert.SaveAlert;
@@ -58,8 +61,6 @@ public class PractiseScreenController {
     @FXML private JFXSpinner playingSpinner;
 
     private PractiseSession session;
-    private SaveAlert saveAlertCache;
-    private MicTestAlert micTestAlertCache;
 
 
 
@@ -164,25 +165,25 @@ public class PractiseScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        if (saveAlertCache == null){
-            saveAlertCache = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
-        }
-        saveAlertCache.show();
+        SaveAlert  alert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
+        alert.setAnimation(new AlertAnimation());
+        alert.show();
         StatsManager.getInstance().save();
-
     }
 
 
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
-        session.saveUserRecordings();
-        SnackBarLoader.displayMessage(parentPane, "Recordings have been saved");
+        if (session.hasUserMadeRecording()) {
+            session.saveUserRecordings();
+            SnackBarLoader.displayMessage(parentPane, "Recordings have been saved");
+        } else {
+            SnackBarLoader.displayMessage(parentPane, "Recording list is empty");
+        }
     }
 
     public void onMicTestButtonClicked(MouseEvent mouseEvent) {
-        if (micTestAlertCache == null) {
-            micTestAlertCache = new MicTestAlert((Stage) parentPane.getScene().getWindow());
-        }
-        micTestAlertCache.show();
+        MicTestAlert alert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
+        alert.show();
         micTestButton.setDisableVisualFocus(true);
     }
 

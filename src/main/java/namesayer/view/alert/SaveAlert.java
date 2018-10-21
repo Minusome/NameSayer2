@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -15,6 +17,7 @@ import namesayer.session.PractiseSession;
 import namesayer.session.Session;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static namesayer.util.Screen.MAIN_MENU;
 
@@ -41,32 +44,37 @@ public class SaveAlert extends JFXAlert {
         JFXDialogLayout layout = new JFXDialogLayout();
         this.setContent(layout);
         layout.setHeading(new Label("Would you like to save this session?"));
-        JFXTextField field = new JFXTextField();
         JFXButton cancelButton = new JFXButton("Cancel");
         JFXButton saveButton = new JFXButton("Save");
         JFXButton dontSaveButton = new JFXButton("Don't Save");
-        saveButton.setDisable(true);
-        String text = session.getSessionName();
-        if (text == null || text.isEmpty()) {
-            text = "Please enter a name to save this session";
+        AtomicReference<String> sessionName = new AtomicReference<>(session.getSessionName());
+        boolean notSaved = (sessionName.get() == null) || (sessionName.get().isEmpty());
+        if (notSaved) {
+            JFXTextField field = new JFXTextField();
+            field.setPromptText("Please enter a name to save this session");
+            field.textProperty().addListener((observable, oldValue, newValue) -> {
+                sessionName.set(newValue);
+                if (newValue.isEmpty()) {
+                    saveButton.setDisable(true);
+                } else {
+                    saveButton.setDisable(false);
+                }
+            });
+            saveButton.setDisable(true);
+            layout.setBody(field);
         } else {
-            field.setEditable(false);
+            Label label = new Label("The name of this session is " + sessionName);
             saveButton.setDisable(false);
+            layout.setBody(label);
         }
-        field.setPromptText(text);
-        field.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                saveButton.setDisable(true);
-            } else {
-                saveButton.setDisable(false);
-            }
-        });
-        layout.setBody(field);
+
         cancelButton.setOnAction(event -> {
             this.hideWithAnimation();
         });
         saveButton.setOnAction(event -> {
-            session.setSessionName(field.getText());
+            if (notSaved) {
+                session.setSessionName(sessionName.get());
+            }
             saveStrategy.run();
             previousScreen(stage);
             this.hideWithAnimation();

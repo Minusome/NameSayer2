@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.NameSelectScreenController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.NameSelectScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -117,7 +117,7 @@
                         <RowConstraints percentHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onResumeButtonClicked" prefHeight="32.0" prefWidth="115.0" style="-fx-background-color: #f2f2f2;" text="Resume" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <JFXButton fx:id="resumeSessionButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onResumeButtonClicked" prefHeight="32.0" prefWidth="115.0" style="-fx-background-color: #f2f2f2;" text="Resume" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets top="20.0" />
                            </GridPane.margin>

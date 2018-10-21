@@ -54,6 +54,7 @@ import static namesayer.util.Screen.*;
 
 public class NameSelectScreenController {
 
+    @FXML private JFXButton resumeSessionButton;
     @FXML private JFXListView<Session> savedSessionsListView;
     @FXML private GridPane parentPane;
     @FXML private JFXTextField nameSearchBar;
@@ -108,11 +109,11 @@ public class NameSelectScreenController {
         savedSessionsListView.setPlaceholder(new Label("No sessions have been saved"));
         ObservableList<Session> items;
         if (sessionType.equals(ASSESSMENT)) {
-             items = FXCollections.observableArrayList(sessionStorageManager.getSavedAssessmentSessions());
-
+            items = FXCollections.observableArrayList(sessionStorageManager.getSavedAssessmentSessions());
         } else {
             items = FXCollections.observableArrayList(sessionStorageManager.getSavedPractiseSessions());
         }
+        resumeSessionButton.setDisable(items.isEmpty());
         savedSessionsListView.setItems(items);
     }
 

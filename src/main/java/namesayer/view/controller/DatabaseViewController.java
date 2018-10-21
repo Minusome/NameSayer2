@@ -164,7 +164,9 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent e) {
                 setRatingVisible(false, false);
                 PartialName name = (PartialName) nameList.getSelectionModel().getSelectedItem();
-                recordingList.setItems(FXCollections.observableArrayList(name.getRecordings()));
+                if (name != null) {
+                    recordingList.setItems(FXCollections.observableArrayList(name.getRecordings()));
+                }
                 recordingActionListener();
             }
 
@@ -184,7 +186,9 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent arg0) {
                 setRatingVisible(false, false);
                 CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
-                recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
+                if (name != null) {
+                    recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
+                }
                 userAttemptsListener();
             }
 
@@ -202,7 +206,9 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent event) {
                 setRatingVisible(false, true);
                 CompositeRecording r = (CompositeRecording) recordingList.getSelectionModel().getSelectedItem();
-                rating.setRating(r.getRating());
+                if (r != null) {
+                    rating.setRating(r.getRating());
+                }
                 //setUserAttemptsRating();
             }
 
@@ -220,7 +226,9 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent event) {
                 setRatingVisible(true, false);
                 PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
-                badQualityToggle.setSelected(r.isBadQuality());
+                if (r != null) {
+                    badQualityToggle.setSelected(r.isBadQuality());
+                }
             }
         });
     }

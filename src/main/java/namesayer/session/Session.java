@@ -75,6 +75,10 @@ public class Session implements Serializable {
         NameStorageManager.getInstance().persistCompleteRecordingsForName(currentName);
     }
 
+    public boolean hasUserMadeRecording() {
+        return !currentName.getUserAttempts().isEmpty();
+    }
+
     public String getId() {
         return id;
     }

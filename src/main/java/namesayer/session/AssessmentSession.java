@@ -33,10 +33,6 @@ public class AssessmentSession extends Session {
         thread.start();
     }
 
-    public boolean hasUserMadeRecording() {
-        return !currentName.getUserAttempts().isEmpty();
-    }
-
 
     public CompositeRecording getCurrentRecording() {
         if (!currentName.getUserAttempts().isEmpty()) {

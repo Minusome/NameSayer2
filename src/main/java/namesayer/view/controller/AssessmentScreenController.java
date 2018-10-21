@@ -22,7 +22,6 @@ import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
 import namesayer.util.TransitionFactory;
 import namesayer.view.alert.MicTestAlert;
-import namesayer.view.controller.RewardCardController;
 import namesayer.view.alert.SaveAlert;
 import org.controlsfx.control.Rating;
 
