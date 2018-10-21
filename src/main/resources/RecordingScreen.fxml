@@ -65,7 +65,7 @@
                   </JFXButton>
                </children>
             </HBox>
-            <Rating fx:id="rating" prefHeight="0.0" prefWidth="176.0" rating="3.0" stylesheets="@css/Material.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Rating fx:id="rating" onMouseClicked="#setUserAttemptsRating" prefHeight="0.0" prefWidth="176.0" rating="3.0" stylesheets="@css/Material.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <HBox alignment="CENTER_LEFT" styleClass="background" stylesheets="@css/Material.css" GridPane.columnSpan="5" />
