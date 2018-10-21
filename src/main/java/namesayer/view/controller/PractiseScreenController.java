@@ -10,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -33,6 +34,8 @@ import namesayer.view.cell.PractiseListCell;
 import namesayer.view.alert.SaveAlert;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+
+import java.util.List;
 
 import static namesayer.util.TransitionFactory.Direction.LEFT;
 import static namesayer.util.TransitionFactory.Direction.RIGHT;
@@ -64,7 +67,7 @@ public class PractiseScreenController {
         this.session = session;
         disableArrows(false);
         label.setText(session.getCurrentName().toString());
-        practiseListView.setCellFactory(param -> new PractiseListCell(session));
+        practiseListView.setCellFactory(param -> new PractiseListCell(session, this));
         practiseListView.setSelectionModel(new EmptySelectionModel<>());
         Label label = new Label("Listen to the sample and make your own recording!");
         label.setFont(new Font(15));
@@ -151,7 +154,8 @@ public class PractiseScreenController {
 
 
     public void refreshList() {
-        ObservableList<CompositeRecording> recordings = session.getRecordingsForCurrentName();
+        List<CompositeRecording> userAttempts = session.getCurrentName().getUserAttempts();
+        ObservableList<CompositeRecording> recordings = FXCollections.observableArrayList(userAttempts);
         practiseListView.setItems(recordings);
         practiseListView.refresh();
         cardNumber.setText(session.getCurrentIndex() + 1 + "/" + session.getNumberOfNames());

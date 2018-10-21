@@ -22,12 +22,11 @@ public class PractiseSession extends Session {
         return !(currentIndex == 0);
     }
 
-    public ObservableList<CompositeRecording> getRecordingsForCurrentName() {
-        return currentName.getUserAttempts();
-    }
-
     public void removeRecordingForCurrentName(CompositeRecording recording) {
-        currentName.getUserAttempts().remove(recording);
+        boolean contained = currentName.getUserAttempts().remove(recording);
+        System.out.println("contains? " + contained);
+
+        System.out.println(currentName.getUserAttempts());
     }
 
     public List<CompositeName> getSuggestions() {

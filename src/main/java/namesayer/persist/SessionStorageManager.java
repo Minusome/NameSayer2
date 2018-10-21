@@ -83,16 +83,18 @@ public class SessionStorageManager {
 
 
     private void saveFile(Path location, Session session) {
-        try {
-            FileOutputStream file = new FileOutputStream(location.toFile());
-            ObjectOutputStream out = new ObjectOutputStream(file);
-            out.writeObject(session);
-            out.flush();
-            out.close();
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            try {
+                FileOutputStream file = new FileOutputStream(location.toFile());
+                ObjectOutputStream out = new ObjectOutputStream(file);
+                out.writeObject(session);
+                out.flush();
+                out.close();
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void deleteFile(Path path) {

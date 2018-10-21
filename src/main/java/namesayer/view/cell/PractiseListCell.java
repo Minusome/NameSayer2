@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import namesayer.model.CompositeRecording;
 import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
+import namesayer.view.controller.PractiseScreenController;
 import namesayer.view.controller.RatingPopupController;
 
 import java.io.IOException;
@@ -37,11 +38,13 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
     private CompositeRecording recording;
     private PractiseSession session;
     private StatsManager manager = StatsManager.getInstance();
+    private PractiseScreenController parentController;
     private static List<CompositeRecording> processedRecordings = new ArrayList<>();
 
-    public PractiseListCell(PractiseSession session) {
+    public PractiseListCell(PractiseSession session, PractiseScreenController controller) {
         super();
         this.session = session;
+        this.parentController = controller;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/PractiseListCell.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -73,6 +76,7 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
     @FXML
     public void onDeleteButtonClicked(MouseEvent mouseEvent) {
         session.removeRecordingForCurrentName(recording);
+        parentController.refreshList();
     }
 
     @FXML

@@ -35,8 +35,8 @@ public class CompositeName extends Name implements Serializable {
         userAttempts.add(recording);
     }
 
-    public ObservableList<CompositeRecording> getUserAttempts() {
-        return FXCollections.observableArrayList(userAttempts);
+    public List<CompositeRecording> getUserAttempts() {
+        return userAttempts;
     }
 
     public Exemplar getExemplar() {

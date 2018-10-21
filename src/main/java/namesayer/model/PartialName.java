@@ -18,9 +18,8 @@ public class PartialName extends Name {
         partialRecordings.add(recording);
     }
 
-    public ObservableList<PartialRecording> getRecordings() {
-        
-        return FXCollections.observableArrayList(partialRecordings);
+    public List<PartialRecording> getRecordings() {
+        return partialRecordings;
     }
 
 

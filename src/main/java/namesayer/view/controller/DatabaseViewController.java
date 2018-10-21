@@ -107,35 +107,23 @@ public class DatabaseViewController implements Initializable {
 	        } else {
 	        	if(counter==0) {
 	        		listOfNames = databaseRecordings.stream()
-
                             .filter(name -> name.toString().toLowerCase().contains(userInput))
-
                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
 	        	}else {
 	        		listOfNames = userRecordings.stream()
-
                             .filter(name -> name.toString().toLowerCase().contains(userInput))
-
                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
 	        	}
-	        	
-
 	        }
-
-	        //TODO change to bindings if u have time
 	        if(listOfNames.isEmpty()) {
 	        	bar.enqueue(new JFXSnackbar.SnackbarEvent("Name not found"));
 	        }
-
 	        nameList.setItems(listOfNames);
     	}
     	
     }
     
-    
-    
-    
-    
+
     /**
      * Back to main menu
      */
@@ -176,7 +164,7 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent e) {
                 setRatingVisible(false, false);
                 PartialName name = (PartialName) nameList.getSelectionModel().getSelectedItem();
-                recordingList.setItems(name.getRecordings());
+                recordingList.setItems(FXCollections.observableArrayList(name.getRecordings()));
                 recordingActionListener();
             }
 
@@ -196,7 +184,7 @@ public class DatabaseViewController implements Initializable {
             public void handle(MouseEvent arg0) {
                 setRatingVisible(false, false);
                 CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
-                recordingList.setItems(name.getUserAttempts());
+                recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
                 userAttemptsListener();
             }
 
