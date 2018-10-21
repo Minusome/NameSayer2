@@ -128,6 +128,9 @@ public class DatabaseViewController implements Initializable {
 	        }
 
 	        //TODO change to bindings if u have time
+	        if(listOfNames.isEmpty()) {
+	        	bar.enqueue(new JFXSnackbar.SnackbarEvent("Name not found"));
+	        }
 
 	        nameList.setItems(listOfNames);
     	}
@@ -217,7 +220,7 @@ public class DatabaseViewController implements Initializable {
                 setRatingVisible(false, true);
                 CompositeRecording r = (CompositeRecording) recordingList.getSelectionModel().getSelectedItem();
                 rating.setRating(r.getRating());
-                setUserAttemptsRating();
+                //setUserAttemptsRating();
             }
 
         });
@@ -269,6 +272,7 @@ public class DatabaseViewController implements Initializable {
     /**
      * Save rating to composite recording
      */
+    @FXML
     public void setUserAttemptsRating() {
         CompositeRecording r = (CompositeRecording) recordingList.getSelectionModel().getSelectedItem();
         ratingValue = rating.getRating();
