@@ -1,7 +1,6 @@
 package namesayer.view.controller;
 
 import com.jfoenix.controls.*;
-
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -19,25 +18,18 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import namesayer.model.CompositeName;
-import namesayer.model.CompositeRecording;
-import namesayer.model.Name;
-import namesayer.model.PartialName;
-import namesayer.model.PartialRecording;
-import namesayer.model.Recording;
+import namesayer.model.*;
 import namesayer.persist.NameStorageManager;
 import org.controlsfx.control.Rating;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import static namesayer.util.Screen.MAIN_MENU;
-
 public class DatabaseViewController implements Initializable {
 
-    @FXML private JFXToggleButton badQualityToggle;
     @FXML private JFXButton backButton;
     @FXML private JFXListView nameList;
     @FXML private JFXListView recordingList;
@@ -45,6 +37,9 @@ public class DatabaseViewController implements Initializable {
     @FXML private JFXSpinner playingSpinner;
     @FXML private JFXTextField nameSearchBar;
     @FXML private Rating rating;
+    @FXML private JFXToggleButton badQualityToggle;
+    @FXML private MaterialIconView ratingIcon;
+    @FXML private JFXButton sortButton;
     private double ratingValue;
     private JFXSnackbar bar;
     private ObservableList<CompositeName> userRecordings;
@@ -60,7 +55,7 @@ public class DatabaseViewController implements Initializable {
        // userRecordings = NameStorageManager.getInstance().getCompositeNames();
        // databaseRecordings = NameStorageManager.getInstance().getPartialNames();
         playingSpinner.setProgress(1);
-        setRatingVisible(false, false);
+        setRatingVisible(false, false,false);
     }
 
     /**
@@ -107,28 +102,43 @@ public class DatabaseViewController implements Initializable {
 	        } else {
 	        	if(counter==0) {
 	        		listOfNames = databaseRecordings.stream()
+
                             .filter(name -> name.toString().toLowerCase().contains(userInput))
+
                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
 	        	}else {
 	        		listOfNames = userRecordings.stream()
+
                             .filter(name -> name.toString().toLowerCase().contains(userInput))
+
                             .collect(Collectors.toCollection(FXCollections::observableArrayList));
 	        	}
+	        	
+
 	        }
+
+	        //TODO change to bindings if u have time
 	        if(listOfNames.isEmpty()) {
 	        	bar.enqueue(new JFXSnackbar.SnackbarEvent("Name not found"));
 	        }
+
 	        nameList.setItems(listOfNames);
     	}
     	
     }
     
-
+    
+    
+    
+    
     /**
      * Back to main menu
      */
     public void onBackClicked() throws IOException {
-        MAIN_MENU.loadWithNode(backButton);
+        Scene scene = backButton.getScene();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuScreen.fxml"));
+        Parent root = loader.load();
+        scene.setRoot(root);
     }
 
     /**
@@ -162,7 +172,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent e) {
-                setRatingVisible(false, false);
+                setRatingVisible(false, false,false);
                 PartialName name = (PartialName) nameList.getSelectionModel().getSelectedItem();
                 recordingList.setItems(FXCollections.observableArrayList(name.getRecordings()));
                 recordingActionListener();
@@ -182,7 +192,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent arg0) {
-                setRatingVisible(false, false);
+                setRatingVisible(false, false,true);
                 CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
                 recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
                 userAttemptsListener();
@@ -200,7 +210,7 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                setRatingVisible(false, true);
+                setRatingVisible(false, true,true);
                 CompositeRecording r = (CompositeRecording) recordingList.getSelectionModel().getSelectedItem();
                 rating.setRating(r.getRating());
                 //setUserAttemptsRating();
@@ -218,13 +228,23 @@ public class DatabaseViewController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                setRatingVisible(true, false);
+                setRatingVisible(true, false,false);
                 PartialRecording r = (PartialRecording) recordingList.getSelectionModel().getSelectedItem();
                 badQualityToggle.setSelected(r.isBadQuality());
             }
         });
     }
 
+    /**
+     * Show quality of partial recording
+     */
+    private void setRating(boolean isBadQuality) {
+        if (isBadQuality) {
+            ratingIcon.setGlyphName("THUMB_DOWN");
+        } else {
+            ratingIcon.setGlyphName("THUMB_UP");
+        }
+    }
 
     /**
      * Save the quality to partial recording
@@ -236,6 +256,7 @@ public class DatabaseViewController implements Initializable {
         r.setBadQuality(newQuality);
         NameStorageManager.getInstance().refreshBadQualityFile();
     }
+
 
     /**
      * Save rating to composite recording
@@ -259,16 +280,29 @@ public class DatabaseViewController implements Initializable {
         bar = new JFXSnackbar(parentPane);
         bar.getStylesheets().addAll("/css/Material.css");
         rating.setRating(3.0);
-        setRatingVisible(false, false);
+        setRatingVisible(false, false,false);
 
     }
 
     /**
      * Set visibility of ratings
      */
-    private void setRatingVisible(boolean thumb, boolean star) {
+    private void setRatingVisible(boolean thumb, boolean star, boolean sort) {
         rating.setVisible(star);
         badQualityToggle.setVisible(thumb);
+        sortButton.setVisible(sort);
     }
+    
+    @FXML
+    private void sortByRating(MouseEvent e) {
+    	if(nameList.getSelectionModel().getSelectedItem()==null) {
+    		bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name to sort"));
+    	}else {
+    		CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
+            recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
+    		recordingList.getItems().sort(Comparator.comparingDouble(CompositeRecording::getRating).reversed());
+    	}
+    }
+    
 
 }

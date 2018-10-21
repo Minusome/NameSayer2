@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<GridPane alignment="CENTER"  prefHeight="648.0" prefWidth="1152.0"  xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.MenuScreenController">
+<GridPane alignment="CENTER" prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.MenuScreenController">
    <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
@@ -50,6 +49,14 @@
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
+            </JFXButton>
+            <JFXButton mnemonicParsing="false" onMouseClicked="#loadNewDatabase" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #d3d3d3;" text="Load New Name">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="22.0" />
+               </font>
             </JFXButton>
          </children>
          <styleClass>

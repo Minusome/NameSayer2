@@ -149,4 +149,19 @@ public class NameStorageManager {
         });
         thread.start();
     }
+
+
+    public void addNewPartialName(PartialName name) {
+        boolean isNewName = true;
+        for(PartialName pn : partialNames) {
+            if(pn.toString().equals(name.toString())) {
+                pn.addRecording(name.getRecordings().get(0));
+                isNewName=false;
+            }
+        }
+        if(isNewName) {
+            partialNames.add(name);
+        }
+
+    }
 }
