@@ -107,6 +107,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
+            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1">
+               <children>
+                  <JFXButton fx:id="sortButton" mnemonicParsing="false" onMouseClicked="#sortByRating" text=" ">
+                     <graphic>
+                        <MaterialIconView fill="WHITE" glyphName="FORMAT_LINE_SPACING" size="27" strokeType="OUTSIDE" strokeWidth="0.0" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </HBox>
             <JFXButton fx:id="backButton" onMouseClicked="#onBackClicked" text=" ">
                <graphic>
                   <MaterialIconView fill="WHITE" glyphName="ARROW_BACK" size="30" />

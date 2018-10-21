@@ -4,9 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import namesayer.persist.NameStorageManager;
+import namesayer.persist.NewDatabaseLoader;
 import namesayer.session.Session;
 
+import java.io.File;
 import java.io.IOException;
 
 import static namesayer.session.Session.SessionType.ASSESSMENT;
@@ -74,6 +77,19 @@ public class MenuScreenController {
 //            practiceButton.setDisable(false);
 //        }
 //    }
+
+    public void loadNewDatabase(MouseEvent e) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Select folder containing recordings");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
+        File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
+        if (selectedFile != null) {
+            new NewDatabaseLoader().editFile(selectedFile);
+
+            //bar.enqueue(new JFXSnackbar.SnackbarEvent("No recordings in datatbase"));
+        }
+    }
+
     public void onBrowseModeClicked(MouseEvent e) throws IOException {
         BROWSE_DATABASE_SCREEN.loadWithNode(practiceButton);
     }
