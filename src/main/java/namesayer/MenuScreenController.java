@@ -3,6 +3,7 @@ package namesayer;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import namesayer.persist.NameStorageManager;
@@ -83,6 +84,11 @@ public class MenuScreenController {
     }
     
     public void onHelpButtonClicked(MouseEvent e) throws IOException {
-    	HELP_SCREEN.loadWithNode(practiceButton);
+    	//HELP_SCREEN.loadWithNode(practiceButton);
+    	Scene scene = browseButton.getScene();
+    	Parent root;
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/HelpScreen.fxml"));
+        root = loader.load();
+        scene.setRoot(root);
     }
 }
