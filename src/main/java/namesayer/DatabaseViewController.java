@@ -126,6 +126,9 @@ public class DatabaseViewController implements Initializable {
 	        }
 
 	        //TODO change to bindings if u have time
+	        if(listOfNames.isEmpty()) {
+	        	bar.enqueue(new JFXSnackbar.SnackbarEvent("Name doesn't exist"));
+	        }
 
 	        nameList.setItems(listOfNames);
     	}
