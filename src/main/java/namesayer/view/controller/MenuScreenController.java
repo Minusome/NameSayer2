@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import namesayer.persist.NameStorageManager;
 import namesayer.persist.NewDatabaseLoader;
@@ -85,12 +86,14 @@ public class MenuScreenController {
 //    }
 
     public void loadNewDatabase(MouseEvent e) {
-        FileChooser chooser = new FileChooser();
+        //FileChooser chooser = new FileChooser();
+        DirectoryChooser chooser= new DirectoryChooser();
         chooser.setTitle("Select folder containing recordings");
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
-        File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
-        if (selectedFile != null) {
-            boolean succeed = (new NewDatabaseLoader().editFile(selectedFile));
+        //chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
+        //File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
+        File selectedFolder = chooser.showDialog(null);
+        if (selectedFolder != null) {
+            boolean succeed = (new NewDatabaseLoader().editFile(selectedFolder));
 
             try {
                 Thread.sleep(2000);
@@ -99,10 +102,10 @@ public class MenuScreenController {
             }
 
             if(succeed){
-                bar.enqueue(new JFXSnackbar.SnackbarEvent("Successfully load name: "+ selectedFile.getName().replace(".wav","")));
+                bar.enqueue(new JFXSnackbar.SnackbarEvent("Successfully load folder: "+ selectedFolder.getName()));
 
             }else{
-                bar.enqueue(new JFXSnackbar.SnackbarEvent("Can't load name: " + selectedFile.getName().replace(".wav","")));
+                bar.enqueue(new JFXSnackbar.SnackbarEvent("Can't load folder: " + selectedFolder.getName()));
             }
 
         }

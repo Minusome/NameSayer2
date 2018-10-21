@@ -50,7 +50,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton mnemonicParsing="false" onMouseClicked="#loadNewDatabase" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #d3d3d3;" text="Load New Name">
+            <JFXButton mnemonicParsing="false" onMouseClicked="#loadNewDatabase" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #d3d3d3;" text="Load New Names">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
