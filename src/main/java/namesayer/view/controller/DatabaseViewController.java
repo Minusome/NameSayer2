@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -36,8 +37,9 @@ import java.util.stream.Collectors;
 
 import static namesayer.util.Screen.MAIN_MENU;
 
-public class DatabaseViewController implements Initializable {
+public class DatabaseViewController {
 
+    @FXML private Label nameDatabaseButton;
     @FXML private JFXToggleButton badQualityToggle;
     @FXML private JFXButton backButton;
     @FXML private JFXListView nameList;
@@ -57,27 +59,26 @@ public class DatabaseViewController implements Initializable {
     /**
      * Initialize listView
      */
-    public void initialise() {
-       // userRecordings = NameStorageManager.getInstance().getCompositeNames();
-       // databaseRecordings = NameStorageManager.getInstance().getPartialNames();
-        playingSpinner.setProgress(1);
-        setRatingVisible(false, false,false);
+    public void initialize() {
+        userRecordings = NameStorageManager.getInstance().getCompositeNames();
+        databaseRecordings = NameStorageManager.getInstance().getPartialNames();
+        rating.setRating(3.0);
+        onNameDatabaseClicked();
     }
 
     /**
      * Show partial name database
      */
     public void onNameDatabaseClicked() {
-
     	counter=0;
         isNameDatabase = true;
-        initialise();
+        playingSpinner.setProgress(1);
+        setRatingVisible(false, false,false);
         if (databaseRecordings.isEmpty()) {
             System.out.println("empty");
             SnackBarLoader.displayMessage(parentPane, "No recordings in database");
         } else {
             showNameDatabase();
-
         }
     }
 
@@ -87,7 +88,8 @@ public class DatabaseViewController implements Initializable {
     public void onUserRecordingClicked() {
     	counter=1;
         isNameDatabase = false;
-        initialise();
+        playingSpinner.setProgress(1);
+        setRatingVisible(false, false,false);
         if (userRecordings.isEmpty()) {
             System.out.println("empty");
             SnackBarLoader.displayMessage(parentPane, "No user recording in datatbase");
@@ -257,18 +259,6 @@ public class DatabaseViewController implements Initializable {
 
     }
 
-    /**
-     * Initialise database view
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // TODO Auto-generated method stub
-        userRecordings = NameStorageManager.getInstance().getCompositeNames();
-        databaseRecordings = NameStorageManager.getInstance().getPartialNames();
-        rating.setRating(3.0);
-        setRatingVisible(false, false,false);
-
-    }
 
     /**
      * Set visibility of ratings

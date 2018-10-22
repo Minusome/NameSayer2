@@ -7,29 +7,72 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="parentPane" alignment="CENTER" prefHeight="648.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.MenuScreenController">
+<GridPane fx:id="parentPane" alignment="CENTER" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.MenuScreenController">
    <columnConstraints>
-      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" percentWidth="27.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="600.0" minWidth="10.0" percentWidth="46.0" prefWidth="600.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="27.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="125.33334350585938" minHeight="10.0" percentHeight="10.0" prefHeight="73.33334350585938" valignment="BOTTOM" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="185.66665649414062" minHeight="10.0" percentHeight="30.0" prefHeight="185.66665649414062" valignment="CENTER" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="50.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="4.0" valignment="BOTTOM" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="110.0" minHeight="10.0" percentHeight="13.0" prefHeight="110.0" valignment="BOTTOM" vgrow="NEVER" />
+      <RowConstraints maxHeight="110.0" minHeight="10.0" percentHeight="13.0" prefHeight="110.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints maxHeight="145.0" minHeight="10.0" percentHeight="17.5" prefHeight="145.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints maxHeight="145.0" minHeight="10.0" percentHeight="17.5" prefHeight="145.0" valignment="BOTTOM" vgrow="NEVER" />
+      <RowConstraints maxHeight="220.0" minHeight="10.0" percentHeight="26.0" prefHeight="220.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints percentHeight="9.0" valignment="CENTER" vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <VBox alignment="CENTER" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <HBox prefHeight="100.0" prefWidth="200.0" stylesheets="@css/Material.css" GridPane.columnSpan="3" GridPane.rowSpan="4">
+         <styleClass>
+            <String fx:value="background" />
+            <String fx:value="shadow-deep" />
+         </styleClass>
+      </HBox>
+      <VBox alignment="CENTER" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets bottom="20.0" />
+            <Insets />
          </GridPane.margin>
          <children>
-            <Label text="Step 2. Start practising!" textFill="#515151">
+            <Label text="Practice And Learn" textFill="#515151">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="15.0" top="15.0" />
+               </VBox.margin>
+            </Label>
+            <JFXButton fx:id="practiceButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onPracticeModeClicked" prefWidth="297.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Practice Mode">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </JFXButton>
+            <JFXButton alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onAssessModeClicked" prefWidth="297.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Assessment Mode">
+               <font>
+                  <Font size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="shadow" />
+         </styleClass>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <children>
+            <Label text="Browse, Listen and Import" textFill="#515151">
                <padding>
                   <Insets bottom="20.0" />
                </padding>
@@ -37,55 +80,38 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <JFXButton fx:id="practiceButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onPracticeModeClicked" prefWidth="297.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Practice Mode">
+            <JFXButton onMouseClicked="#onBrowseModeClicked" prefHeight="43.0" prefWidth="297.0" ripplerFill="#81abc7" style="-fx-background-color: #d3d3d3;" text="Browse Database">
                <font>
-                  <Font size="22.0" />
-               </font>
-            </JFXButton>
-            <JFXButton  alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onAssessModeClicked" prefWidth="297.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Assessment Mode">
-               <font>
-                  <Font size="22.0" />
+                  <Font size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets />
                </VBox.margin>
             </JFXButton>
          </children>
-         <styleClass>
-            <String fx:value="card" />
-            <String fx:value="shadow" />
-         </styleClass>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <styleClass>
-            <String fx:value="card" />
-            <String fx:value="shadow" />
-         </styleClass>
+      <VBox alignment="CENTER" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <children>
-            <Label text="Step1:Listen to the recordings">
+            <Label text="Track Your Progress" textFill="#515151">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <JFXButton onMouseClicked="#onBrowseModeClicked" prefHeight="43.0" prefWidth="291.0" ripplerFill="#81abc7" style="-fx-background-color: #d3d3d3;" text="Browse Database">
+            <JFXButton onMouseClicked="#onStatisticsClicked" prefHeight="43.0" prefWidth="297.0" ripplerFill="#81abc7" style="-fx-background-color: #d3d3d3;" text="Statistics">
                <font>
                   <Font size="20.0" />
                </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXButton>
-            <JFXButton onMouseClicked="#onStatisticsClicked" prefHeight="43.0" prefWidth="291.0" ripplerFill="#81abc7" style="-fx-background-color: #d3d3d3;" text="Statistics">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
             </JFXButton>
          </children>
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="shadow" />
+         </styleClass>
       </VBox>
-      <VBox alignment="CENTER_RIGHT" GridPane.columnSpan="3" GridPane.rowIndex="3">
+      <VBox alignment="CENTER_RIGHT" GridPane.columnSpan="3" GridPane.rowIndex="6">
          <children>
             <JFXButton onMouseClicked="#onHelpButtonClicked" prefHeight="59.0" prefWidth="65.0" text=" ">
                <font>
@@ -97,6 +123,6 @@
             </JFXButton>
          </children>
       </VBox>
-      
+
    </children>
 </GridPane>

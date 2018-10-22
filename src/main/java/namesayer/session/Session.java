@@ -4,13 +4,18 @@ package namesayer.session;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
+import namesayer.model.CompositeRecording;
 import namesayer.model.PartialName;
 import namesayer.persist.NameStorageManager;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+
+import static namesayer.persist.Config.USER_ATTEMPTS;
 
 
 public class Session implements Serializable {
@@ -79,12 +84,28 @@ public class Session implements Serializable {
         return !currentName.getUserAttempts().isEmpty();
     }
 
+
     public String getId() {
         return id;
     }
 
     public SessionType getType() {
         return type;
+    }
+
+    public void removeFiles() {
+        for (CompositeName name : namesList) {
+            for (CompositeRecording recording : name.getUserAttempts()) {
+                try {
+                    if (recording.getRecordingPath().toString().contains(USER_ATTEMPTS.toString())){
+                        System.out.println("deleted: " + recording.getRecordingPath());
+                        Files.deleteIfExists(recording.getRecordingPath());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -106,4 +127,6 @@ public class Session implements Serializable {
     public int hashCode() {
         return id.hashCode();
     }
+
+
 }

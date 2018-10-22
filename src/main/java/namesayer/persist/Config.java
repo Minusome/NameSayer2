@@ -1,6 +1,5 @@
 package namesayer.persist;
 
-import javafx.stage.Stage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,4 +18,6 @@ public class Config {
     public static final Path BAD_QUALITY_FILE = GENERATED_FOLDER.resolve("bad_quality_names.txt");
     public static final Path STATS_FOLDER = GENERATED_FOLDER.resolve("stats");
     public static final Path STATS_FILE = STATS_FOLDER.resolve("data.ser");
+
+    public static final double BUFFER_TIME = 1;
 }

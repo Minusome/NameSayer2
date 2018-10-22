@@ -24,7 +24,7 @@
    </columnConstraints>
    <rowConstraints>
       <RowConstraints minHeight="10.0" percentHeight="7.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="4.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" percentHeight="75.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
@@ -39,8 +39,8 @@
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" percentHeight="60.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <styleClass>
@@ -48,12 +48,12 @@
                   <String fx:value="shadow" />
                </styleClass>
                <children>
-                  <Label fx:id="label" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="4">
+                  <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="78.0" prefWidth="440.0" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="4">
                      <font>
-                        <Font size="32.0" />
+                        <Font size="24.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                        <Insets bottom="15.0" left="20.0" right="20.0" top="20.0" />
                      </GridPane.margin>
                   </Label>
                   <HBox alignment="CENTER" style="-fx-background-color: #E8E8E8;" styleClass="shadow" GridPane.columnSpan="4" GridPane.rowIndex="1">
@@ -82,7 +82,7 @@
                                     <Insets bottom="2.0" right="2.0" />
                                  </StackPane.margin>
                               </JFXSpinner>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRecordingButtonClicked" text="Button">
+                              <JFXButton fx:id="recordingButton" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRecordingButtonClicked" text="Button">
                                  <graphic>
                                     <MaterialIconView fill="#009688" glyphName="MIC" size="80" />
                                  </graphic>
@@ -106,9 +106,9 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <JFXListView fx:id="practiseListView" GridPane.columnSpan="4" GridPane.rowIndex="2">
+                  <JFXListView fx:id="practiseListView" prefHeight="218.0" prefWidth="410.0" GridPane.columnSpan="4" GridPane.rowIndex="2">
                      <GridPane.margin>
-                        <Insets bottom="35.0" left="35.0" right="35.0" top="10.0" />
+                        <Insets bottom="25.0" left="30.0" right="30.0" top="30.0" />
                      </GridPane.margin>
                   </JFXListView>
                </children>

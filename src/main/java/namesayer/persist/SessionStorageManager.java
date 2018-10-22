@@ -109,14 +109,17 @@ public class SessionStorageManager {
 
 
     public void removeSession(AssessmentSession session) {
+        session.removeFiles();
         if (savedAssessmentSessions.containsKey(session)) {
             deleteFile(savedAssessmentSessions.get(session));
             savedAssessmentSessions.remove(session);
         }
 
+
     }
 
     public void removeSession(PractiseSession session) {
+        session.removeFiles();
         if (savedPractiseSessions.containsKey(session)) {
             deleteFile(savedPractiseSessions.get(session));
             savedPractiseSessions.remove(session);

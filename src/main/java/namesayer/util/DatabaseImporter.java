@@ -10,8 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +22,7 @@ import static namesayer.persist.Config.DATABASE_FOLDER;
 public class DatabaseImporter extends Task<Void>{
 	
 	private File _file;
-	private final File database = DATABASE_FOLDER.toFile();
+
 	
 	public DatabaseImporter(File file) {
 		_file=file;
@@ -34,8 +36,11 @@ public class DatabaseImporter extends Task<Void>{
         for(File f : _file.listFiles()){
             if(getFileType(f).equals("wav")){
 
-                String command = "sh "+ script.toString() + " " + f.getAbsolutePath();
+                String command = script.toString() + " " + f.getAbsolutePath();
                 ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", command);
+
+                System.out.println(" Command ------> " + command);
+
                 builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
                 builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                 builder.redirectError(ProcessBuilder.Redirect.INHERIT);
@@ -54,8 +59,11 @@ public class DatabaseImporter extends Task<Void>{
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
-                f.renameTo(new File(database + "//" + f.getName()));
-                File file=new File(database + "//" + f.getName());
+                Path newPath = DATABASE_FOLDER.resolve(f.getName());
+                File newFile = new File(newPath.toUri());
+                if (!newFile.exists()) {
+                    Files.copy(f.toPath(), newPath);
+                }
                 Matcher matcher = Pattern.compile("[a-zA-Z]+(?:\\.wav)").matcher(f.getName());
                 String name = "unrecognized";
                 if (matcher.find()) {
@@ -64,8 +72,7 @@ public class DatabaseImporter extends Task<Void>{
                 if(!name.isEmpty()) {
                     name = name.substring(0, 1).toUpperCase() + name.substring(1);
                     PartialName partialName = new PartialName(name);
-                    partialName.addRecording(new PartialRecording(file.toPath()));
-
+                    partialName.addRecording(new PartialRecording(newPath));
                     //System.out.println(_file.getAbsolutePath());
                     NameStorageManager.getInstance().addNewPartialName(partialName);
                 }

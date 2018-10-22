@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -82,11 +83,17 @@ public class NameStorageManager {
     }
 
     public void persistCompleteRecordingsForName(CompositeName newName) {
+        List<CompositeRecording> copyOfNames = new ArrayList<>(newName.getUserAttempts());
         for (CompositeRecording newRecording : newName.getUserAttempts()) {
             Path oldPath = newRecording.getRecordingPath();
             Path newPath = SAVED_RECORDINGS.resolve(oldPath.getFileName());
             try {
-                Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+                File target = new File(newPath.toUri());
+                if(!target.exists()){
+                    Files.move(oldPath, newPath);
+                } else {
+                    copyOfNames.remove(newRecording);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -94,7 +101,7 @@ public class NameStorageManager {
         }
         for (CompositeName storedName : compositeNames) {
             if (storedName.equals(newName)) {
-                storedName.getUserAttempts().addAll(newName.getUserAttempts());
+                storedName.getUserAttempts().addAll(copyOfNames);
                 return;
             }
         }

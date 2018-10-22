@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static namesayer.persist.Config.BUFFER_TIME;
 import static namesayer.persist.Config.USER_ATTEMPTS;
 import static namesayer.persist.Config.WAV_EXTENSION;
 
@@ -57,7 +58,7 @@ public class CompositeName extends Name implements Serializable {
 
         Thread thread = new Thread(() -> {
             Path newRecordingPath = USER_ATTEMPTS.resolve(recordingName + WAV_EXTENSION).toAbsolutePath();
-            String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t " + exemplar.getLength() + " -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
+            String command = "ffmpeg -loglevel \"quiet\" -f alsa -i default -t " + (exemplar.getLength() + BUFFER_TIME) + " -acodec pcm_s16le -ar 16000 -ac 1 -y \"" +
                     newRecordingPath.toString() + "\"";
             ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", command);
             try {

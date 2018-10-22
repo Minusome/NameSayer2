@@ -2,9 +2,9 @@
 
 n=$#
 
-#declare -i counter
+declare -i counter
 counter=0
-lowestVol=-20
+lowestVol=(-10)
 #targetVol=(-2)
 
 for file in $*; do
@@ -12,16 +12,22 @@ for file in $*; do
 	f=${file}
 	#This command is to get the max volume of input audio
 	volumeString="$(ffmpeg -i $f -af volumedetect -vn -sn -dn -f null /dev/null 2>&1 | grep max_volume)"
-	
+	echo $volumeString
 	#Find the actual maximum volume (in dB)
-	maxVolume=${volumeString:0-7:4}
+	#maxVolume="${volumeString//[[:space:]]/}"
+	maxVolume=${volumeString:0-8:5}
+	maxVolume="${maxVolume//[[:space:]]/}"
+	echo $maxVolume
+	#maxVolume=${maxVolume%d*}
 
 	#Change volume
 	offsetMaxVolume=$(expr $maxVolume*-1|bc)
 	#changeVol=$(expr $targetVol-$offsetMaxVolume|bc)
 
-	ifEdit=$(echo "$maxVolume<$lowestVol"|bc)
-	
+	ifEdit=$(echo "$maxVolume>$lowestVol"|bc)
+	#echo $maxVolume
+	echo $ifEdit
+
 
 	if [ $ifEdit -eq 1 ]; then
 
@@ -40,4 +46,4 @@ for file in $*; do
 	
 
 done
-echo $counter
+#echo $counter

@@ -27,6 +27,7 @@ import org.controlsfx.control.Rating;
 
 import java.io.IOException;
 
+import static namesayer.persist.Config.BUFFER_TIME;
 import static namesayer.util.TransitionFactory.Direction.LEFT;
 
 public class AssessmentScreenController {
@@ -50,8 +51,6 @@ public class AssessmentScreenController {
     private AssessmentSession session;
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
-    private SaveAlert saveAlertCache;
-    private MicTestAlert micTestAlertCache;
 
     public void injectSession(AssessmentSession session) {
         this.session = session;
@@ -108,13 +107,17 @@ public class AssessmentScreenController {
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         if (!session.hasUserMadeRecording()) {
             disableButtons(true, true);
+            recordingButton.setMouseTransparent(true);
             session.getCurrentName().makeNewRecording(event -> reBindProperties());
             recordingSpinner.setVisible(true);
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                     new KeyFrame(
-                            Duration.seconds(session.getCurrentName().getExemplar().getLength()),
-                            event -> disableButtons(false, true),
+                            Duration.seconds(session.getCurrentName().getExemplar().getLength() + BUFFER_TIME),
+                            event -> {
+                                recordingButton.setMouseTransparent(false);
+                                disableButtons(false, true);
+                            },
                             new KeyValue(recordingSpinner.progressProperty(), 1)
                     )
             );
@@ -167,18 +170,14 @@ public class AssessmentScreenController {
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        if (saveAlertCache == null){
-            saveAlertCache = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
-        }
-        saveAlertCache.show();
+        SaveAlert alert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
+        alert.show();
         StatsManager.getInstance().save();
     }
 
     public void onMicTestButtonClicked() {
-        if (micTestAlertCache == null) {
-            micTestAlertCache = new MicTestAlert((Stage) parentPane.getScene().getWindow());
-        }
-        micTestAlertCache.show();
+        MicTestAlert alert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
+        alert.show();
         micTestButton.setDisableVisualFocus(true);
     }
 }

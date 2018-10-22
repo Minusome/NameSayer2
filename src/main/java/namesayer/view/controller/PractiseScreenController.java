@@ -6,12 +6,14 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
+import com.sun.javafx.scene.control.skin.Utils;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -31,7 +34,6 @@ import namesayer.persist.StatsManager;
 import namesayer.session.PractiseSession;
 import namesayer.util.EmptySelectionModel;
 import namesayer.util.SnackBarLoader;
-import namesayer.view.alert.AlertAnimation;
 import namesayer.view.alert.MicTestAlert;
 import namesayer.view.cell.PractiseListCell;
 import namesayer.view.alert.SaveAlert;
@@ -40,13 +42,13 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.util.List;
 
+import static namesayer.persist.Config.BUFFER_TIME;
 import static namesayer.util.TransitionFactory.Direction.LEFT;
 import static namesayer.util.TransitionFactory.Direction.RIGHT;
 import static namesayer.util.TransitionFactory.cardDoubleSlideTransition;
 
 
 public class PractiseScreenController {
-
 
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXButton micTestButton;
@@ -59,9 +61,9 @@ public class PractiseScreenController {
     @FXML private StackPane cardPane;
     @FXML private Label label;
     @FXML private JFXSpinner playingSpinner;
+    @FXML private JFXButton recordingButton;
 
     private PractiseSession session;
-
 
 
     public void injectSession(PractiseSession session) {
@@ -119,11 +121,13 @@ public class PractiseScreenController {
             disableArrows(false);
             refreshList();
         });
+        recordingButton.setMouseTransparent(true);
         recordingSpinner.setVisible(true);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0), new KeyValue(recordingSpinner.progressProperty(), 0)),
                 new KeyFrame(
-                        Duration.seconds(session.getCurrentName().getExemplar().getLength()),
+                        Duration.seconds(session.getCurrentName().getExemplar().getLength() + BUFFER_TIME),
+                        event -> recordingButton.setMouseTransparent(false),
                         new KeyValue(recordingSpinner.progressProperty(), 1)
                 )
         );
@@ -165,8 +169,7 @@ public class PractiseScreenController {
 
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
-        SaveAlert  alert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
-        alert.setAnimation(new AlertAnimation());
+        SaveAlert alert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
         alert.show();
         StatsManager.getInstance().save();
     }
