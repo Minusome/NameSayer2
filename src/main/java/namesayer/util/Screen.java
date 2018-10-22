@@ -16,7 +16,6 @@ public enum Screen {
     NAME_SELECT_SCREEN("/NameSelectScreen.fxml"),
     STATS_SCREEN("/StatsScreen.fxml"),
 	MENU_HELP_SCREEN("/MenuHelpScreen.fxml"),
-    NAME_SELECT_HELP_SCREEN("/NameSelectHelpScreen.fxml"),
     MIC_TEST_ALERT("/MicTestAlert.fxml");
 
     private URL url;

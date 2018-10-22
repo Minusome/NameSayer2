@@ -42,21 +42,13 @@
                   <Font size="22.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="assessButton" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onAssessModeClicked" prefWidth="297.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Assessment Mode">
+            <JFXButton  alignment="CENTER" contentDisplay="CENTER" defaultButton="true" onMouseClicked="#onAssessModeClicked" prefWidth="297.0" ripplerFill="#7eb6d7" style="-fx-background-color: #D3D3D3;" text="Assessment Mode">
                <font>
                   <Font size="22.0" />
                </font>
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </JFXButton>
-            <JFXButton mnemonicParsing="false" onMouseClicked="#loadNewDatabase" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #d3d3d3;" text="Load New Names">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="22.0" />
-               </font>
             </JFXButton>
          </children>
          <styleClass>
@@ -75,7 +67,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <JFXButton fx:id="browseButton" onMouseClicked="#onBrowseModeClicked" prefHeight="43.0" prefWidth="291.0" ripplerFill="#81abc7" style="-fx-background-color: #d3d3d3;" text="Browse Database">
+            <JFXButton onMouseClicked="#onBrowseModeClicked" prefHeight="43.0" prefWidth="291.0" ripplerFill="#81abc7" style="-fx-background-color: #d3d3d3;" text="Browse Database">
                <font>
                   <Font size="20.0" />
                </font>

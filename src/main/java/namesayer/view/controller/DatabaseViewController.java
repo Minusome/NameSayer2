@@ -2,7 +2,6 @@ package namesayer.view.controller;
 
 import com.jfoenix.controls.*;
 
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,14 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
@@ -26,8 +23,11 @@ import namesayer.model.PartialName;
 import namesayer.model.PartialRecording;
 import namesayer.model.Recording;
 import namesayer.persist.NameStorageManager;
+import namesayer.util.DatabaseImporter;
+import namesayer.util.SnackBarLoader;
 import org.controlsfx.control.Rating;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
@@ -48,7 +48,6 @@ public class DatabaseViewController implements Initializable {
     @FXML private Rating rating;
     @FXML private JFXButton sortButton;
     private double ratingValue;
-    private JFXSnackbar bar;
     private ObservableList<CompositeName> userRecordings;
     private ObservableList<PartialName> databaseRecordings;
     private boolean isNameDatabase;
@@ -75,7 +74,7 @@ public class DatabaseViewController implements Initializable {
         initialise();
         if (databaseRecordings.isEmpty()) {
             System.out.println("empty");
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("No recordings in datatbase"));
+            SnackBarLoader.displayMessage(parentPane, "No recordings in database");
         } else {
             showNameDatabase();
 
@@ -91,7 +90,7 @@ public class DatabaseViewController implements Initializable {
         initialise();
         if (userRecordings.isEmpty()) {
             System.out.println("empty");
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("No user recording in datatbase"));
+            SnackBarLoader.displayMessage(parentPane, "No user recording in datatbase");
         } else {
             //System.out.println("222");
             showComNameDatabase();
@@ -118,7 +117,7 @@ public class DatabaseViewController implements Initializable {
 	        	}
 	        }
 	        if(listOfNames.isEmpty()) {
-	        	bar.enqueue(new JFXSnackbar.SnackbarEvent("Name not found"));
+                SnackBarLoader.displayMessage(parentPane, "Name not found");
 	        }
 	        nameList.setItems(listOfNames);
     	}
@@ -139,7 +138,7 @@ public class DatabaseViewController implements Initializable {
     public void onPlayButtonClicked(MouseEvent e) {
         Recording recording = (Recording) recordingList.getSelectionModel().getSelectedItem();
         if (recording == null) {
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a recording first"));
+            SnackBarLoader.displayMessage(parentPane, "Please select a recording first");
         } else {
             recording.playAudio();
             Timeline timeline = new Timeline(
@@ -266,8 +265,6 @@ public class DatabaseViewController implements Initializable {
         // TODO Auto-generated method stub
         userRecordings = NameStorageManager.getInstance().getCompositeNames();
         databaseRecordings = NameStorageManager.getInstance().getPartialNames();
-        bar = new JFXSnackbar(parentPane);
-        bar.getStylesheets().addAll("/css/Material.css");
         rating.setRating(3.0);
         setRatingVisible(false, false,false);
 
@@ -285,7 +282,7 @@ public class DatabaseViewController implements Initializable {
     @FXML
     private void sortByRating(MouseEvent e) {
         if(nameList.getSelectionModel().getSelectedItem()==null) {
-            bar.enqueue(new JFXSnackbar.SnackbarEvent("Please select a name to sort"));
+            SnackBarLoader.displayMessage(parentPane, "Please select a name to sort");
         }else {
             CompositeName name = (CompositeName) nameList.getSelectionModel().getSelectedItem();
             recordingList.setItems(FXCollections.observableArrayList(name.getUserAttempts()));
@@ -293,4 +290,18 @@ public class DatabaseViewController implements Initializable {
         }
     }
 
+    public void onImportButtonClicked() {
+        DirectoryChooser chooser= new DirectoryChooser();
+        chooser.setTitle("Select folder containing recordings");
+        //chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
+        //File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
+        File selectedFolder = chooser.showDialog(null);
+        if (selectedFolder != null) {
+            SnackBarLoader.displayMessage(parentPane, "Database loading in progress...");
+            DatabaseImporter importer = new DatabaseImporter(selectedFolder);
+            importer.setOnFailed(event -> SnackBarLoader.displayMessage(parentPane, "Can't load folder: " + selectedFolder.getName()));
+            importer.setOnSucceeded(event -> SnackBarLoader.displayMessage(parentPane, "Successfully loaded folder: " + selectedFolder.getName()));
+            new Thread(importer).start();
+        }
+    }
 }

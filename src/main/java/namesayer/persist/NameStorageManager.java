@@ -152,16 +152,12 @@ public class NameStorageManager {
 
 
     public void addNewPartialName(PartialName name) {
-        boolean isNewName = true;
         for(PartialName pn : partialNames) {
-            if(pn.toString().equals(name.toString())) {
+            if(pn.toString().toLowerCase().equals(name.toString().toLowerCase())) {
                 pn.addRecording(name.getRecordings().get(0));
-                isNewName=false;
+                return;
             }
         }
-        if(isNewName) {
-            partialNames.add(name);
-        }
-
+        partialNames.add(name);
     }
 }

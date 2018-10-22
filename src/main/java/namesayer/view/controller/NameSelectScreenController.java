@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,13 +55,13 @@ import static namesayer.util.Screen.*;
 
 public class NameSelectScreenController {
 
+    @FXML private JFXButton clearAllButton;
     @FXML private JFXButton resumeSessionButton;
     @FXML private JFXListView<Session> savedSessionsListView;
     @FXML private GridPane parentPane;
     @FXML private JFXTextField nameSearchBar;
     @FXML private JFXListView<String> nameListView;
     @FXML private JFXToggleButton randomToggle;
-    @FXML private JFXButton helpButton;
 
     private SuggestionProvider<String> suggestions;
     private List<String> autoCompletions = new ArrayList<>();
@@ -83,7 +84,7 @@ public class NameSelectScreenController {
         suggestions = SuggestionProvider.create(autoCompletions);
         AutoCompletionBinding<String> binding = TextFields.bindAutoCompletion(nameSearchBar, suggestions);
         binding.setPrefWidth(500);
-        helpButton.setVisible(false);
+        clearAllButton.disableProperty().bind(Bindings.isEmpty(nameListView.getItems()));
     }
 
     private void addToListView(String userInput, String errorMsg) {
@@ -116,6 +117,7 @@ public class NameSelectScreenController {
         }
         resumeSessionButton.setDisable(items.isEmpty());
         savedSessionsListView.setItems(items);
+        savedSessionsListView.setExpanded(true);
     }
 
     /**
@@ -228,9 +230,12 @@ public class NameSelectScreenController {
         Scene scene = nameSearchBar.getScene();
         scene.setRoot(root);
     }
-    
-    @FXML
-    public void onHelpButtonClicked(MouseEvent e) throws IOException {
-        NAME_SELECT_HELP_SCREEN.loadWithNode(helpButton);
+
+
+    public void onClearAllClicked(MouseEvent mouseEvent) {
+        List<String> userInputNames = new ArrayList<>(nameListView.getItems());
+        for (String userInputName : userInputNames) {
+            removeSelection(userInputName);
+        }
     }
 }

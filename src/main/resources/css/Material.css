@@ -92,6 +92,7 @@
     -fx-background-color: transparent;
 }
 
+
 .expanded-gap {
     -jfx-expanded: true;
     -jfx-vertical-gap: 1em;
@@ -130,18 +131,20 @@
 }
 
 .list-cell:odd {
-    -fx-background-color: #f3f3fa;
+    -fx-background-color: #f6f6fd;
 }
 
 .list-cell:selected {
-    -fx-background-color: #c7c7e2;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-background-color: #cac9d2;
+    -fx-text-fill: black;
 }
 
 .list-cell:empty {
     -fx-background-color: white;
+}
+
+.jfx-list-cell .jfx-rippler {
+    -jfx-rippler-fill: #9d9c9e;
 }
 
 .jfx-tab-pane .tab-header-background {

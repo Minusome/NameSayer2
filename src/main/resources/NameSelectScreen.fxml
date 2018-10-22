@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.NameSelectScreenController">
@@ -49,15 +50,7 @@
                           </JFXButton>
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="277.0" styleClass="background-dark" stylesheets="@css/Material.css" GridPane.columnIndex="1">
-               <children>
-                  <JFXButton fx:id="helpButton" onMouseClicked="#onHelpButtonClicked" text=" ">
-                     <graphic>
-                        <MaterialIconView fill="#efebeb" glyphName="HELP" size="27" />
-                     </graphic>
-                  </JFXButton>
-               </children>
-            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="277.0" styleClass="background-dark" stylesheets="@css/Material.css" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <JFXTabPane stylesheets="@css/Material.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="50.0" GridPane.rowIndex="1">
@@ -83,6 +76,11 @@
                                       <String fx:value="shadow-deep" />
                                   </styleClass>
                               </HBox>
+                        <StackPane alignment="BOTTOM_RIGHT" GridPane.columnIndex="1">
+                           <children>
+                              <JFXButton fx:id="clearAllButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onClearAllClicked" text="Clear All" textFill="WHITE" />
+                           </children>
+                        </StackPane>
                               <JFXTextField fx:id="nameSearchBar" focusColor="#009688" onKeyReleased="#onSearchBarKeyTyped" promptText="Enter a name" style="-fx-prompt-text-fill: #BDBDBD; -fx-text-fill: #FFFFFF;" unFocusColor="#d1c4e9" GridPane.columnIndex="1">
                                   <font>
                                       <Font size="16.0" />
@@ -112,7 +110,7 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                         <RowConstraints percentHeight="70.0" vgrow="SOMETIMES" />
                         <RowConstraints percentHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
                      </rowConstraints>
@@ -122,7 +120,7 @@
                               <Insets top="20.0" />
                            </GridPane.margin>
                         </JFXButton>
-                        <JFXListView fx:id="savedSessionsListView" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXListView fx:id="savedSessionsListView" depth="1" stylesheets="@css/Material.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
               </content>
