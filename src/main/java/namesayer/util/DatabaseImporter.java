@@ -24,10 +24,15 @@ public class DatabaseImporter extends Task<Void>{
 	private File _file;
 
 	
+	/** Set the folder that contains name recordings
+	*/
 	public DatabaseImporter(File file) {
 		_file=file;
 	}
 
+	/**
+	 *  Edit audio file including silence removing and adjusting volume
+	*/
     @Override
     protected Void call() throws Exception {
         URL url = getClass().getResource("/script/VolumeEdit.sh");
@@ -81,7 +86,8 @@ public class DatabaseImporter extends Task<Void>{
         return null;
     }
 
-
+    /** Return the file type
+    */
 	public String getFileType(File file){
 	    String fileName = file.getName();
 	    String suffix = fileName.substring(fileName.lastIndexOf(".")+1);

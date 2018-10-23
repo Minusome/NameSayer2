@@ -100,6 +100,8 @@ public class DatabaseViewController {
     }
 
     
+    
+    
     @FXML
     public void searchNameKeyTyped(KeyEvent e) {
     	String userInput = nameSearchBar.getText();
@@ -269,6 +271,9 @@ public class DatabaseViewController {
         sortButton.setVisible(sort);
     }
 
+    /**
+    * Sort recording list by rating
+    */
     @FXML
     private void sortByRating(MouseEvent e) {
         if(nameList.getSelectionModel().getSelectedItem()==null) {
@@ -280,11 +285,12 @@ public class DatabaseViewController {
         }
     }
 
+    /**
+     * Import new database
+    */
     public void onImportButtonClicked() {
         DirectoryChooser chooser= new DirectoryChooser();
         chooser.setTitle("Select folder containing recordings");
-        //chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
-        //File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
         File selectedFolder = chooser.showDialog(null);
         if (selectedFolder != null) {
             SnackBarLoader.displayMessage(parentPane, "Database loading in progress...");
