@@ -223,7 +223,6 @@ public class PractiseScreenController {
     public void searchNameKeyTyped(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             boolean found = session.jumpTo(nameSearchBar.getText());
-            System.out.println(nameSearchBar.getText());
             nameSearchBar.clear();
             if (found) {
                 SequentialTransition transition = cardDoubleSlideTransition(cardPane, LEFT, event -> {

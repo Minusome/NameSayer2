@@ -104,7 +104,6 @@ public class Session implements Serializable {
             for (CompositeRecording recording : name.getUserAttempts()) {
                 try {
                     if (recording.getRecordingPath().toString().contains(USER_ATTEMPTS.toString())){
-                        System.out.println("deleted: " + recording.getRecordingPath());
                         Files.deleteIfExists(recording.getRecordingPath());
                     }
                 } catch (IOException e) {

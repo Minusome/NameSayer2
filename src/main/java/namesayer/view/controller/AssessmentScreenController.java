@@ -49,6 +49,7 @@ public class AssessmentScreenController {
     private AssessmentSession session;
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
+    private boolean notCompared = true;
 
     /**
      * This method must be called to provide the Session model

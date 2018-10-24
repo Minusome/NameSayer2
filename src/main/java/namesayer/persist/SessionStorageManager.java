@@ -65,11 +65,9 @@ public class SessionStorageManager {
             if (type.equals(Session.SessionType.PRACTISE)) {
                 PractiseSession session = (PractiseSession) in.readObject();
                 savedPractiseSessions.put(session, path);
-                System.out.println("Loaded: " + session.getSessionName());
             } else {
                 AssessmentSession session = (AssessmentSession) in.readObject();
                 savedAssessmentSessions.put(session, path);
-                System.out.println("Loaded: " + session.getSessionName());
             }
             in.close();
             file.close();

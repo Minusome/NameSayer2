@@ -30,7 +30,6 @@ import static namesayer.util.Screen.MAIN_MENU;
 
 public class DatabaseViewController {
 
-    @FXML private Label nameDatabaseButton;
     @FXML private JFXToggleButton badQualityToggle;
     @FXML private JFXButton backButton;
     @FXML private JFXListView nameList;
@@ -43,7 +42,6 @@ public class DatabaseViewController {
     private double ratingValue;
     private ObservableList<CompositeName> userRecordings;
     private ObservableList<PartialName> databaseRecordings;
-    private boolean isNameDatabase;
     private ObservableList<Name> listOfNames;
     private int counter = 0;
 
@@ -62,11 +60,9 @@ public class DatabaseViewController {
      */
     public void onNameDatabaseClicked() {
     	counter=0;
-        isNameDatabase = true;
         playingSpinner.setProgress(1);
         setRatingVisible(false, false,false);
         if (databaseRecordings.isEmpty()) {
-            System.out.println("empty");
             SnackBarLoader.displayMessage(parentPane, "No recordings in database");
         } else {
             showNameDatabase();
@@ -78,14 +74,11 @@ public class DatabaseViewController {
      */
     public void onUserRecordingClicked() {
     	counter=1;
-        isNameDatabase = false;
         playingSpinner.setProgress(1);
         setRatingVisible(false, false,false);
         if (userRecordings.isEmpty()) {
-            System.out.println("empty");
             SnackBarLoader.displayMessage(parentPane, "No user recording in datatbase");
         } else {
-            //System.out.println("222");
             showComNameDatabase();
         }
     }
@@ -145,7 +138,6 @@ public class DatabaseViewController {
                     )
             );
             timeline.play();
-            System.out.println(recording.toString());
         }
     }
 
@@ -287,7 +279,10 @@ public class DatabaseViewController {
             SnackBarLoader.displayMessage(parentPane, "Database loading in progress...");
             DatabaseImporter importer = new DatabaseImporter(selectedFolder);
             importer.setOnFailed(event -> SnackBarLoader.displayMessage(parentPane, "Can't load folder: " + selectedFolder.getName()));
-            importer.setOnSucceeded(event -> SnackBarLoader.displayMessage(parentPane, "Successfully loaded folder: " + selectedFolder.getName()));
+            importer.setOnSucceeded(event -> {
+                SnackBarLoader.displayMessage(parentPane, "Successfully loaded folder: " + selectedFolder.getName());
+                onNameDatabaseClicked();
+            });
             new Thread(importer).start();
         }
     }

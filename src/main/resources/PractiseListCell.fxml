@@ -4,10 +4,12 @@
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
-<HBox fx:id="listItemHBox" alignment="CENTER_LEFT" prefHeight="40.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.text.Font?>
+<HBox fx:id="listItemHBox" alignment="CENTER_LEFT" prefHeight="40.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="itemLabel" contentDisplay="CENTER" text="Label" textAlignment="CENTER" HBox.hgrow="NEVER">
             <HBox.margin>
@@ -21,15 +23,36 @@
          <graphic>
             <MaterialIconView glyphName="PLAY_CIRCLE_FILLED" size="20" />
          </graphic>
+         <tooltip>
+            <Tooltip text="Play this recording" >
+                <font>
+                    <Font size="12.0" />
+                </font>
+            </Tooltip>
+         </tooltip>
       </JFXButton>
       <JFXButton fx:id="rateButton" contentDisplay="GRAPHIC_ONLY" onMouseClicked="#onRateButtonClicked" HBox.hgrow="NEVER">
          <graphic>
             <MaterialIconView glyphName="STAR" size="20" />
          </graphic>
+         <tooltip>
+            <Tooltip text="Rate the quality of this recording" >
+                <font>
+                    <Font size="12.0" />
+                </font>
+            </Tooltip>
+         </tooltip>
       </JFXButton>
       <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onMouseClicked="#onDeleteButtonClicked" HBox.hgrow="NEVER">
          <graphic>
             <MaterialIconView glyphName="DELETE" size="20" strokeType="OUTSIDE" strokeWidth="0.0" />
-         </graphic></JFXButton>
+         </graphic>
+         <tooltip>
+            <Tooltip text="Delete this recording" >
+                <font>
+                    <Font size="12.0" />
+                </font>
+            </Tooltip>
+         </tooltip></JFXButton>
     </children>
 </HBox>

@@ -55,6 +55,7 @@ import static namesayer.util.Screen.*;
 
 public class NameSelectScreenController {
 
+    @FXML private GridPane sessionPane;
     @FXML private JFXButton clearAllButton;
     @FXML private JFXButton resumeSessionButton;
     @FXML private JFXListView<Session> savedSessionsListView;
@@ -70,6 +71,9 @@ public class NameSelectScreenController {
     private SessionFactory sessionFactory = new SessionFactory();
     private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
     private SessionStorageManager sessionStorageManager = SessionStorageManager.getInstance();
+
+    private static final String checkString = "[a-zA-Z-' ]+";
+
 
     /**
      * Generate custom ListView cells and create auto-suggestion for the name's input textfield
@@ -163,14 +167,17 @@ public class NameSelectScreenController {
 
         //Add the name if enter is pressed
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            addToListView(userInput, "This name could not be located in the database");
-            nameSearchBar.clear();
-            resetSuggestions();
-            return;
+            if (userInput.matches(checkString)){
+                addToListView(userInput, "This name could not be located in the database");
+                nameSearchBar.clear();
+                resetSuggestions();
+                return;
+            } else {
+                SnackBarLoader.displayMessage(parentPane, "Input contains invalid characters");
+            }
         }
         //Query the name
         Result result = nameStorageManager.queryUserRequestedName(userInput);
-        System.out.println(result.getStatus());
 
         //If the name is not discoverable at all, clear suggestions
         if (result.getStatus().equals(Status.NONE_FOUND)) {
@@ -240,19 +247,25 @@ public class NameSelectScreenController {
      */
     public void onResumeButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root;
-        if (sessionType.equals(ASSESSMENT)) {
-            FXMLLoader loader = ASSESSMENT_SCREEN.getLoader();
-            root = loader.load();
-            AssessmentScreenController controller = loader.getController();
-            controller.injectSession((AssessmentSession) savedSessionsListView.getSelectionModel().getSelectedItem());
+        Session selectedSession = savedSessionsListView.getSelectionModel().getSelectedItem();
+        if (selectedSession != null) {
+            if (sessionType.equals(ASSESSMENT)) {
+                FXMLLoader loader = ASSESSMENT_SCREEN.getLoader();
+                root = loader.load();
+                AssessmentScreenController controller = loader.getController();
+                controller.injectSession((AssessmentSession) savedSessionsListView.getSelectionModel().getSelectedItem());
+            } else {
+                FXMLLoader loader = PRACTISE_SCREEN.getLoader();
+                root = loader.load();
+                PractiseScreenController controller = loader.getController();
+                controller.injectSession((PractiseSession) savedSessionsListView.getSelectionModel().getSelectedItem());
+            }
+            Scene scene = nameSearchBar.getScene();
+            scene.setRoot(root);
         } else {
-            FXMLLoader loader = PRACTISE_SCREEN.getLoader();
-            root = loader.load();
-            PractiseScreenController controller = loader.getController();
-            controller.injectSession((PractiseSession) savedSessionsListView.getSelectionModel().getSelectedItem());
+            SnackBarLoader.displayMessage(sessionPane, "Session not selected");
         }
-        Scene scene = nameSearchBar.getScene();
-        scene.setRoot(root);
+
     }
 
 

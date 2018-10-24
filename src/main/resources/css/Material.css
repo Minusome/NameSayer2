@@ -175,3 +175,7 @@
 	-fx-text-fill: #ffffff;
 	
 }
+
+#tooltips {
+    -fx-font-size: 0.85em;
+}

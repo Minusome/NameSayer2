@@ -35,8 +35,16 @@ public class NameConcatenateTask extends Task<Void> {
         for (String s : components) {
             PartialName name = manager.findPartialNameFromString(s);
             if (name != null) {
+                List<PartialRecording> recordings = name.getRecordings();
+                PartialRecording selected = null;
+                for (PartialRecording r : recordings) {
+                    if (!r.isBadQuality()){
+                        selected = r;
+                        break;
+                    }
+                }
                 //TODO just getting first recording for now, change to quality
-                discovered.add(name.getRecordings().get(0));
+                discovered.add((selected != null) ? selected : recordings.get(0));
             }
         }
         if (discovered.size() == 0) {

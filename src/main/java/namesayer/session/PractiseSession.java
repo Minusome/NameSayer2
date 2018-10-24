@@ -31,10 +31,7 @@ public class PractiseSession extends Session {
      * @param recording To be deleted
      */
     public void removeRecordingForCurrentName(CompositeRecording recording) {
-        boolean contained = currentName.getUserAttempts().remove(recording);
-        System.out.println("contains? " + contained);
-
-        System.out.println(currentName.getUserAttempts());
+        currentName.getUserAttempts().remove(recording);
     }
 
     /**

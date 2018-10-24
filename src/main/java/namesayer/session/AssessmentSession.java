@@ -54,7 +54,6 @@ public class AssessmentSession extends Session {
         double rating = 0;
         for (CompositeName name : namesList) {
             rating += name.getUserAttempts().get(0).getRating();
-            System.out.println(rating);
         }
         return rating / namesList.size();
     }

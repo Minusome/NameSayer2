@@ -1,46 +1,109 @@
+  _   _                               _____
+ | \ | |                             / ____|
+ |  \| |   __ _   _ __ ___     ___  | (___     __ _   _   _    ___   _ __
+ | . ` |  / _` | | '_ ` _ \   / _ \  \___ \   / _` | | | | |  / _ \ | '__|
+ | |\  | | (_| | | | | | | | |  __/  ____) | | (_| | | |_| | |  __/ | |
+ |_| \_|  \__,_| |_| |_| |_|  \___| |_____/   \__,_|  \__, |  \___| |_|
+                                                       __/ |
+                                                      |___/
 
-What is NameSayer?
-******************
+What is it?
+***********
+Tool for learning unfamiliar names
 
-The purpose of this program is for users to say unfamiliar names.
-The user will be able to listen to the recordings stored in the name data base and record their own productions.
+License:
+********
+MIT License
 
-
-How to install:
-***************
-
-It doesn't need installation
-
-
-
-Author:
-*******
-
-Group 41: 
-Tony Liu, 
-Guangya Zhu
+Authors:
+********
+Tony Liu,
+Lisa Wang
 
 
+Requirements:
+*************
+● Oracle Java 8 version 1.8.0_121 or newer (Java 9 and 10 are not supported)
+● Oracle JavaFX runtime (normally bundled with Java 8)
+● FFmpeg version 3.4.4
+● FFplay version 3.4.4
+● Microphone and audio output
+● Linux Operating System
+● Intel HD 4000 graphics or better
 
-How to use NameSayer:
-*********************
-(1)Double click on the application ----> Main Menu
-(2)First Select the database of all the names (first time using this application) ----> This will generate a folder hierarchy in your home menu (select this carefully as this will delete all ratings and the production of the user)
-	*Or click on the load button to load existing folder hierarchy and historical ratings for the recordings.
-(3)Then the Practice Mode button will be enabled
-(4)Click on Practice Mode button ------> Name Selection Screen
-The Name Selection Screen would contain:
-										a search bar ----> search for a name
-										a list of names -----> tick the check box to select names want to practice
-										a randomized toggle button -----> randomize the order of the selected list
-										a next button -----> to enter the next stage of practsing
-										a back button -----> in case the initialisation of names go off, back to step (2)
-(5)Select one of the names displayed in the selected names list----> all versions of recordings with that name would appear in the saved recordings section with different prefix.
-(6)Select one version of the names ----> a player and rating stars pops up.
-(7)Click on the play button ----> play the recording selected
-(8)Rating stars are used to rate recordings. After the first time using this application 
+(Warning: animations may drop frames if hardware acceleration is not supported)
 
-Creating recordings
-*********************
-After playing a recording. Click on the new button followed by the record button. After a short duration the recording will be produced and can be seen in the new recording section.
-The user can listen to this recording and click on the save button to save it to the database. And it will have a prefix of "Recording" indicating it is the users production.
+
+Run Instructions:
+*****************
+Extract into working directory. You should see the following directory structure:
+
+    pwd/
+    | -- readme.txt
+    | -- NameSayer.jar
+    | -- database/
+        |-- name1.wav
+        |-- name2.wav etc.
+    | -- generated/
+        |-- attempts/
+        |-- saved/
+        |-- session/
+            |-- assessment/
+            |-- practise/
+        |-- stats/
+    | -- script/
+        |-- VolumeEdit.sh/
+
+Then run the following commands from the present working directory:
+
+    user@shell:/pwd/$ chmod +x NameSayer.jar
+    user@shell:/pwd/$ java -jar NameSayer.jar
+
+FAQ:
+****
+
+> Main menu fails to load / Nothing displays / Assets Corrupted
+    Solution : This is often caused by running the application with OpenJDK. Please check your java version by running:
+               user@shell:/path-to-folder/$ java -version
+               Switch to Oracle JDK if it is not already.
+
+> Getting exception java.lang.ClassNotFoundException: com.sun.javafx.css.StyleConverterImpl
+    Solution : This is caused when running the application with Java 9 or 10. Please downgrade your distribution to Java 8
+
+> No audio during playback or after recording
+    Solution : Install FFmpeg using the following link:
+                https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg
+                (Courtesy of Adapt)
+
+> Can’t import new name folder
+    Solution : Make sure only wav files are being imported
+
+> Animations are choppy / Dropped frames
+    Solution : Please ensure the application is not running within a VM and has hardware acceleration supported
+
+
+Dependencies:
+************
+● JFoenix library - licensed under Apache License 2.0
+● FontAwesomeFX - licensed under Apache License 2.0
+● ControlsFX - licensed under BSD 3-clause license
+● FFmpeg / FFplay - licensed under GNU Lesser General Public License version 2.1
+
+
+Copyright (c) 2018 Tony Liu, Lisa Wang
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
