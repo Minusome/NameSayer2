@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import namesayer.persist.SessionStorageManager;
 import namesayer.persist.StatsManager;
 import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
@@ -26,6 +27,7 @@ import org.controlsfx.control.Rating;
 import java.io.IOException;
 
 import static namesayer.persist.Config.BUFFER_TIME;
+import static namesayer.util.Screen.MAIN_MENU;
 import static namesayer.util.TransitionFactory.Direction.LEFT;
 
 
@@ -49,7 +51,7 @@ public class AssessmentScreenController {
     private AssessmentSession session;
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
-    private boolean notCompared = true;
+    private SessionStorageManager sessionManager = SessionStorageManager.getInstance();
 
     /**
      * This method must be called to provide the Session model
@@ -92,7 +94,6 @@ public class AssessmentScreenController {
         statsManager.updateRatingFreq(ratingValue);
         statsManager.updateDifficultName(session.getCurrentName(), ratingValue);
         if (session.getCurrentIndex() + 1 == session.getNumberOfNames()) {
-            session.resetToFirst();
             statsManager.updateAvgAssessRating(session.getAverageRating());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RewardCard.fxml"));
             Parent root = null;
@@ -193,6 +194,10 @@ public class AssessmentScreenController {
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
+        if (session.getCurrentIndex() + 1 == session.getNumberOfNames()){
+            MAIN_MENU.loadWithNode(parentPane);
+            sessionManager.removeSession(session);
+        }
         SaveAlert alert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
         alert.show();
         StatsManager.getInstance().save();

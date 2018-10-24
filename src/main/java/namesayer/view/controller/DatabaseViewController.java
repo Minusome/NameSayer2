@@ -84,26 +84,25 @@ public class DatabaseViewController {
     }
 
     
-    
-    
-    @FXML
+
     public void searchNameKeyTyped(KeyEvent e) {
     	String userInput = nameSearchBar.getText();
+        if (userInput.isEmpty()) {
+            listOfNames = (counter == 0) ? FXCollections.observableArrayList(databaseRecordings) :
+                    FXCollections.observableArrayList(userRecordings);
+            nameList.setItems(listOfNames);
+            return;
+        }
 		if(e.getCode().equals(KeyCode.ENTER)) {
-			nameSearchBar.clear();
-	        if (userInput.isEmpty()) {
-	            //showNameDatabase();
-	        } else {
-	        	if(counter==0) {
-	        		listOfNames = databaseRecordings.stream()
-                            .filter(name -> name.toString().toLowerCase().contains(userInput))
-                            .collect(Collectors.toCollection(FXCollections::observableArrayList));
-	        	}else {
-	        		listOfNames = userRecordings.stream()
-                            .filter(name -> name.toString().toLowerCase().contains(userInput))
-                            .collect(Collectors.toCollection(FXCollections::observableArrayList));
-	        	}
-	        }
+            if(counter==0) {
+                listOfNames = databaseRecordings.stream()
+                        .filter(name -> name.toString().toLowerCase().contains(userInput))
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            }else {
+                listOfNames = userRecordings.stream()
+                        .filter(name -> name.toString().toLowerCase().contains(userInput))
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            }
 	        if(listOfNames.isEmpty()) {
                 SnackBarLoader.displayMessage(parentPane, "Name not found");
 	        }
@@ -281,7 +280,7 @@ public class DatabaseViewController {
             importer.setOnFailed(event -> SnackBarLoader.displayMessage(parentPane, "Can't load folder: " + selectedFolder.getName()));
             importer.setOnSucceeded(event -> {
                 SnackBarLoader.displayMessage(parentPane, "Successfully loaded folder: " + selectedFolder.getName());
-                onNameDatabaseClicked();
+                initialize();
             });
             new Thread(importer).start();
         }

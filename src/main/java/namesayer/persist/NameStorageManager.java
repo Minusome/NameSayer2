@@ -129,7 +129,13 @@ public class NameStorageManager {
                 return;
             }
         }
-        compositeNames.add(newName);
+        //Create a copy and add it
+        CompositeName copy = new CompositeName(newName.toString());
+        copy.setExemplar(newName.getExemplar());
+        for (CompositeRecording attempts : newName.getUserAttempts()) {
+            copy.addUserAttempt(attempts);
+        }
+        compositeNames.add(copy);
     }
 
 

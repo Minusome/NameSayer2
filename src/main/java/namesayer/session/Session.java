@@ -58,11 +58,6 @@ public class Session implements Serializable {
         return namesList.size();
     }
 
-    public void resetToFirst() {
-        currentIndex = 0;
-        currentName = namesList.get(0);
-    }
-
     public void next() {
         currentName = namesList.get(++currentIndex);
     }
