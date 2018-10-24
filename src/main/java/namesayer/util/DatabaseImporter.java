@@ -13,26 +13,31 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static namesayer.persist.Config.DATABASE_FOLDER;
+
+/**
+ * A task responsible for add names from a different database into
+ * the default one maintained by our application
+ */
 
 public class DatabaseImporter extends Task<Void>{
 	
 	private File _file;
 
 	
-	/** Set the folder that contains name recordings
-	*/
+	/**
+     * Set the folder that contains name recordings
+	 */
 	public DatabaseImporter(File file) {
 		_file=file;
 	}
 
 	/**
 	 *  Edit audio file including silence removing and adjusting volume
-	*/
+	 */
     @Override
     protected Void call() throws Exception {
         URL url = getClass().getResource("/script/VolumeEdit.sh");
@@ -86,8 +91,9 @@ public class DatabaseImporter extends Task<Void>{
         return null;
     }
 
-    /** Return the file type
-    */
+    /**
+     * Return the file type
+     */
 	public String getFileType(File file){
 	    String fileName = file.getName();
 	    String suffix = fileName.substring(fileName.lastIndexOf(".")+1);

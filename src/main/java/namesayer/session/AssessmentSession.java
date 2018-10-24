@@ -7,6 +7,10 @@ import namesayer.model.CompositeRecording;
 
 import java.util.List;
 
+/**
+ * An instance of Assessment Mode - in progress or saved to file
+ */
+
 public class AssessmentSession extends Session {
 
     public AssessmentSession(List<CompositeName> namesList) {
@@ -14,7 +18,11 @@ public class AssessmentSession extends Session {
         this.type = SessionType.ASSESSMENT;
     }
 
-
+    /**
+     * Plays the exemplar first, then plays the user's own recording
+     *
+     * @param onFinished Runs when finishes playing
+     */
     public void compareUserAttemptWithExemplar(EventHandler<ActionEvent> onFinished) {
         Thread thread = new Thread(() -> {
             try {

@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 
 import static namesayer.persist.Config.DATABASE_FOLDER;
 
+/**
+ * Responsible for loading PartialNames which have been saved in the Name Corpus database.
+ */
+
 public class PartialNamesLoader extends NamesLoader<PartialName, PartialRecording> {
 
     @Override

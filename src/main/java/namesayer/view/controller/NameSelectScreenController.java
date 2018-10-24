@@ -71,7 +71,9 @@ public class NameSelectScreenController {
     private NameStorageManager nameStorageManager = NameStorageManager.getInstance();
     private SessionStorageManager sessionStorageManager = SessionStorageManager.getInstance();
 
-
+    /**
+     * Generate custom ListView cells and create auto-suggestion for the name's input textfield
+     */
     public void initialize() {
         //Use custom ListCell with checkboxes
         nameListView.setCellFactory(value -> new CompleteNameLoadingCell(this));
@@ -87,6 +89,12 @@ public class NameSelectScreenController {
         clearAllButton.disableProperty().bind(Bindings.isEmpty(nameListView.getItems()));
     }
 
+    /**
+     * Attempts to add a user input string into the List of names
+     *
+     * @param userInput Raw input
+     * @param errorMsg Displays this message if the user input string is not discoverable in the database
+     */
     private void addToListView(String userInput, String errorMsg) {
         Result result = nameStorageManager.queryUserRequestedName(userInput);
         if (result.getStatus().equals(Status.NONE_FOUND)) {
@@ -105,7 +113,6 @@ public class NameSelectScreenController {
     /**
      * The sessionType must be set after initializing this scene
      */
-
     public void setSessionType(SessionType sessionType) {
         this.sessionType = sessionType;
         savedSessionsListView.setPlaceholder(new Label("No sessions have been saved"));
@@ -121,9 +128,8 @@ public class NameSelectScreenController {
     }
 
     /**
-     * Loads the RecordingScreen
+     * Loads the [Practice, Assessment] Screen and injects the correct Session using SessionFactory
      */
-
     public void onNextButtonClicked(MouseEvent mouseEvent) throws IOException {
         if (nameListView.getItems().isEmpty()) {
             SnackBarLoader.displayMessage(parentPane, "Please enter a name first");
@@ -149,24 +155,30 @@ public class NameSelectScreenController {
     }
 
     /**
-     * Works but probably should be cleaned up
+     * Dynamically updates the Auto-suggestions based on what the user has already typed in
      */
-
     @FXML
     public void onSearchBarKeyTyped(KeyEvent keyEvent) {
         String userInput = nameSearchBar.getCharacters().toString();
+
+        //Add the name if enter is pressed
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             addToListView(userInput, "This name could not be located in the database");
             nameSearchBar.clear();
             resetSuggestions();
             return;
         }
+        //Query the name
         Result result = nameStorageManager.queryUserRequestedName(userInput);
         System.out.println(result.getStatus());
+
+        //If the name is not discoverable at all, clear suggestions
         if (result.getStatus().equals(Status.NONE_FOUND)) {
             resetSuggestions();
             return;
         } else if (result.getStatus().equals(Status.ALL_FOUND)) {
+            //Updates the suggestions based on the discovered names and guesses
+            //possible future names.
             String lastChar = userInput.substring(userInput.length() - 1);
             boolean readyForSuggestion = (lastChar.equals(" ") || lastChar. equals("-"));
             if (readyForSuggestion) {
@@ -189,7 +201,10 @@ public class NameSelectScreenController {
         MAIN_MENU.loadWithNode(nameSearchBar);
     }
 
-
+    /**
+     * Shows File selection dialog to user and parses or names in it (separated by newlines)
+     * then attempts to add them
+     */
     public void onFileInsertClicked(MouseEvent mouseEvent) {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Select .txt file containing list of names");
@@ -204,6 +219,9 @@ public class NameSelectScreenController {
         }
     }
 
+    /**
+     * Delete the name from the ListView
+     */
     public void removeSelection(String item) {
         if (sessionType.equals(PRACTISE)) {
             sessionFactory.removeName(new CompositeName(item));
@@ -214,6 +232,12 @@ public class NameSelectScreenController {
         canonicalNameCache.values().remove(item);
     }
 
+    /**
+     * Loads the [Practice, Assessment] Screen and injects the correct Session serialized file data
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onResumeButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root;
         if (sessionType.equals(ASSESSMENT)) {

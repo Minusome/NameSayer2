@@ -4,10 +4,8 @@ import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,6 +18,10 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static namesayer.util.Screen.MAIN_MENU;
+
+/**
+ * Creates a pop-up dialog which displays the a save prompt to the user
+ */
 
 public class SaveAlert extends JFXAlert {
 
@@ -39,6 +41,11 @@ public class SaveAlert extends JFXAlert {
         loadContent(stage, session, this::savePractise, this::removePractise);
     }
 
+    /**
+     * Populates the view container
+     * @param stage Stage
+     * @param session Assessment or Practice
+     */
     private void loadContent(Stage stage ,Session session, Runnable saveStrategy, Runnable removeStrategy) {
         this.initModality(Modality.WINDOW_MODAL);
         JFXDialogLayout layout = new JFXDialogLayout();

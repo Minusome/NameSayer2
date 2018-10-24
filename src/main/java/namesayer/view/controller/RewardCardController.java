@@ -4,6 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.controlsfx.control.Rating;
 
+/**
+ * Displays the final card of an Assessment session to inform
+ * user of their average rating
+ */
+
 public class RewardCardController {
 
     @FXML private Label rewardLabel;

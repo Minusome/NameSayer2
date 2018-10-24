@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 
 import static namesayer.persist.Config.SAVED_RECORDINGS;
 
+/**
+ * Responsible for loading CompositeNames which have been saved in the generated database.
+ */
+
 public class CompositeNamesLoader extends NamesLoader<CompositeName, CompositeRecording> {
 
     @Override

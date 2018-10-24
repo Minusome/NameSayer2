@@ -1,8 +1,6 @@
 package namesayer.model;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -14,16 +12,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static namesayer.persist.Config.BUFFER_TIME;
-import static namesayer.persist.Config.USER_ATTEMPTS;
-import static namesayer.persist.Config.WAV_EXTENSION;
+import static namesayer.persist.Config.*;
+
+
+/**
+ * Represents a full-name created by the user.
+ * This name combines various PartialNames which come bundled with the Names Corpus Database.
+ */
 
 public class CompositeName extends Name implements Serializable {
 
-    /**
-     * These recordings are permanently associated with this name
-     * NameStorageManager accesses this list, any other class will only be able to see an empty list
-     */
 
     private List<CompositeRecording> userAttempts = new ArrayList<>();
     private Exemplar exemplar;
@@ -48,8 +46,14 @@ public class CompositeName extends Name implements Serializable {
         this.exemplar = exemplar;
     }
 
+    /**
+     * Creates a new recording for this name using FFmpeg.
+     * This command is executed by a bash shell in a separate thread.
+     *
+     *
+     * @param onFinished The EventHandler executed after recording is complete
+     */
     public void makeNewRecording(EventHandler<ActionEvent> onFinished) {
-        //TODO Assume that the name provided is in a suitable format, will provide need regex to check later
         String temp = "se206_" +
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-M-yyyy_HH:mm:ss")) +
                 " " +
@@ -74,10 +78,5 @@ public class CompositeName extends Name implements Serializable {
         });
         thread.start();
     }
-
-    public void makeNewRecording() {
-        this.makeNewRecording(event -> {});
-    }
-
 
 }

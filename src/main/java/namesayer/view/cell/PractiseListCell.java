@@ -24,7 +24,7 @@ import java.util.List;
 
 
 /**
- * Represents a custom listCell which displays a delete button and dialog to prompt the user
+ * Represents a custom listCell which displays a play button, delete button and rating prompt
  */
 public class PractiseListCell extends JFXListCell<CompositeRecording> {
 
@@ -40,6 +40,7 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
     private StatsManager manager = StatsManager.getInstance();
     private PractiseScreenController parentController;
     private static List<CompositeRecording> processedRecordings = new ArrayList<>();
+
 
     public PractiseListCell(PractiseSession session, PractiseScreenController controller) {
         super();
@@ -84,6 +85,11 @@ public class PractiseListCell extends JFXListCell<CompositeRecording> {
         recording.playAudio();
     }
 
+    /**
+     * Opens a rating dialog pop-up with so user can rate their recordings
+     *
+     * @throws IOException thrown if FXML fails to load
+     */
     @FXML
     public void onRateButtonClicked(MouseEvent mouseEvent) throws IOException {
         JFXAlert alert = new JFXAlert((Stage) listItemHBox.getScene().getWindow());

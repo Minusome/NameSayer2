@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Defines constants which are mainly folder names
+ * Defines constants which describe the required folder structure
  */
 public class Config {
     public static final Path DATABASE_FOLDER = Paths.get("database");

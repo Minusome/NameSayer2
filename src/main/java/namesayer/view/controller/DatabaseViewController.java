@@ -1,7 +1,6 @@
 package namesayer.view.controller;
 
 import com.jfoenix.controls.*;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -9,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,12 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
-import namesayer.model.CompositeName;
-import namesayer.model.CompositeRecording;
-import namesayer.model.Name;
-import namesayer.model.PartialName;
-import namesayer.model.PartialRecording;
-import namesayer.model.Recording;
+import namesayer.model.*;
 import namesayer.persist.NameStorageManager;
 import namesayer.util.DatabaseImporter;
 import namesayer.util.SnackBarLoader;
@@ -30,9 +23,7 @@ import org.controlsfx.control.Rating;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Comparator;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static namesayer.util.Screen.MAIN_MENU;

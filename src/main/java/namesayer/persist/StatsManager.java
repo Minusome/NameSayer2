@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
 
 import static namesayer.persist.Config.STATS_FILE;
 
+/**
+ * Singleton responsible for calculating all statistics data invovling ratings
+ * Also saves and loads statistics file from disk
+ */
+
 public class StatsManager implements Serializable {
 
     private Map<Integer, Integer> globalRatingFreq = new HashMap<>();
@@ -29,6 +34,10 @@ public class StatsManager implements Serializable {
 
     private static StatsManager instance;
 
+    /**
+     * Reads the statistics file and loads into singleton instance before
+     * getInstance() is called
+     */
     static {
         try {
             FileInputStream file = new FileInputStream(STATS_FILE.toFile());
@@ -57,7 +66,9 @@ public class StatsManager implements Serializable {
         return instance;
     }
 
-
+    /**
+     * On a new thread, saves this object into a file
+     */
     public void save() {
         Thread thread = new Thread(() -> {
             try {
@@ -74,8 +85,13 @@ public class StatsManager implements Serializable {
        thread.start();
     }
 
+    /**
+     * Increase the count for global rating frequencies
+     * Ratings are between (1-5) inclusive
+     *
+     * @param rating Rating between (1-5)
+     */
     public void updateRatingFreq(int rating) {
-//        assert (0 <= rating && rating <= 5);
         Integer frequency = globalRatingFreq.get(rating);
         if (frequency == null) {
             globalRatingFreq.put(rating, 1);
@@ -84,10 +100,26 @@ public class StatsManager implements Serializable {
         }
     }
 
+    /**
+     * Caches an Assessment rating final score (i.e. the average)
+     *
+     * @param avgRating Average rating
+     */
     public void updateAvgAssessRating(Double avgRating) {
         avgAssessRatingOverTime.add(avgRating);
     }
 
+    /**
+     * Updates the average rating for a difficult to pronounce CompositeName
+     * (i.e. name with rating <2 )
+     *
+     * HashMap stores <Double, Integer>
+     *     Double -> Moving Average
+     *     Integer -> Incrementing sample size to calcualte the average
+     *
+     * @param name CompositeName
+     * @param rating Rating of name
+     */
     public void updateDifficultName(CompositeName name, int rating) {
         if (rating > 2) {
             return;
@@ -103,7 +135,11 @@ public class StatsManager implements Serializable {
         }
     }
 
-
+    /**
+     * Sorts the cached CompositeNames by lowest rating first
+     *
+     * @return Returns a List of Pair<CompositeName,Double>> containing the Name and its rating
+     */
     public List<Pair<CompositeName,Double>> getDifficultNamesList() {
         return difficultNamesRunningAvg.entrySet()
                                        .stream()

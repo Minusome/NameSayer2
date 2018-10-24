@@ -17,6 +17,10 @@ import java.io.IOException;
 
 import static namesayer.persist.Result.Status.*;
 
+/**
+ * Represents a cell in a ListView with dynamic icons and the ability to delete itself from the List
+ */
+
 public class CompleteNameLoadingCell extends JFXListCell<String> {
 
     @FXML private Label itemLabel;
@@ -41,7 +45,12 @@ public class CompleteNameLoadingCell extends JFXListCell<String> {
         }
     }
 
-
+    /**
+     * Draw the cell
+     *
+     * @param item Name
+     * @param empty Is empty
+     */
     @Override
     public void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
@@ -54,6 +63,7 @@ public class CompleteNameLoadingCell extends JFXListCell<String> {
                 itemLabel.setText("<null>");
             } else {
                 Result result = manager.queryUserRequestedName(item);
+                //Display different icons based on discovery result
                 if (result.getStatus().equals(ALL_FOUND)) {
                     icon.setGlyphName("DONE");
                     icon.setFill(Paint.valueOf("#4CAF50"));

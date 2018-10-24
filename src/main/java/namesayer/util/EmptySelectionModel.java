@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 
 /**
- * Model needed to support checkboxes in ListView
+ * Default model to support custom ListCells
  */
 public class EmptySelectionModel<T> extends MultipleSelectionModel<T> {
     @Override

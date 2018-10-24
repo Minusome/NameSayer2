@@ -32,22 +32,30 @@ public class MenuScreenController {
         bar.getStylesheets().addAll("/css/Material.css");
     }
 
+    /**
+     * Transition to the Name Selection Screen
+     */
     public void onPracticeModeClicked(MouseEvent mouseEvent) throws IOException {
         loadSelection(PRACTISE);
     }
 
-
+    /**
+     * Transition to the Name Selection Screen
+     */
     public void onAssessModeClicked(MouseEvent mouseEvent) throws IOException {
         loadSelection(ASSESSMENT);
     }
 
+    /**
+     * Sets the [Practice, Assessment] Mode of the Name Section Screen controller
+     *
+     */
     public void loadSelection(Session.SessionType type) throws IOException {
         FXMLLoader loader =  NAME_SELECT_SCREEN.getLoader();
         practiceButton.getScene().setRoot(loader.load());
         NameSelectScreenController controller = loader.getController();
         controller.setSessionType(type);
     }
-
 
     public void onBrowseModeClicked(MouseEvent e) throws IOException {
         BROWSE_DATABASE_SCREEN.loadWithNode(practiceButton);

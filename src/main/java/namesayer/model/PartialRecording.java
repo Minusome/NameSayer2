@@ -2,6 +2,10 @@ package namesayer.model;
 
 import java.nio.file.Path;
 
+/**
+ *  Represents the audio file of a PartialName
+ */
+
 public class PartialRecording extends Recording {
 
     private boolean isBadQuality = false;

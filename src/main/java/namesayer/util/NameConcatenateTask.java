@@ -13,8 +13,9 @@ import java.util.List;
 
 
 /**
- * Parses user requested names into CompleteNames where available
+ * A task which parses user requested names into CompositeNames where available
  */
+
 public class NameConcatenateTask extends Task<Void> {
 
     private String userRequestedName;
@@ -27,7 +28,7 @@ public class NameConcatenateTask extends Task<Void> {
 
 
     @Override
-    protected Void call() throws Exception {
+    protected Void call() {
         NameStorageManager manager = NameStorageManager.getInstance();
         String[] components = userRequestedName.split("[\\s-]+");
         List<PartialRecording> discovered = new ArrayList<>();

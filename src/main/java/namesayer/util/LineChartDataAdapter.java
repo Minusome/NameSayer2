@@ -4,6 +4,11 @@ import javafx.scene.chart.XYChart;
 
 import java.util.List;
 
+/**
+ * Converts Collections from StatisticsManager into format
+ * accepted by LineChart.
+ */
+
 public class LineChartDataAdapter {
 
     public XYChart.Series<String, Number> retrieveData(List<Double> rawData) {

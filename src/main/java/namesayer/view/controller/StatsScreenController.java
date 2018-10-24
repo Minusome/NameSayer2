@@ -4,10 +4,6 @@ import com.jfoenix.controls.JFXListView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.CacheHint;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.input.MouseEvent;
@@ -19,8 +15,6 @@ import namesayer.util.LineChartDataAdapter;
 import namesayer.util.PieChartDataAdapter;
 import namesayer.view.cell.StatsNameListCell;
 
-import java.io.IOException;
-
 import static namesayer.util.Screen.MAIN_MENU;
 
 public class StatsScreenController {
@@ -31,20 +25,25 @@ public class StatsScreenController {
 
     private StatsManager statsManager = StatsManager.getInstance();
 
-
+    /**
+     * Populates the graphs and List
+     */
     public void initialize() {
-
         pieChart.setLegendVisible(false);
         pieChart.setLabelLineLength(10);
         lineChart.setLegendVisible(false);
         badNamesList.setSelectionModel(new EmptySelectionModel<>());
         badNamesList.setCellFactory(param -> new StatsNameListCell());
 
+        //Run on new thread to get rid of lag when loading
         Thread thread = new Thread(() -> {
             Platform.runLater(() -> {
                 badNamesList.setItems(FXCollections.observableArrayList(statsManager.getDifficultNamesList()));
                 pieChart.setData(new PieChartDataAdapter().retrieveData(statsManager.getGlobalRatingFreq()));
                 lineChart.getData().add(new LineChartDataAdapter().retrieveData(statsManager.getAvgAssessRatingOverTime()));
+
+                //DO NOT ANIMATE THE X-AXIS
+                //A BUG WITH JAVAFX causes a display corruption is this is true
                 lineChart.getXAxis().setAnimated(false);
             });
         });

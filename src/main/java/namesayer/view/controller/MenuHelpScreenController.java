@@ -1,13 +1,9 @@
 package namesayer.view.controller;
 
-import java.io.IOException;
-
 import com.jfoenix.controls.JFXButton;
-
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
+import java.io.IOException;
 
 import static namesayer.util.Screen.MAIN_MENU;
 

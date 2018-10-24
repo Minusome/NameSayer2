@@ -10,6 +10,11 @@ import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Abstract base class of any type of Recording
+ * Represents a WAV audio file
+ */
+
 public abstract class Recording implements Serializable {
 
     private String recordingPath;
@@ -21,7 +26,9 @@ public abstract class Recording implements Serializable {
     }
 
 
-    //Play audio using bash command
+    /**
+     * Play audio using FFplay in separate thread
+     */
     public void playAudio() {
         Thread thread = new Thread(() -> {
             String command = "ffplay -nodisp -autoexit -loglevel quiet \"" + recordingPath + "\"";
@@ -45,7 +52,9 @@ public abstract class Recording implements Serializable {
     }
 
 
-    //Calculates the length
+    /**
+     * Calculates the length using Java AudioStream API
+     */
     public double getLength() {
         double durationInSeconds = 0.0;
         try {

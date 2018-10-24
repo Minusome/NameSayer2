@@ -6,8 +6,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
+/**
+ * Represents an audio file of a CompositeName
+ */
+
 public class CompositeRecording extends Recording {
 
+    //Default rating is 3.0
     private double rating = 3.0;
 
     private LocalDateTime timeStamp;

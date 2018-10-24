@@ -19,6 +19,10 @@ import java.util.Map;
 import static namesayer.persist.Config.SAVED_ASSESSMENT_SESSIONS;
 import static namesayer.persist.Config.SAVED_PRACTISE_SESSIONS;
 
+/**
+ * Singleton responsible for all file storage operations (loading and saving) surrounding Sessions
+ */
+
 public class SessionStorageManager {
 
     private static SessionStorageManager instance;
@@ -33,6 +37,9 @@ public class SessionStorageManager {
         return instance;
     }
 
+    /**
+     * On construction, load the Practice and Assessment Sessions
+     */
     private SessionStorageManager() {
         try {
             Files.walk(SAVED_PRACTISE_SESSIONS)
@@ -46,7 +53,11 @@ public class SessionStorageManager {
         }
     }
 
-
+    /**
+     * Loads the session object using input streams
+     * @param type Practice or Assessment
+     * @param path File path of the Session
+     */
     public void load(Session.SessionType type, Path path) {
         try {
             FileInputStream file = new FileInputStream(path.toFile());
@@ -67,21 +78,32 @@ public class SessionStorageManager {
         }
     }
 
-
+    /**
+     * Saves Practice Sessions because the object graph is serializable
+     * @param session Practice Session
+     */
     public void saveSession(PractiseSession session) {
         Path saveFile = SAVED_PRACTISE_SESSIONS.resolve(session.getId() + "ser");
         savedPractiseSessions.put(session, saveFile);
         saveFile(saveFile, session);
     }
 
-
+    /**
+     * Saves Assessment Sessions because the object graph is serializable
+     * @param session Assessment Session
+     */
     public void saveSession(AssessmentSession session) {
         Path saveFile = SAVED_ASSESSMENT_SESSIONS.resolve(session.getId() + "ser");
         savedAssessmentSessions.put(session, saveFile);
         saveFile(saveFile, session);
     }
 
-
+    /**
+     * On a new thread, saves the session to file using output streams
+     *
+     * @param location The File to save to
+     * @param session Practice or Assessment session to save
+     */
     private void saveFile(Path location, Session session) {
         new Thread(() -> {
             try {
@@ -97,6 +119,10 @@ public class SessionStorageManager {
         }).start();
     }
 
+    /**
+     * Delete a session no longer needed
+     * @param path The file path of the session
+     */
     private void deleteFile(Path path) {
         try {
             if (path != null) {
@@ -107,7 +133,10 @@ public class SessionStorageManager {
         }
     }
 
-
+    /**
+     * Removes Assessment Session from memory
+     * @param session Assessment Session
+     */
     public void removeSession(AssessmentSession session) {
         session.removeFiles();
         if (savedAssessmentSessions.containsKey(session)) {
@@ -118,6 +147,10 @@ public class SessionStorageManager {
 
     }
 
+    /**
+     * Removes Pracice Session from memory
+     * @param session Practice Session
+     */
     public void removeSession(PractiseSession session) {
         session.removeFiles();
         if (savedPractiseSessions.containsKey(session)) {
