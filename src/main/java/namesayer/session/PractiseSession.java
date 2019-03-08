@@ -1,11 +1,14 @@
 package namesayer.session;
 
-import javafx.collections.ObservableList;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
 
 import java.util.Collections;
 import java.util.List;
+
+/**
+ * An instance of a Practice Mode - in progress or saved as File
+ */
 
 public class PractiseSession extends Session {
 
@@ -22,17 +25,28 @@ public class PractiseSession extends Session {
         return !(currentIndex == 0);
     }
 
+    /**
+     * Deletes a recording which the user created
+     *
+     * @param recording To be deleted
+     */
     public void removeRecordingForCurrentName(CompositeRecording recording) {
-        boolean contained = currentName.getUserAttempts().remove(recording);
-        System.out.println("contains? " + contained);
-
-        System.out.println(currentName.getUserAttempts());
+        currentName.getUserAttempts().remove(recording);
     }
 
+    /**
+     * Unmodifiable version of the list to populate  auto-suggestions
+     */
     public List<CompositeName> getSuggestions() {
         return Collections.unmodifiableList(namesList);
     }
 
+    /**
+     * Allows skipping of names for ease of navigation
+     *
+     * @param text Name to skip to
+     * @return true if names is found, otherwise false
+     */
     public boolean jumpTo(String text) {
         int i = 0;
         for (CompositeName name : namesList) {

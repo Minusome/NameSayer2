@@ -8,6 +8,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -69,6 +70,13 @@
                                  <graphic>
                                     <MaterialIconView fx:id="playIcon" fill="#009688" fontSmoothingType="LCD" glyphName="PLAY_ARROW" size="80" />
                                  </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Play the exemplar" >
+                                        <font>
+                                            <Font size="12.0" />
+                                        </font>
+                                    </Tooltip>
+                                 </tooltip>
                               </JFXButton>
                            </children>
                            <HBox.margin>
@@ -86,6 +94,13 @@
                                  <graphic>
                                     <MaterialIconView fill="#009688" glyphName="MIC" size="80" />
                                  </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Make a new recording" >
+                                        <font>
+                                            <Font size="12.0" />
+                                        </font>
+                                    </Tooltip>
+                                 </tooltip>
                               </JFXButton>
                            </children>
                            <HBox.margin>
@@ -129,6 +144,13 @@
                <font>
                   <Font size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Save the recordings for this name to the database" >
+                      <font>
+                          <Font size="12.0" />
+                      </font>
+                  </Tooltip>
+               </tooltip>
             </JFXButton>
          </children>
          <GridPane.margin>

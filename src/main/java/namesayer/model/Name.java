@@ -2,6 +2,9 @@ package namesayer.model;
 
 import java.io.Serializable;
 
+/**
+ * Abstract base class for any type of Name
+ */
 public abstract class Name implements Comparable<Name>, Serializable {
 
     protected String name;

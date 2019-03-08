@@ -65,7 +65,11 @@ public class PractiseScreenController {
 
     private PractiseSession session;
 
-
+    /**
+     * This method must be called to provide the Session model
+     *
+     * @param session PracticeSession Session
+     */
     public void injectSession(PractiseSession session) {
         this.session = session;
         disableArrows(false);
@@ -87,7 +91,9 @@ public class PractiseScreenController {
         recordingSpinner.setProgress(1);
     }
 
-
+    /**
+     * Update labels for a new Name
+     */
     private void loadNewCard(boolean isNext) {
         if (isNext) {
             session.next();
@@ -100,6 +106,9 @@ public class PractiseScreenController {
     }
 
 
+    /**
+     * Play the exemplar and animate the playButton
+     */
     public void onPlayButtonClicked(MouseEvent mouseEvent) {
         session.getCurrentName().getExemplar().playAudio();
         disableArrows(true);
@@ -114,7 +123,9 @@ public class PractiseScreenController {
         timeline.play();
     }
 
-
+    /**
+     * Start the recording and animate the RecordingButton
+     */
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         disableArrows(true);
         session.getCurrentName().makeNewRecording(event -> {
@@ -134,19 +145,27 @@ public class PractiseScreenController {
         timeline.play();
     }
 
-
+    /**
+     * Transition to the next card and animate it
+     */
     public void onNextButtonClicked(MouseEvent mouseEvent) {
         SequentialTransition transition = cardDoubleSlideTransition(cardPane, LEFT, event -> loadNewCard(true));
         transition.play();
     }
 
-
+    /**
+     * Transition to the previous card and animate it
+     */
     public void onPrevButtonClicked(MouseEvent mouseEvent) {
         SequentialTransition transition = cardDoubleSlideTransition(cardPane, RIGHT, event -> loadNewCard(false));
         transition.play();
     }
 
-
+    /**
+     * Disable various UI elements so the user does not get into a bad state
+     *
+     * @param disableArrows Disable arrow buttons for next / prev
+     */
     private void disableArrows(boolean disableArrows) {
         if (disableArrows) {
             nextButton.setDisable(true);
@@ -157,7 +176,9 @@ public class PractiseScreenController {
         }
     }
 
-
+    /**
+     * Updates the List of Names when a recording is finished
+     */
     public void refreshList() {
         List<CompositeRecording> userAttempts = session.getCurrentName().getUserAttempts();
         ObservableList<CompositeRecording> recordings = FXCollections.observableArrayList(userAttempts);
@@ -174,7 +195,10 @@ public class PractiseScreenController {
         StatsManager.getInstance().save();
     }
 
-
+    /**
+     * Attempts to save all CompositeRecordings made for the current name
+     * and displays error or success message
+     */
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         if (session.hasUserMadeRecording()) {
             session.saveUserRecordings();
@@ -184,16 +208,21 @@ public class PractiseScreenController {
         }
     }
 
+    /**
+     * Show Microphone testing dialog with volume information
+     */
     public void onMicTestButtonClicked(MouseEvent mouseEvent) {
         MicTestAlert alert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
         alert.show();
         micTestButton.setDisableVisualFocus(true);
     }
 
+    /**
+     * Allows the user to jump to a different name by entering one in the search bar
+     */
     public void searchNameKeyTyped(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             boolean found = session.jumpTo(nameSearchBar.getText());
-            System.out.println(nameSearchBar.getText());
             nameSearchBar.clear();
             if (found) {
                 SequentialTransition transition = cardDoubleSlideTransition(cardPane, LEFT, event -> {

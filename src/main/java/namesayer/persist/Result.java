@@ -1,9 +1,12 @@
 package namesayer.persist;
 
-import java.util.List;
+/**
+ * Contains an enum to describe whether a user requested name is found
+ */
 
 public class Result {
 
+    //The canonical string for the discovered name
     private String discoveredName;
 
     private final Status status;

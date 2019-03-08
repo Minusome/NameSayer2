@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Creates sessions at runtime.
+ * Populates the session with names.
+ */
+
 public class SessionFactory {
 
     private List<CompositeName> namesList = new ArrayList<>();

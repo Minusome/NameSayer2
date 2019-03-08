@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 /**
- * Represents a custom listCell which displays a delete button and dialog to prompt the user
+ * Represents a custom listCell which displays a play button and a rating
  */
 public class StatsNameListCell extends JFXListCell<Pair<CompositeName, Double>> {
 

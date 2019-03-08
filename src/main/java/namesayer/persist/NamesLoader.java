@@ -15,8 +15,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * Base class for loading saved name files into memory
+ *
+ * @param <N> CompositeName or PartialName
+ * @param <R> CompositeRecording or PartialRecording
+ */
+
 public abstract class NamesLoader<N extends Name, R extends Recording> {
 
+
+    /**
+     * Traverses the database, parses each name using regex and instantiates Name and Recording
+     * implementatons in memory
+     *
+     * @param listToLoad list to be populated
+     */
     public void load(List<N> listToLoad) {
         try (Stream<Path> paths = Files.walk(getDirectory())) {
             Map<String, N> initializedNames = new HashMap<>();
@@ -44,7 +58,7 @@ public abstract class NamesLoader<N extends Name, R extends Recording> {
     }
 
     /**
-     * Template Methods
+     * Template Methods for different loading strategies
      **/
     public abstract Path getDirectory();
 

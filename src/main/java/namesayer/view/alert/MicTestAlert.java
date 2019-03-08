@@ -20,6 +20,11 @@ import java.io.IOException;
 
 import static namesayer.util.Screen.MIC_TEST_ALERT;
 
+/**
+ * Creates a pop-up dialog which displays the current microphone volume
+ * dynamically in a progress bar
+ */
+
 public class MicTestAlert extends JFXAlert {
 
     @FXML private JFXProgressBar microphoneVolume;
@@ -32,6 +37,9 @@ public class MicTestAlert extends JFXAlert {
         loadContent();
     }
 
+    /**
+     * Populates the view container
+     */
     private void loadContent() {
         this.initModality(Modality.WINDOW_MODAL);
         JFXDialogLayout layout = new JFXDialogLayout();
@@ -55,11 +63,15 @@ public class MicTestAlert extends JFXAlert {
         layout.setCache(true);
         layout.setCacheShape(true);
         layout.setCacheHint(CacheHint.SPEED);
+
+        //Read the microphone volume on a new thread
         Thread thread = new Thread(this::testMicrophone);
         thread.start();
     }
 
-
+    /**
+     * Samples the current microphone volume using a moving average strategy
+     */
     private void testMicrophone() {
         try {
             AudioFormat format = new AudioFormat(8000.0f, 16, 1, true, true);
@@ -68,21 +80,28 @@ public class MicTestAlert extends JFXAlert {
             microphone.start();
 
             double highestVolume = 0;
+            //store volume data into array buffer
             byte tempBuffer[] = new byte[1000];
             while (isSampling){
                 if (microphone.read(tempBuffer, 0, tempBuffer.length) > 0) {
                     double sumVolume = 0;
                     for (byte aTempBuffer : tempBuffer) {
                         double absoluteVolume = Math.abs(aTempBuffer);
+                        //sums up the volume
                         sumVolume = sumVolume + absoluteVolume;
                         if (absoluteVolume > highestVolume) {
+                            //cache the highest volume to calculate percentage
                             highestVolume = absoluteVolume;
                         }
                     }
+                    //reports the volume as a percentage of the highest volume
                     double volume = (sumVolume / tempBuffer.length) / highestVolume;
+                    //Update on UI thread
                     Platform.runLater(() -> microphoneVolume.setProgress(volume));
                 }
             }
+            microphone.flush();
+            microphone.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

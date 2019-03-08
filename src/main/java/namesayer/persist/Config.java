@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Defines constants which are mainly folder names
+ * Defines constants which describe the required folder structure
  */
 public class Config {
     public static final Path DATABASE_FOLDER = Paths.get("database");
@@ -18,6 +18,8 @@ public class Config {
     public static final Path BAD_QUALITY_FILE = GENERATED_FOLDER.resolve("bad_quality_names.txt");
     public static final Path STATS_FOLDER = GENERATED_FOLDER.resolve("stats");
     public static final Path STATS_FILE = STATS_FOLDER.resolve("data.ser");
+    public static final Path SCRIPT_FILE = Paths.get("script").resolve("VolumeEdit.sh");
 
-    public static final double BUFFER_TIME = 1;
+
+    public static final double BUFFER_TIME = 0.5;
 }

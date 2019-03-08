@@ -6,6 +6,9 @@ import javafx.scene.Node;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Helper enum for transitions between screens
+ */
 
 public enum Screen {
 

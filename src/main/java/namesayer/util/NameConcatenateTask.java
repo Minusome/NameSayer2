@@ -13,8 +13,9 @@ import java.util.List;
 
 
 /**
- * Parses user requested names into CompleteNames where available
+ * A task which parses user requested names into CompositeNames where available
  */
+
 public class NameConcatenateTask extends Task<Void> {
 
     private String userRequestedName;
@@ -27,15 +28,23 @@ public class NameConcatenateTask extends Task<Void> {
 
 
     @Override
-    protected Void call() throws Exception {
+    protected Void call() {
         NameStorageManager manager = NameStorageManager.getInstance();
         String[] components = userRequestedName.split("[\\s-]+");
         List<PartialRecording> discovered = new ArrayList<>();
         for (String s : components) {
             PartialName name = manager.findPartialNameFromString(s);
             if (name != null) {
+                List<PartialRecording> recordings = name.getRecordings();
+                PartialRecording selected = null;
+                for (PartialRecording r : recordings) {
+                    if (!r.isBadQuality()){
+                        selected = r;
+                        break;
+                    }
+                }
                 //TODO just getting first recording for now, change to quality
-                discovered.add(name.getRecordings().get(0));
+                discovered.add((selected != null) ? selected : recordings.get(0));
             }
         }
         if (discovered.size() == 0) {

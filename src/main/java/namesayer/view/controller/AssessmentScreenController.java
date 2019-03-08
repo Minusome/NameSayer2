@@ -1,12 +1,10 @@
 package namesayer.view.controller;
 
-import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import namesayer.persist.SessionStorageManager;
 import namesayer.persist.StatsManager;
 import namesayer.session.AssessmentSession;
 import namesayer.util.SnackBarLoader;
@@ -28,7 +27,9 @@ import org.controlsfx.control.Rating;
 import java.io.IOException;
 
 import static namesayer.persist.Config.BUFFER_TIME;
+import static namesayer.util.Screen.MAIN_MENU;
 import static namesayer.util.TransitionFactory.Direction.LEFT;
+
 
 public class AssessmentScreenController {
 
@@ -46,12 +47,17 @@ public class AssessmentScreenController {
     @FXML private Label label;
 
 
-
     //Must set session when initializing this scene
     private AssessmentSession session;
     private DoubleProperty ratingProperty;
     private StatsManager statsManager = StatsManager.getInstance();
+    private SessionStorageManager sessionManager = SessionStorageManager.getInstance();
 
+    /**
+     * This method must be called to provide the Session model
+     *
+     * @param session Assessment Session
+     */
     public void injectSession(AssessmentSession session) {
         this.session = session;
         label.setText(session.getCurrentName().toString());
@@ -70,20 +76,24 @@ public class AssessmentScreenController {
         recordingButton.setFocusTraversable(false);
     }
 
-
+    /**
+     * Animate the card swipe
+     */
     public void onNextButtonClicked(MouseEvent mouseEvent) {
         TransitionFactory.cardDoubleSlideTransition(cardPane, LEFT, event -> loadNewCard()).play();
         TransitionFactory.slideDownTransition(ratingCard).play();
     }
 
-    //enable loading cards backwards and forwards
-    //disable the button if its the last card
+    /**
+     * Enable loading cards backwards and forwards.
+     * Also, disable the next button if its the last card.
+     * Statistics data is also persisted by this method
+     */
     private void loadNewCard() {
         int ratingValue = (int) Math.round(ratingStars.getRating());
         statsManager.updateRatingFreq(ratingValue);
         statsManager.updateDifficultName(session.getCurrentName(), ratingValue);
         if (session.getCurrentIndex() + 1 == session.getNumberOfNames()) {
-            session.resetToFirst();
             statsManager.updateAvgAssessRating(session.getAverageRating());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RewardCard.fxml"));
             Parent root = null;
@@ -103,7 +113,9 @@ public class AssessmentScreenController {
         disableButtons(true, true);
     }
 
-
+    /**
+     * Start the recording and its associated animation
+     */
     public void onRecordingButtonClicked(MouseEvent mouseEvent) {
         if (!session.hasUserMadeRecording()) {
             disableButtons(true, true);
@@ -137,14 +149,21 @@ public class AssessmentScreenController {
         }
     }
 
-
+    /**
+     * Save the current name recording and display success message
+     */
     public void onSaveButtonClicked(MouseEvent mouseEvent) {
         session.saveUserRecordings();
         saveButton.setDisable(true);
         SnackBarLoader.displayMessage(parentPane, "Recording is saved");
     }
 
-
+    /**
+     * Disable various UI elements so the user does not get into a bad state
+     *
+     * @param disableButtons Disable on screen buttons
+     * @param disableArrows Disable arrow buttons for next / prev
+     */
     private void disableButtons(boolean disableButtons, boolean disableArrows) {
         if (disableArrows || (!session.hasNext() && session.getCurrentIndex() < session.getNumberOfNames() - 1)) {
             nextButton.setDisable(true);
@@ -155,12 +174,17 @@ public class AssessmentScreenController {
         saveButton.setDisable(disableButtons);
     }
 
+    /**
+     * Updates the number of the name in the session
+     */
     public void refreshCardNumber() {
         cardPane.requestFocus();
         cardNumber.setText(session.getCurrentIndex() + 1 + "/" + session.getNumberOfNames());
     }
 
-
+    /**
+     * Bind the rating properties to the Rating Stars
+     */
     public void reBindProperties() {
         if (ratingProperty != null) {
             ratingStars.ratingProperty().unbindBidirectional(ratingProperty);
@@ -170,11 +194,18 @@ public class AssessmentScreenController {
     }
 
     public void onBackButtonClicked(MouseEvent mouseEvent) {
+        if (session.getCurrentIndex() + 1 == session.getNumberOfNames()){
+            MAIN_MENU.loadWithNode(parentPane);
+            sessionManager.removeSession(session);
+        }
         SaveAlert alert = new SaveAlert((Stage) parentPane.getScene().getWindow(), session);
         alert.show();
         StatsManager.getInstance().save();
     }
 
+    /**
+     * Show Microphone testing dialog with volume information
+     */
     public void onMicTestButtonClicked() {
         MicTestAlert alert = new MicTestAlert((Stage) parentPane.getScene().getWindow());
         alert.show();

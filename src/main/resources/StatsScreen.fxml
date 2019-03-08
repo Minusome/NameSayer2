@@ -10,6 +10,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.StatsScreenController">
+<GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="@css/Material.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="namesayer.view.controller.StatsScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="4.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="45.0" prefWidth="100.0" />
@@ -84,6 +85,13 @@
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Names are sorted by rating (lowest to highest)" >
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Tooltip>
+                     </tooltip>
                   </Label>
                   <JFXListView fx:id="badNamesList" VBox.vgrow="ALWAYS">
                      <VBox.margin>

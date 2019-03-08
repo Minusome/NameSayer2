@@ -4,6 +4,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import org.controlsfx.control.Rating;
 
+/**
+ * Displays clickable star icons to rate Recording quality
+ */
+
 public class RatingPopupController {
 
     @FXML private Rating rating;

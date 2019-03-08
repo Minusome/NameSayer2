@@ -6,6 +6,11 @@ import javafx.scene.chart.PieChart;
 
 import java.util.Map;
 
+/**
+ * Converts Collections from StatisticsManager into format
+ * accepted by PieChart.
+ */
+
 public class PieChartDataAdapter {
 
     public ObservableList<PieChart.Data> retrieveData(Map<Integer, Integer> rawData) {

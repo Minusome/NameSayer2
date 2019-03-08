@@ -1,26 +1,26 @@
 package namesayer.session;
 
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import namesayer.model.CompositeName;
 import namesayer.model.CompositeRecording;
-import namesayer.model.PartialName;
 import namesayer.persist.NameStorageManager;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 import static namesayer.persist.Config.USER_ATTEMPTS;
 
+/**
+ * Base class for Practice and Assessment Sessions
+ * Allows basic operations on Names provided to the session
+ */
 
 public class Session implements Serializable {
 
-    protected List<CompositeName> namesList = new LinkedList<>();
+    protected List<CompositeName> namesList;
     protected int currentIndex = 0;
     protected CompositeName currentName;
     protected String sessionName;
@@ -37,6 +37,8 @@ public class Session implements Serializable {
         }
         this.namesList = namesList;
         currentName = this.namesList.get(0);
+
+        //Each session is separated by ID
         id = UUID.randomUUID().toString();
     }
 
@@ -54,11 +56,6 @@ public class Session implements Serializable {
 
     public int getNumberOfNames() {
         return namesList.size();
-    }
-
-    public void resetToFirst() {
-        currentIndex = 0;
-        currentName = namesList.get(0);
     }
 
     public void next() {
@@ -93,12 +90,15 @@ public class Session implements Serializable {
         return type;
     }
 
+    /**
+     * Called when session is deleted
+     * Removes all unsaved files created by this session
+     */
     public void removeFiles() {
         for (CompositeName name : namesList) {
             for (CompositeRecording recording : name.getUserAttempts()) {
                 try {
                     if (recording.getRecordingPath().toString().contains(USER_ATTEMPTS.toString())){
-                        System.out.println("deleted: " + recording.getRecordingPath());
                         Files.deleteIfExists(recording.getRecordingPath());
                     }
                 } catch (IOException e) {

@@ -1,7 +1,6 @@
 package namesayer.view.controller;
 
 import com.jfoenix.controls.*;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -9,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,12 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
-import namesayer.model.CompositeName;
-import namesayer.model.CompositeRecording;
-import namesayer.model.Name;
-import namesayer.model.PartialName;
-import namesayer.model.PartialRecording;
-import namesayer.model.Recording;
+import namesayer.model.*;
 import namesayer.persist.NameStorageManager;
 import namesayer.util.DatabaseImporter;
 import namesayer.util.SnackBarLoader;
@@ -30,16 +23,13 @@ import org.controlsfx.control.Rating;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Comparator;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static namesayer.util.Screen.MAIN_MENU;
 
 public class DatabaseViewController {
 
-    @FXML private Label nameDatabaseButton;
     @FXML private JFXToggleButton badQualityToggle;
     @FXML private JFXButton backButton;
     @FXML private JFXListView nameList;
@@ -52,7 +42,6 @@ public class DatabaseViewController {
     private double ratingValue;
     private ObservableList<CompositeName> userRecordings;
     private ObservableList<PartialName> databaseRecordings;
-    private boolean isNameDatabase;
     private ObservableList<Name> listOfNames;
     private int counter = 0;
 
@@ -71,11 +60,9 @@ public class DatabaseViewController {
      */
     public void onNameDatabaseClicked() {
     	counter=0;
-        isNameDatabase = true;
         playingSpinner.setProgress(1);
         setRatingVisible(false, false,false);
         if (databaseRecordings.isEmpty()) {
-            System.out.println("empty");
             SnackBarLoader.displayMessage(parentPane, "No recordings in database");
         } else {
             showNameDatabase();
@@ -87,37 +74,35 @@ public class DatabaseViewController {
      */
     public void onUserRecordingClicked() {
     	counter=1;
-        isNameDatabase = false;
         playingSpinner.setProgress(1);
         setRatingVisible(false, false,false);
         if (userRecordings.isEmpty()) {
-            System.out.println("empty");
             SnackBarLoader.displayMessage(parentPane, "No user recording in datatbase");
         } else {
-            //System.out.println("222");
             showComNameDatabase();
         }
     }
 
     
-    @FXML
+
     public void searchNameKeyTyped(KeyEvent e) {
     	String userInput = nameSearchBar.getText();
+        if (userInput.isEmpty()) {
+            listOfNames = (counter == 0) ? FXCollections.observableArrayList(databaseRecordings) :
+                    FXCollections.observableArrayList(userRecordings);
+            nameList.setItems(listOfNames);
+            return;
+        }
 		if(e.getCode().equals(KeyCode.ENTER)) {
-			nameSearchBar.clear();
-	        if (userInput.isEmpty()) {
-	            //showNameDatabase();
-	        } else {
-	        	if(counter==0) {
-	        		listOfNames = databaseRecordings.stream()
-                            .filter(name -> name.toString().toLowerCase().contains(userInput))
-                            .collect(Collectors.toCollection(FXCollections::observableArrayList));
-	        	}else {
-	        		listOfNames = userRecordings.stream()
-                            .filter(name -> name.toString().toLowerCase().contains(userInput))
-                            .collect(Collectors.toCollection(FXCollections::observableArrayList));
-	        	}
-	        }
+            if(counter==0) {
+                listOfNames = databaseRecordings.stream()
+                        .filter(name -> name.toString().toLowerCase().contains(userInput))
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            }else {
+                listOfNames = userRecordings.stream()
+                        .filter(name -> name.toString().toLowerCase().contains(userInput))
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            }
 	        if(listOfNames.isEmpty()) {
                 SnackBarLoader.displayMessage(parentPane, "Name not found");
 	        }
@@ -152,7 +137,6 @@ public class DatabaseViewController {
                     )
             );
             timeline.play();
-            System.out.println(recording.toString());
         }
     }
 
@@ -269,6 +253,9 @@ public class DatabaseViewController {
         sortButton.setVisible(sort);
     }
 
+    /**
+    * Sort recording list by rating
+    */
     @FXML
     private void sortByRating(MouseEvent e) {
         if(nameList.getSelectionModel().getSelectedItem()==null) {
@@ -280,17 +267,21 @@ public class DatabaseViewController {
         }
     }
 
+    /**
+     * Import new database
+    */
     public void onImportButtonClicked() {
         DirectoryChooser chooser= new DirectoryChooser();
         chooser.setTitle("Select folder containing recordings");
-        //chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(".wav", "*.wav"));
-        //File selectedFile = chooser.showOpenDialog(browseButton.getScene().getWindow());
         File selectedFolder = chooser.showDialog(null);
         if (selectedFolder != null) {
             SnackBarLoader.displayMessage(parentPane, "Database loading in progress...");
             DatabaseImporter importer = new DatabaseImporter(selectedFolder);
             importer.setOnFailed(event -> SnackBarLoader.displayMessage(parentPane, "Can't load folder: " + selectedFolder.getName()));
-            importer.setOnSucceeded(event -> SnackBarLoader.displayMessage(parentPane, "Successfully loaded folder: " + selectedFolder.getName()));
+            importer.setOnSucceeded(event -> {
+                SnackBarLoader.displayMessage(parentPane, "Successfully loaded folder: " + selectedFolder.getName());
+                initialize();
+            });
             new Thread(importer).start();
         }
     }
