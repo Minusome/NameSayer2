@@ -3,12 +3,12 @@
 NameSayer is a JavaFX application which helps users practise unfamiliar names. The user will be able to listen to the recordings stored in the name database, practise them and make their own recordings.
 
 <p float="left">
-  <img width="340" height="300" src="./screenshots/ScreenShot1.png?raw=true"/>
-  <img width="340" height="300" src="./screenshots/ScreenShot2.png?raw=true"/>
+  <img width="40%" height="40%" src="./screenshots/ScreenShot1.png?raw=true"/>
+  <img width="40%" height="40%" src="./screenshots/ScreenShot2.png?raw=true"/>
 </p>
 <p float="left">
-  <img width="340" height="300" src="./screenshots/ScreenShot3.png?raw=true"/>
-  <img width="340" height="300" src="./screenshots/ScreenShot4.png?raw=true"/>
+  <img width="40%" height="40%" src="./screenshots/ScreenShot3.png?raw=true"/>
+  <img width="40%" height="40%" src="./screenshots/ScreenShot4.png?raw=true"/>
 </p>
 
 
